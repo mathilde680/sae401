@@ -17,6 +17,7 @@ class MailerController extends AbstractController
         $recipient='contact@mmiple.fr';
         $sujet='Message du test';
 
+
         $email = (new Email())
             ->from($sender)
             ->to($recipient)

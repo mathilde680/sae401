@@ -34,7 +34,23 @@ body{
             div{
                 margin: 7% 0;
                 text-align: left;
+
+                #mdpOublieBox{
+                    text-align: right;
+                    margin: 0;
+
+                    #mdpOublieText{
+                        text-decoration: none;
+                        color: $couleurTexte;
+                        font-size: 12px;
+                        &:hover{
+                            text-decoration: underline;
+                        }
+                    }
+                }
             }
+
+
         }
     }
 }

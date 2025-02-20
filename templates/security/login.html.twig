@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Connexion{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
 
 {% block body %}
     <section id="connexion">
@@ -23,7 +23,10 @@
 
             <div>
                 <label for="password">Mot de passe</label>
-                <input type="password" placeholder="Entrez votre mot de passe" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                <div id="mdpOublieBox">
+                    <input type="password" placeholder="Entrez votre mot de passe" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                    <a id="mdpOublieText" href="{{ path ('app_mdp_oublie')}}">Mot de passe oublié ?</a>
+                </div>
             </div>
 
             {% if error %}
@@ -38,8 +41,6 @@
             <input type="hidden" name="_csrf_token"
                    value="{{ csrf_token('authenticate') }}"
             >
-
-            <a href="{{ path ('app_mdp_oublie')}}">Mot de passe oublié</a>
 
             <button class="btn btn-lg btn-primary" type="submit">Se connecter</button>
         </form>
