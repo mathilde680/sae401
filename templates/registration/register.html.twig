@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <section id="inscription">
+        <h1>Bienvenue sur Correcto</h1>
+        <div class="choixConnexionInscription">
+            <a href="{{ path ('app_login') }}">Connexion</a>  | <a class="active" href="{{ path ('app_register') }}">Inscription</a>
+        </div>
+
+
+        {{ form_start(registrationForm) }}
+
+        <div>
+            {{ form_label(registrationForm.email) }}
+            {{ form_widget(registrationForm.email) }}
+            <p class="alert">{{ form_errors(registrationForm.email) }}</p>
+        </div>
+
+        <div>
+            {{ form_label(registrationForm.plainPassword, 'Mot de passe') }}
+            {{ form_widget(registrationForm.plainPassword) }}
+            <p class="alert">{{ form_errors(registrationForm.plainPassword) }}</p>
+        </div>
+
+            <button type="submit" class="btn">S'inscrire</button>
+        {{ form_end(registrationForm) }}
+    </section>
+{% endblock %}

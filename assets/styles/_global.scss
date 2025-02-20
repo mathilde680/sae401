@@ -1,0 +1,33 @@
+html{
+  background-color: $couleurBackground;
+}
+
+//input pour les formulaires
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #080808;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+//boutons
+button{
+  @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 2% 7%);
+  &:hover{
+    cursor: pointer;
+    @include bouton($couleurBackground, #273b8c, 1px solid #273B8CFF, 8px, 2% 7%);
+  }
+}
+
+//alertes messages d'erreurs
+.alert{
+  display: flex;
+  align-items: center;
+  color: #BD0000;
+}
+
+.iconForm{
+  width: 25px;
+  height: 25px;
+}

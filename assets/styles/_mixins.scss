@@ -1,0 +1,7 @@
+@mixin bouton($color:$couleurBackground, $background:$couleurBouton, $border:1px solid $couleurBouton, $border-radius:8px ,$padding:1%){
+  color: $color;
+  background-color: $background;
+  border: $border;
+  border-radius: $border-radius;
+  padding: $padding;
+}
