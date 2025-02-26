@@ -32,7 +32,7 @@ body{
             text-align: right;
 
             div{
-                margin: 7% 0;
+                margin: 6% 0;
                 text-align: left;
 
                 #mdpOublieBox{
@@ -49,8 +49,17 @@ body{
                     }
                 }
             }
+        }
+    }
 
+    section#inscription{
+        .doubleCriteres{
+            display: flex;
+            gap: 10px;
 
+            div{
+                width: 100%;
+            }
         }
     }
 }

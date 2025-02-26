@@ -12,19 +12,53 @@
 
         {{ form_start(registrationForm) }}
 
-        <div>
+        <div id="email">
             {{ form_label(registrationForm.email) }}
             {{ form_widget(registrationForm.email) }}
-            <p class="alert">{{ form_errors(registrationForm.email) }}</p>
+            <!--<p class="alert">{{ form_errors(registrationForm.email) }}</p>-->
         </div>
 
-        <div>
+        <div class="doubleCriteres">
+            <div id="nom">
+                {{ form_label(registrationForm.nom) }}
+                {{ form_widget(registrationForm.nom) }}
+                <!--<p class="alert">{{ form_errors(registrationForm.nom) }}</p>-->
+            </div>
+
+            <div id="prenom">
+                {{ form_label(registrationForm.prenom) }}
+                {{ form_widget(registrationForm.prenom) }}
+                <!--<p class="alert">{{ form_errors(registrationForm.prenom) }}</p>-->
+            </div>
+        </div>
+
+        <div id="promotion">
+            {{ form_label(registrationForm.promotion) }}
+            {{ form_widget(registrationForm.promotion) }}
+            <!--<p class="alert">{{ form_errors(registrationForm.promotion) }}</p>-->
+        </div>
+
+        <div class="doubleCriteres">
+            <div id="td">
+                {{ form_label(registrationForm.td) }}
+                {{ form_widget(registrationForm.td) }}
+                <!--<p class="alert">{{ form_errors(registrationForm.td) }}</p>-->
+            </div>
+
+            <div id="tp">
+                {{ form_label(registrationForm.tp) }}
+                {{ form_widget(registrationForm.tp) }}
+                <!--<p class="alert">{{ form_errors(registrationForm.tp) }}</p>-->
+            </div>
+        </div>
+
+        <div id="mot de passe">
             {{ form_label(registrationForm.plainPassword, 'Mot de passe') }}
             {{ form_widget(registrationForm.plainPassword) }}
             <p class="alert">{{ form_errors(registrationForm.plainPassword) }}</p>
         </div>
 
-            <button type="submit" class="btn">S'inscrire</button>
+            <button type="submit" class="btn">Continuer</button>
         {{ form_end(registrationForm) }}
     </section>
 {% endblock %}

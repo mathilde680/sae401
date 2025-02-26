@@ -13,16 +13,43 @@ header{
     margin-left: 0.5rem ;
     border-radius: 10rem;
     box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+    position: relative;
     a{
       margin: 0.5rem;
       padding: 0.5rem;
       border-radius: 10rem;
+      position: relative;
       &:hover{
         background-color: $couleurBouton;
         svg{
           filter: invert(1);
         }
       }
+      &:hover + div{
+        display: flex;
+      }
+    }
+    div {
+      display: none;
+      position: absolute;
+      left: 110%;
+      background-color: $couleurBouton;
+      color: $couleurBackground;
+      padding: 10%;
+      border-radius: 5px;
+      transition: opacity 0.3s ease-in-out;
+    }
+    #popAccueil{
+      top: 10%;
+    }
+    #popNotes{
+      top: 32%;
+    }
+    #popChat{
+      top: 56%;
+    }
+    #popDarkMode{
+      top: 76%;
     }
   }
 }
@@ -93,8 +120,9 @@ header{
   display: flex;
   justify-content: space-between;
 }
+
 main{
   width: 95%;
-  border: 0.1rem solid $couleurBouton;
   height: 87vh;
+  padding: 20px;
 }

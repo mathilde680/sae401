@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout Matière{% endblock %}
+
+{% block main %}
+    {% block form %}
+        <h1>Ajout d'une ressource</h1>
+        {{ form_start(form_matiere) }}
+            {{ form_row(form_matiere.nom) }}
+            <button class="btn">{{ button_label|default('Ajouter') }}</button>
+        {{ form_end(form_matiere) }}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,71 @@
+section#dashboardProf {
+  .gridProf {
+    width: 100%;
+    height: 87vh;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 25px;
+
+    .alertesProf, .ressourcesProf, .grillesProf{
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      border-radius: 15px;
+      padding: 15px;
+      overflow: hidden;
+
+      .headerSectionDash{
+        display: flex;
+        justify-content: space-between;
+        color: $couleurBouton;
+
+        .nomSection{
+          display: flex;
+          align-items: center;
+          .icons{
+            width: 5%;
+            margin-right: 10px;
+          }
+          h2{
+            margin: 0;
+          }
+        }
+        .ajouter{
+          @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 50%);
+          text-decoration: none;
+          text-align: center;
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+    }
+
+    .alertesProf {
+      grid-column: 1 / 4;
+      grid-row: 1 / 2;
+    }
+
+    .ressourcesProf {
+      grid-column: 4 / 6;
+      grid-row: 1 / 2;
+
+      .ressourcesAffichage{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .icons{
+          width: 20px;
+          height: auto;
+          margin-left: 10px;
+          color: $couleurTexte;
+        }
+      }
+    }
+
+    .grillesProf {
+      grid-column: 1 / 3;
+      grid-row: 2 / 3;
+    }
+  }
+}

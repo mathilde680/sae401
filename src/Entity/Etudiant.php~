@@ -36,18 +36,6 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
-
-    #[ORM\Column(length: 10)]
-    private ?string $promotion = null;
-
-    #[ORM\Column(length: 8)]
-    private ?string $TD = null;
-
-    #[ORM\Column(length: 8)]
-    private ?string $TP = null;
-
 
     public function getId(): ?int
     {
@@ -132,54 +120,6 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): static
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getPromotion(): ?string
-    {
-        return $this->promotion;
-    }
-
-    public function setPromotion(string $promotion): static
-    {
-        $this->promotion = $promotion;
-
-        return $this;
-    }
-
-    public function getTD(): ?string
-    {
-        return $this->TD;
-    }
-
-    public function setTD(string $TD): static
-    {
-        $this->TD = $TD;
-
-        return $this;
-    }
-
-    public function getTP(): ?string
-    {
-        return $this->TP;
-    }
-
-    public function setTP(string $TP): static
-    {
-        $this->TP = $TP;
 
         return $this;
     }
