@@ -12,7 +12,7 @@ final class AccueilProfController extends AbstractController
     #[Route('/accueil/prof', name: 'app_accueil_prof')]
     public function index(MatiereRepository $MatiereRepository) : response
     {
-        $matieres = $MatiereRepository->findAll();
+        $matieres = $MatiereRepository->findAllMatiere();
 
         return $this->render('accueil_prof/index.html.twig', [
             'matieres' => $matieres,

@@ -11,12 +11,32 @@ section#dashboardProf {
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       border-radius: 15px;
       padding: 15px;
-      overflow: hidden;
+      overflow-y: scroll;
+      overflow-x: hidden;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #a4a4a4;
+        border-radius: 50px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #8c8c8c;
+      }
 
       .headerSectionDash{
         display: flex;
         justify-content: space-between;
         color: $couleurBouton;
+        background-color: $couleurBackground;
 
         .nomSection{
           display: flex;
@@ -54,11 +74,20 @@ section#dashboardProf {
         align-items: center;
         justify-content: space-between;
 
-        .icons{
-          width: 20px;
-          height: auto;
-          margin-left: 10px;
-          color: $couleurTexte;
+        .crudRessource{
+          display: flex;
+          align-items: center;
+
+          a{
+            text-decoration: none;
+
+            .icons{
+            width: 20px;
+            height: auto;
+            margin-left: 10px;
+            color: $couleurTexte;
+            }
+          }
         }
       }
     }
