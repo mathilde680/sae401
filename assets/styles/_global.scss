@@ -2,6 +2,10 @@ html{
   background-color: $couleurBackground;
 }
 
+body{
+  font-family: "Inter", sans-serif;
+}
+
 //input pour les formulaires
 input, select {
   width: 100%;
@@ -13,12 +17,19 @@ input, select {
 
 //boutons
 button{
-  @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 2% 7%);
+  @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  svg{
+    padding-left: 0.5rem;
+  }
   &:hover{
     cursor: pointer;
-    @include bouton($couleurBackground, #273b8c, 1px solid #273B8CFF, 8px, 2% 7%);
+    @include bouton($couleurBackground, #273b8c, 1px solid #273B8CFF, 8px, 0.7rem 1.2rem);
   }
 }
+
 
 //alertes messages d'erreurs
 .alert{

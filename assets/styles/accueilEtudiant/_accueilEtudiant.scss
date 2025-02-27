@@ -54,12 +54,17 @@ header{
   }
 }
 .header{
-  width: 90%;
+  width: 98%;
   margin: auto;
   height: 10vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .logo{
+    img{
+      width: 3rem;
+    }
+  }
   .partSearch{
     width: 70%;
     .search-bar {

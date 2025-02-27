@@ -8,29 +8,10 @@ section#dashboardProf {
     gap: 25px;
 
     .alertesProf, .ressourcesProf, .grillesProf{
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
       border-radius: 15px;
       padding: 15px;
-      overflow-y: scroll;
-      overflow-x: hidden;
-
-      &::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: #a4a4a4;
-        border-radius: 50px;
-      }
-
-      &::-webkit-scrollbar-thumb:hover {
-        background: #8c8c8c;
-      }
+      overflow-y: hidden;
 
       .headerSectionDash{
         display: flex;
@@ -63,33 +44,83 @@ section#dashboardProf {
     .alertesProf {
       grid-column: 1 / 4;
       grid-row: 1 / 2;
+      .allAlertes{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .alerteItem{
+          display: flex;
+          justify-content: space-between;
+          div{
+            display: flex;
+            align-items: center;
+            margin: 0 1rem;
+            justify-content: center;
+            img{
+              width: 3rem;
+            }
+            svg{
+              width: 5rem;
+            }
+          }
+          p{
+            text-align: left;
+          }
+
+
+        }
+      }
     }
 
     .ressourcesProf {
       grid-column: 4 / 6;
       grid-row: 1 / 2;
 
-      .ressourcesAffichage{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
 
-        .crudRessource{
+      .toutesLesRessources{
+      overflow-y: scroll;
+        height: 100%;
+        width: 100%;
+        &::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: none;
+          border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #a4a4a4;
+          border-radius: 50px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: #8c8c8c;
+        }
+        .ressourcesAffichage{
           display: flex;
           align-items: center;
+          justify-content: space-between;
 
-          a{
-            text-decoration: none;
+          .crudRessource{
+            display: flex;
+            align-items: center;
 
-            .icons{
-            width: 20px;
-            height: auto;
-            margin-left: 10px;
-            color: $couleurTexte;
+            a{
+              text-decoration: none;
+
+              .icons{
+                width: 20px;
+                height: auto;
+                margin-left: 10px;
+                color: $couleurTexte;
+              }
             }
           }
         }
       }
+
     }
 
     .grillesProf {

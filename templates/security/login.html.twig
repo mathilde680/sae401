@@ -4,6 +4,7 @@
 
 {% block body %}
     <section id="connexion">
+        <img src="img/logoCorrecto.png" alt="logo correcto">
         <h1>Bienvenue sur Correcto</h1>
         <div class="choixConnexionInscription">
             <a class="active" href="{{ path ('app_login') }}">Connexion</a>  | <a href="{{ path ('app_register') }}">Inscription</a>
@@ -18,13 +19,13 @@
 
             <div>
                 <label for="username">Email</label>
-                <input type="email" value="{{ last_username }}" placeholder="Entrez votre email" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+                <input type="email" value="{{ last_username }}" placeholder="john.doe@email.com" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
             </div>
 
             <div>
                 <label for="password">Mot de passe</label>
                 <div id="mdpOublieBox">
-                    <input type="password" placeholder="Entrez votre mot de passe" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                    <input type="password" placeholder="*********" name="_password" id="password" class="form-control" autocomplete="current-password" required>
                     <a id="mdpOublieText" href="{{ path ('app_mdp_oublie')}}">Mot de passe oublié ?</a>
                 </div>
             </div>
@@ -42,7 +43,8 @@
                    value="{{ csrf_token('authenticate') }}"
             >
 
-            <button class="btn btn-lg btn-primary" type="submit">Se connecter</button>
+            <button type="submit">Se connecter</button>
+
         </form>
     </section>
 {% endblock %}
