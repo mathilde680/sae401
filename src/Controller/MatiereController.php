@@ -14,6 +14,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class MatiereController extends AbstractController
 {
 
+    #[Route('/fiche/{id}', name: 'app_fiche_matiere', requirements: ['id'=>'\d+'])]
+    public function matiere_fiche(int $id, MatiereRepository $matiereRepository): Response
+    {
+        $fiches = $matiereRepository->findBy(['id' => $id]);
+
+        return $this->render('matiere/fiche.html.twig', [
+            'fiches' => $fiches,
+        ]);
+    }
+
     #[Route('/matiere/ajout', name: 'app_matiere_ajout')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

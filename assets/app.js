@@ -26,3 +26,4 @@ try {
 } catch (error) {
     console.error('Erreur détectée :', error);
 }
+

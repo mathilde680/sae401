@@ -6,6 +6,11 @@ body{
   font-family: "Inter", sans-serif;
 }
 
+//textes
+a{
+  text-decoration: none;
+}
+
 //input pour les formulaires
 input, select {
   width: 100%;
@@ -16,7 +21,7 @@ input, select {
 }
 
 //boutons
-button{
+.bouton{
   @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
   display: flex;
   justify-content: space-between;
@@ -27,6 +32,20 @@ button{
   &:hover{
     cursor: pointer;
     @include bouton($couleurBackground, #273b8c, 1px solid #273B8CFF, 8px, 0.7rem 1.2rem);
+  }
+}
+
+.boutonSecondaire{
+  @include bouton($couleurTexte, #D9D9D9, 1px solid #D9D9D9, 8px, 0.7rem 1.2rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  svg{
+    padding-left: 0.5rem;
+  }
+  &:hover{
+    cursor: pointer;
+    @include bouton($couleurTexte, #b3b1b1, 1px solid #B3B1B1FF, 8px, 0.7rem 1.2rem);
   }
 }
 

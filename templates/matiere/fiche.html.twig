@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MatiereController!{% endblock %}
+
+{% block main %}
+
+    <div class="boutonRetour" onclick=" history.back();">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+        </svg>
+        Retour
+    </div>
+
+    {% for fiche in fiches %}
+        <h1>{{ fiche.nom }}</h1>
+    {% endfor %}
+
+    <div class="box1">
+        <div class="choixGroupe">
+            <div class="s1">
+                <button class="promotion">S1</button>
+                <div class="s1td">
+                    <button class="td">TD AB</button>
+                    <button class="td">TD CD</button>
+                    <button class="td">TD EF</button>
+                    <button class="td">TD GH</button>
+                </div>
+            </div>
+            <div class="s2">
+                <button class="promotion">S2</button>
+                <div class="s2td">
+                    <button class="td">TD AB</button>
+                    <button class="td">TD CD</button>
+                    <button class="td">TD EF</button>
+                    <button class="td">TD GH</button>
+                    <button class="td">TD IJ</button>
+                </div>
+            </div>
+            <div class="s3">
+                <button class="promotion">S3</button>
+                <div class="s3td">
+                    <button class="td">TD AB</button>
+                    <button class="td">TD CD</button>
+                    <button class="td">TD EF</button>
+                    <button class="td">TD GH</button>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <a class="boutonSecondaire" href="">Ajouter une note</a>
+            <a class="boutonSecondaire" href="">Ajouter une grille d'évaluation</a>
+            <a class="boutonSecondaire" href="">Supprimer une note</a>
+        </div>
+    </div>
+
+    <button class="supprimer">Supprimer la ressource</button>
+{% endblock %}

@@ -70,7 +70,7 @@
                     {% for matiere in matieres %}
                         <div class="ressourcesAffichage">
                             <div>
-                                <p>{{ matiere.nom }}</p>
+                                <a href="{{ path('app_fiche_matiere', {'id': matiere.id}) }}">{{ matiere.nom }}</a>
                             </div>
                             <div class="crudRessource">
                                 <a href="{{ path('app_matiere_modif', {'id': matiere.id}) }}">
