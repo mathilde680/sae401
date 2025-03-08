@@ -25,6 +25,19 @@ class MatiereRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllBySemestre($nom) : array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.nom LIKE :nom')
+            ->setParameter('nom', '%'.$nom.'%')
+
+            ->orderBy('s.nom', 'ASC')
+
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     //    /**
     //     * @return Matiere[] Returns an array of Matiere objects

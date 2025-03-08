@@ -102,6 +102,12 @@ section#dashboardProf {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          color: $couleurTexte;
+          margin-bottom: 1rem;
+
+          a{
+            color: $couleurTexte;
+          }
 
           .crudRessource{
             display: flex;
@@ -115,6 +121,11 @@ section#dashboardProf {
                 height: auto;
                 margin-left: 10px;
                 color: $couleurTexte;
+              }
+            }
+            form{
+              button{
+                background-color: transparent;
               }
             }
           }
