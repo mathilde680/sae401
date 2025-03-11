@@ -40,12 +40,14 @@ input, select {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 50px;
   svg{
     padding-left: 0.5rem;
   }
   &:hover{
-    cursor: pointer;
     @include bouton($couleurTexte, #b3b1b1, 1px solid #B3B1B1FF, 8px, 0.7rem 1.2rem);
+    border-radius: 50px;
+    cursor: pointer;
   }
 }
 
