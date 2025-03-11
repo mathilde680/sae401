@@ -12,46 +12,49 @@
   }
 }
 
-  .box1{
-    width: 45%;
+.box1{
+  width: 45%;
+  display: flex;
+  flex-wrap: wrap;
+  box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+  border-radius: 15px;
+  padding: 15px;
+
+  .choixGroupe, .actions{
     display: flex;
-    flex-wrap: wrap;
-    box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
-    border-radius: 15px;
-    padding: 15px;
+    width: 100%;
 
-    .choixGroupe, .actions{
-      display: flex;
-      width: 100%;
-
-      //boutons pour choisir la promo
-      button.promotion{
-        @include bouton($couleurTexte, $couleurBackground, 1px solid $couleurBouton, 8px, 1rem);
+    //boutons pour choisir la promo
+    button.promotion{
+      @include bouton($couleurTexte, $couleurBackground, 1px solid $couleurBouton, 8px, 1rem);
+      border-radius: 50px;
+      &:hover, &:focus {
+        @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 1rem);
         border-radius: 50px;
-        &:hover, &:focus {
-          @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 1rem);
-          border-radius: 50px;
-          cursor: pointer;
-        }
+        cursor: pointer;
       }
+    }
 
-      //boutons pour choisir le td
-      button.td{
-        @include bouton($couleurTexte, $couleurBackground, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
-        &:hover, &:focus {
-          @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
-          cursor: pointer;
-        }
+    //boutons pour choisir le td
+    button.td{
+      @include bouton($couleurTexte, $couleurBackground, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
+      &:hover, &:focus {
+        @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
+        cursor: pointer;
       }
     }
   }
+}
 
-  .supprimer{
-    @include bouton($couleurBackground, $couleurAlerte, 1px solid $couleurAlerte, 8px, 0.7rem 1.2rem);
-    &:hover{
-      @include bouton($couleurBackground, #780505, 1px solid #780505, 8px, 0.7rem 1.2rem);
-      cursor: pointer;
-    }
+.supprimer{
+  @include bouton($couleurBackground, $couleurAlerte, 1px solid $couleurAlerte, 8px, 0.7rem 1.2rem);
+  border-radius: 50px;
+  margin-top: 25px;
+  &:hover{
+    @include bouton($couleurBackground, #780505, 1px solid #780505, 8px, 0.7rem 1.2rem);
+    cursor: pointer;
+    border-radius: 50px;
   }
+}
 
 

@@ -33,6 +33,17 @@ class EtudiantRepository extends ServiceEntityRepository implements PasswordUpgr
         $this->getEntityManager()->flush();
     }
 
+    public function findAllById(int $id)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.id = :id')
+            ->setParameter('id', $id)
+
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     //    /**
     //     * @return Etudiant[] Returns an array of Etudiant objects
     //     */
