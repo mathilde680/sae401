@@ -13,8 +13,44 @@ class FicheCours
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ficheCours')]
+    private ?Etudiant $Etudiant = null;
+
+    #[ORM\ManyToOne(inversedBy: 'ficheCours')]
+    private ?Matiere $Matiere = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Fiche_cours')]
+    private ?Etudiant $etudiant = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Fiche_cours')]
+    private ?Matiere $matiere = null;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getEtudiant(): ?Etudiant
+    {
+        return $this->Etudiant;
+    }
+
+    public function setEtudiant(?Etudiant $Etudiant): static
+    {
+        $this->Etudiant = $Etudiant;
+
+        return $this;
+    }
+
+    public function getMatiere(): ?Matiere
+    {
+        return $this->Matiere;
+    }
+
+    public function setMatiere(?Matiere $Matiere): static
+    {
+        $this->Matiere = $Matiere;
+
+        return $this;
     }
 }

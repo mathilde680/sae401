@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EvaluationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +30,67 @@ class Evaluation
 
     #[ORM\Column(length: 20)]
     private ?string $statut_groupe = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $taille_max_groupe = null;
+
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'Evaluation')]
+    private Collection $notes;
+
+    #[ORM\ManyToOne(inversedBy: 'evaluations')]
+    private ?Matiere $Matiere = null;
+
+    /**
+     * @var Collection<int, FicheGrille>
+     */
+    #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'Evaluation')]
+    private Collection $ficheGrilles;
+
+    #[ORM\ManyToOne(inversedBy: 'evaluations')]
+    private ?Professeur $Professeur = null;
+
+    /**
+     * @var Collection<int, Groupe>
+     */
+    #[ORM\OneToMany(targetEntity: Groupe::class, mappedBy: 'Evaluation')]
+    private Collection $groupes;
+
+    /**
+     * @var Collection<int, FicheGrille>
+     */
+    #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'evaluation')]
+    private Collection $Fiche_grille;
+
+    #[ORM\ManyToOne(inversedBy: 'Evaluation')]
+    private ?Professeur $professeur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Evaluation')]
+    private ?Matiere $matiere = null;
+
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'evaluation')]
+    private Collection $Note;
+
+    /**
+     * @var Collection<int, Groupe>
+     */
+    #[ORM\OneToMany(targetEntity: Groupe::class, mappedBy: 'evaluation')]
+    private Collection $Groupe;
+
+    public function __construct()
+    {
+        $this->notes = new ArrayCollection();
+        $this->ficheGrilles = new ArrayCollection();
+        $this->groupes = new ArrayCollection();
+        $this->Fiche_grille = new ArrayCollection();
+        $this->Note = new ArrayCollection();
+        $this->Groupe = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -92,5 +155,155 @@ class Evaluation
         $this->statut_groupe = $statut_groupe;
 
         return $this;
+    }
+
+    public function getTailleMaxGroupe(): ?int
+    {
+        return $this->taille_max_groupe;
+    }
+
+    public function setTailleMaxGroupe(?int $taille_max_groupe): static
+    {
+        $this->taille_max_groupe = $taille_max_groupe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setEvaluation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getEvaluation() === $this) {
+                $note->setEvaluation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMatiere(): ?Matiere
+    {
+        return $this->Matiere;
+    }
+
+    public function setMatiere(?Matiere $Matiere): static
+    {
+        $this->Matiere = $Matiere;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FicheGrille>
+     */
+    public function getFicheGrilles(): Collection
+    {
+        return $this->ficheGrilles;
+    }
+
+    public function addFicheGrille(FicheGrille $ficheGrille): static
+    {
+        if (!$this->ficheGrilles->contains($ficheGrille)) {
+            $this->ficheGrilles->add($ficheGrille);
+            $ficheGrille->setEvaluation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFicheGrille(FicheGrille $ficheGrille): static
+    {
+        if ($this->ficheGrilles->removeElement($ficheGrille)) {
+            // set the owning side to null (unless already changed)
+            if ($ficheGrille->getEvaluation() === $this) {
+                $ficheGrille->setEvaluation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProfesseur(): ?Professeur
+    {
+        return $this->Professeur;
+    }
+
+    public function setProfesseur(?Professeur $Professeur): static
+    {
+        $this->Professeur = $Professeur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Groupe>
+     */
+    public function getGroupes(): Collection
+    {
+        return $this->groupes;
+    }
+
+    public function addGroupe(Groupe $groupe): static
+    {
+        if (!$this->groupes->contains($groupe)) {
+            $this->groupes->add($groupe);
+            $groupe->setEvaluation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupe(Groupe $groupe): static
+    {
+        if ($this->groupes->removeElement($groupe)) {
+            // set the owning side to null (unless already changed)
+            if ($groupe->getEvaluation() === $this) {
+                $groupe->setEvaluation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FicheGrille>
+     */
+    public function getFicheGrille(): Collection
+    {
+        return $this->Fiche_grille;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNote(): Collection
+    {
+        return $this->Note;
+    }
+
+    /**
+     * @return Collection<int, Groupe>
+     */
+    public function getGroupe(): Collection
+    {
+        return $this->Groupe;
     }
 }

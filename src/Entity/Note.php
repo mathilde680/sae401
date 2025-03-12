@@ -19,6 +19,18 @@ class Note
     #[ORM\Column(length: 255)]
     private ?string $commentaire = null;
 
+    #[ORM\ManyToOne(inversedBy: 'notes')]
+    private ?Etudiant $Etudiant = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notes')]
+    private ?Evaluation $Evaluation = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Note')]
+    private ?Evaluation $evaluation = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Note')]
+    private ?Etudiant $etudiant = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +56,30 @@ class Note
     public function setCommentaire(string $commentaire): static
     {
         $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    public function getEtudiant(): ?Etudiant
+    {
+        return $this->Etudiant;
+    }
+
+    public function setEtudiant(?Etudiant $Etudiant): static
+    {
+        $this->Etudiant = $Etudiant;
+
+        return $this;
+    }
+
+    public function getEvaluation(): ?Evaluation
+    {
+        return $this->Evaluation;
+    }
+
+    public function setEvaluation(?Evaluation $Evaluation): static
+    {
+        $this->Evaluation = $Evaluation;
 
         return $this;
     }

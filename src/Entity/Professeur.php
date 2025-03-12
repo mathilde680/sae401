@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProfesseurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,6 +38,52 @@ class Professeur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $prenom = null;
+
+    /**
+     * @var Collection<int, Grille>
+     */
+    #[ORM\OneToMany(targetEntity: Grille::class, mappedBy: 'Professeur')]
+    private Collection $grilles;
+
+    /**
+     * @var Collection<int, FicheMatiere>
+     */
+    #[ORM\OneToMany(targetEntity: FicheMatiere::class, mappedBy: 'Professeur')]
+    private Collection $ficheMatieres;
+
+    /**
+     * @var Collection<int, Evaluation>
+     */
+    #[ORM\OneToMany(targetEntity: Evaluation::class, mappedBy: 'Professeur')]
+    private Collection $evaluations;
+
+    /**
+     * @var Collection<int, FicheMatiere>
+     */
+    #[ORM\OneToMany(targetEntity: FicheMatiere::class, mappedBy: 'professeur')]
+    private Collection $Fiche_matiere;
+
+    /**
+     * @var Collection<int, Grille>
+     */
+    #[ORM\OneToMany(targetEntity: Grille::class, mappedBy: 'professeur')]
+    private Collection $Grille;
+
+    /**
+     * @var Collection<int, Evaluation>
+     */
+    #[ORM\OneToMany(targetEntity: Evaluation::class, mappedBy: 'professeur')]
+    private Collection $Evaluation;
+
+    public function __construct()
+    {
+        $this->grilles = new ArrayCollection();
+        $this->ficheMatieres = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
+        $this->Fiche_matiere = new ArrayCollection();
+        $this->Grille = new ArrayCollection();
+        $this->Evaluation = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -134,5 +182,119 @@ class Professeur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->prenom = $prenom;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Grille>
+     */
+    public function getGrilles(): Collection
+    {
+        return $this->grilles;
+    }
+
+    public function addGrille(Grille $grille): static
+    {
+        if (!$this->grilles->contains($grille)) {
+            $this->grilles->add($grille);
+            $grille->setProfesseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGrille(Grille $grille): static
+    {
+        if ($this->grilles->removeElement($grille)) {
+            // set the owning side to null (unless already changed)
+            if ($grille->getProfesseur() === $this) {
+                $grille->setProfesseur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FicheMatiere>
+     */
+    public function getFicheMatieres(): Collection
+    {
+        return $this->ficheMatieres;
+    }
+
+    public function addFicheMatiere(FicheMatiere $ficheMatiere): static
+    {
+        if (!$this->ficheMatieres->contains($ficheMatiere)) {
+            $this->ficheMatieres->add($ficheMatiere);
+            $ficheMatiere->setProfesseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFicheMatiere(FicheMatiere $ficheMatiere): static
+    {
+        if ($this->ficheMatieres->removeElement($ficheMatiere)) {
+            // set the owning side to null (unless already changed)
+            if ($ficheMatiere->getProfesseur() === $this) {
+                $ficheMatiere->setProfesseur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Evaluation>
+     */
+    public function getEvaluations(): Collection
+    {
+        return $this->evaluations;
+    }
+
+    public function addEvaluation(Evaluation $evaluation): static
+    {
+        if (!$this->evaluations->contains($evaluation)) {
+            $this->evaluations->add($evaluation);
+            $evaluation->setProfesseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluation(Evaluation $evaluation): static
+    {
+        if ($this->evaluations->removeElement($evaluation)) {
+            // set the owning side to null (unless already changed)
+            if ($evaluation->getProfesseur() === $this) {
+                $evaluation->setProfesseur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FicheMatiere>
+     */
+    public function getFicheMatiere(): Collection
+    {
+        return $this->Fiche_matiere;
+    }
+
+    /**
+     * @return Collection<int, Grille>
+     */
+    public function getGrille(): Collection
+    {
+        return $this->Grille;
+    }
+
+    /**
+     * @return Collection<int, Evaluation>
+     */
+    public function getEvaluation(): Collection
+    {
+        return $this->Evaluation;
     }
 }
