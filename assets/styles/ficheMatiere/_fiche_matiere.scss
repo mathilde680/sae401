@@ -1,5 +1,3 @@
-//la box1 correspond à la boxe où on choisit à qui on veut mettre la note. Ex : le TD A des BUT1
-
 .boutonRetour {
   display: flex;
   align-items: center;
@@ -12,35 +10,73 @@
   }
 }
 
-.box1{
-  width: 45%;
+.ficheMatiere{
   display: flex;
-  flex-wrap: wrap;
-  box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
-  border-radius: 15px;
-  padding: 15px;
+  gap: 5%;
 
-  .choixGroupe, .actions{
+  //la box1 correspond à la boxe où on choisit à qui on veut mettre la note. Ex : le TD A des BUT1
+  .box1{
+    width: 45%;
     display: flex;
-    width: 100%;
+    flex-wrap: wrap;
+    box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+    border-radius: 15px;
+    padding: 15px;
 
-    //boutons pour choisir la promo
-    button.promotion{
-      @include bouton($couleurTexte, $couleurBackground, 1px solid $couleurBouton, 8px, 1rem);
-      border-radius: 50px;
-      &:hover, &:focus {
-        @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 1rem);
+    .choixGroupe, .actions{
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      //boutons pour choisir la promo
+      button.promotion{
+        @include bouton($couleurTexte, $couleurBackground, 1px solid $couleurBouton, 8px, 1rem);
         border-radius: 50px;
-        cursor: pointer;
+        &:hover, &:focus {
+          @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 1rem);
+          border-radius: 50px;
+          cursor: pointer;
+        }
+      }
+
+      //boutons pour choisir le td
+      button.td{
+        @include bouton($couleurTexte, $couleurBackground, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
+        &:hover, &:focus {
+          @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
+          cursor: pointer;
+        }
       }
     }
+  }
 
-    //boutons pour choisir le td
-    button.td{
-      @include bouton($couleurTexte, $couleurBackground, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
-      &:hover, &:focus {
-        @include bouton($couleurBackground, $couleurBouton, 1px solid $couleurBouton, 8px, 0.7rem 1.2rem);
-        cursor: pointer;
+  .box2{
+    width: 45%;
+
+    .boxEvaluation{
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+      border-radius: 15px;
+      padding: 15px;
+      gap: 10%;
+      margin-bottom: 20px;
+
+      .infoEvaluation{
+        display: flex;
+        flex-direction: column;
+        width: 45%;
+
+        h2{
+          color: $couleurBouton;
+          margin: 0;
+        }
+
+        .actionEvaluation{
+          display: flex;
+          justify-content: space-between;
+        }
       }
     }
   }

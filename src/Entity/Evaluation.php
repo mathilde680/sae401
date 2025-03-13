@@ -40,8 +40,8 @@ class Evaluation
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'Evaluation')]
     private Collection $notes;
 
-    #[ORM\ManyToOne(inversedBy: 'evaluations')]
-    private ?Matiere $Matiere = null;
+//    #[ORM\ManyToOne(inversedBy: 'evaluations')]
+//    private ?Matiere $Matiere = null;
 
     /**
      * @var Collection<int, FicheGrille>
@@ -64,8 +64,8 @@ class Evaluation
     #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'evaluation')]
     private Collection $Fiche_grille;
 
-    #[ORM\ManyToOne(inversedBy: 'Evaluation')]
-    private ?Professeur $professeur = null;
+//    #[ORM\ManyToOne(inversedBy: 'Evaluation')]
+//    private ?Professeur $professeur = null;
 
     #[ORM\ManyToOne(inversedBy: 'Evaluation')]
     private ?Matiere $matiere = null;
@@ -201,13 +201,13 @@ class Evaluation
 
     public function getMatiere(): ?Matiere
     {
-        return $this->Matiere;
+        return $this->matiere;
     }
 
-    public function setMatiere(?Matiere $Matiere): static
+    public function setMatiere(?Matiere $matiere): static
     {
-        $this->Matiere = $Matiere;
-
+        $this->matiere = $matiere;
+        $this->matiere = $matiere;
         return $this;
     }
 

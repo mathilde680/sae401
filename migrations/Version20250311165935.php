@@ -14,7 +14,7 @@ final class Version20250311165935 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Ajout des propriétés de la table etudiant';
     }
 
     public function up(Schema $schema): void

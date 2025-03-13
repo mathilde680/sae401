@@ -14,7 +14,7 @@ final class Version20250312214113 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Jointure entre les tables';
     }
 
     public function up(Schema $schema): void
