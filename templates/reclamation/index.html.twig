@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReclamationController!{% endblock %}
+
+{% block main %}
+<h1 id="h1_reclamation">Réclamation</h1>
+
+    <div id="info_reclamation">
+        <p>Vous avez obtenu une note en dessous de 8 et vous souhaitez faire une réclamation. Attention cette demande doit être réfléchi et ne doit pas faire preuve d’un abus. Si nous trouvons que ces demandes sont abusives, cette fonctionnalité vous sera retiré.</p>
+        <p>Demande pour :</p>
+        <div id="info_note_reclamation">
+            <p id="matiere_reclamation">WR 301 - Anglais</p>
+            <p id="libelle_reclamation">Compréhension orale</p>
+            <p id="note_reclamation">5,00</p>
+        </div>
+        <p>Explication de la demande :</p>
+        <input type="text">
+        <a href="">Annuler ma demande</a>
+        <button>Envoyer la demande</button>
+    </div>
+
+
+{% endblock %}
