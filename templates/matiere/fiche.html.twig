@@ -54,7 +54,7 @@
             </div>
             <div class="actions">
                 <a class="boutonSecondaire" href="{{ path('app_evaluation_ajout', {'id': fiches.id}) }}">Ajouter une note</a>
-                <a class="boutonSecondaire" href="">Ajouter une grille d'évaluation</a>
+                <a class="boutonSecondaire" href="{{ path ('app_grille') }}">Ajouter une grille d'évaluation</a>
                 <a class="boutonSecondaire" href="">Supprimer une note</a>
             </div>
         </div>
@@ -64,9 +64,11 @@
             <div class="boxEvaluation">
                 <div class="infoEvaluation">
                     <h2>{{ evaluation.nom }}</h2>
-                    <p>Publiée le {{ evaluation.date|date('d/m/Y') }}</p>
+                    <p>{{ evaluation.statut }} le {{ evaluation.date|date('d/m/Y') }}</p>
+                    <p>{{ evaluation.statutGroupe }}</p>
                     <div class="actionEvaluation">
                         <a href="{{ path ('app_evaluation_modif', {'id': evaluation.id}) }}" class="bouton">Modifier</a>
+                        <a href="" class="bouton">Evaluer</a>
                         <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
                             <button class="bouton">
                                 Supprimer
