@@ -41,13 +41,13 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 10, nullable: true)]
     private ?string $promotion = null;
 
-    #[ORM\Column(length: 8)]
+    #[ORM\Column(length: 8, nullable: true)]
     private ?string $TD = null;
 
-    #[ORM\Column(length: 8)]
+    #[ORM\Column(length: 8, nullable: true)]
     private ?string $TP = null;
 
     /**
@@ -147,7 +147,7 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_ETUDIANT';
 
         return array_unique($roles);
     }

@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Professeur;
 use App\Form\ResetPasswordRequestType;
 use App\Repository\EtudiantRepository;
 use App\Service\MailerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,15 +18,32 @@ use Doctrine\ORM\EntityManagerInterface;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, Security $security): Response
     {
-        if ($this->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('app_accueil_etudiant');
+        if ($security->getUser()) {
+            $user = $security->getUser();
+
+            // Redirection selon le type d'utilisateur
+            if ($this->isGranted('ROLE_PROFESSEUR')) {
+                return $this->redirectToRoute('app_accueil_prof');
+            } elseif ($this->isGranted('ROLE_ETUDIANT')){
+                return $this->redirectToRoute('app_accueil_etudiant');
+            }
         }
+
+        //CODE DE BASE
+        //if ($this->isGranted('ROLE_USER')) {
+          //  return $this->redirectToRoute('app_accueil_etudiant');
+        //}
+
+       //if ($this->isGranted('ROLE_PROFESSEUR')) {
+         //  return $this->redirectToRoute('app_accueil_prof');
+        //}else{
+          //  return $this->redirectToRoute('app_accueil_etudiant');
+        //}
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
