@@ -16,6 +16,18 @@ class CritereRepository extends ServiceEntityRepository
         parent::__construct($registry, Critere::class);
     }
 
+    public function findCriteresByGrille(int $grilleId)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c, g.nom')  // On récupère aussi le nom de la grille
+            ->leftJoin('c.grille', 'g') // Jointure avec l'entité Grille
+            ->where('g.id = :grilleId')
+            ->setParameter('grilleId', $grilleId)
+            ->getQuery()
+            ->getResult();
+    }
+
+
     //    /**
     //     * @return Critere[] Returns an array of Critere objects
     //     */

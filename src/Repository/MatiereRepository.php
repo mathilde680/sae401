@@ -16,27 +16,31 @@ class MatiereRepository extends ServiceEntityRepository
         parent::__construct($registry, Matiere::class);
     }
 
-    public function findAllMatiere() : array
+    public function findAllMatiereByProfesseur($profId): array
     {
         return $this->createQueryBuilder('m')
+            ->join('App\Entity\FicheMatiere', 'fm', 'WITH', 'fm.Matiere = m.id')
+            ->where('fm.Professeur = :profId')
+            ->setParameter('profId', $profId)
             ->orderBy('m.nom', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
-    public function findAllBySemestre($nom) : array
+    public function findAllBySemestreAndProfesseur($nom, $profId): array
     {
-        return $this->createQueryBuilder('s')
-            ->where('s.nom LIKE :nom')
+        return $this->createQueryBuilder('m')
+            ->join('App\Entity\FicheMatiere', 'fm', 'WITH', 'fm.Matiere = m.id')
+            ->where('m.nom LIKE :nom')
+            ->andWhere('fm.Professeur = :profId')
             ->setParameter('nom', '%'.$nom.'%')
-
-            ->orderBy('s.nom', 'ASC')
-
+            ->setParameter('profId', $profId)
+            ->orderBy('m.nom', 'ASC')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
+
+
 
 
     //    /**

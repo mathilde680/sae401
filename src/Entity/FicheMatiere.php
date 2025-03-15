@@ -19,11 +19,11 @@ class FicheMatiere
     #[ORM\ManyToOne(inversedBy: 'ficheMatieres')]
     private ?Professeur $Professeur = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Fiche_matiere')]
-    private ?Matiere $matiere = null;
-
-    #[ORM\ManyToOne(inversedBy: 'Fiche_matiere')]
-    private ?Professeur $professeur = null;
+//    #[ORM\ManyToOne(inversedBy: 'Fiche_matiere')]
+//    private ?Matiere $matiere = null;
+//
+//    #[ORM\ManyToOne(inversedBy: 'Fiche_matiere')]
+//    private ?Professeur $professeur = null;
 
     public function getId(): ?int
     {
