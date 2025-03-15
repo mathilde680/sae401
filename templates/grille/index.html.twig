@@ -3,12 +3,14 @@
 {% block title %}Ajout d'une grille{% endblock %}
 
 {% block main %}
-    <h1>Quelles grilles d'évaluation souhaitez-vous mettre en place ?</h1>
-    <div class="boxGrille">
-    {% for grille in grilles %}
-        <a href="">{{ grille.nom }}</a>
-    {% endfor %}
-
-        <a href="{{ path ('app_grille_ajout') }}">Créer une nouvelle grille</a>
+    <div class="box">
+        <h1>Quelles grilles d'évaluation souhaitez-vous mettre en place ?</h1>
+        <div class="boxGrille">
+            <a href="{{ path ('app_grille_ajout') }}"> Créer une nouvelle grille</a>
+            {% for grille in grilles %}
+                <a href="">{{ grille.nom }}</a>
+            {% endfor %}
+        </div>
     </div>
+
 {% endblock %}

@@ -16,12 +16,9 @@ class MatiereRepository extends ServiceEntityRepository
         parent::__construct($registry, Matiere::class);
     }
 
-    public function findAllMatiereByProfesseur($profId): array
+    public function findAllMatiere() : array
     {
         return $this->createQueryBuilder('m')
-            ->join('App\Entity\FicheMatiere', 'fm', 'WITH', 'fm.Matiere = m.id')
-            ->where('fm.Professeur = :profId')
-            ->setParameter('profId', $profId)
             ->orderBy('m.nom', 'ASC')
             ->getQuery()
             ->getResult();

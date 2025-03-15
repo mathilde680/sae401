@@ -50,4 +50,50 @@ final class GrilleController extends AbstractController
             'grilles' => $grilles,
         ]);
     }
+
+
+    #[Route('/grille/{id}/supprime', name: 'app_grille_supprime', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function supprime(int $id, EntityManagerInterface $entityManager): Response
+    {
+        // Récupérer l'entité Jeu existante
+        $grille = $entityManager->getRepository(Grille::class)->find($id);
+
+
+        // Supprimer le jeu de la base de données
+        $entityManager->remove($grille);
+        $entityManager->flush();
+
+        // Rediriger vers la liste des jeux après la suppression
+        return $this->redirectToRoute('app_accueil_prof');
+    }
+
+    //modification d'une grille
+    #[Route('/grille/{id}/modif', name: 'app_grille_modif', requirements: ['id' => '\d+'])]
+    public function modif(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $grille = $entityManager->getRepository(Grille::class)->find($id);
+
+
+        $form = $this->createForm(AjoutGrilleType::class, $grille);
+        $form->handleRequest($request);
+
+        // Vérifier si le formulaire est soumis et valide
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // Persister et enregistrer les modifications dans la base de données
+            $entityManager->persist($grille);
+            $entityManager->flush();
+
+            // Rediriger vers la fiche du Jeu
+            return $this->redirectToRoute('app_accueil_prof', ['code' => $grille->getId()]);
+        }
+
+        //affiche le formulaire
+        return $this->render('grille/ajout.html.twig', [
+            'form_grille' => $form->createView(),
+            'id' => $id,
+            'grille' => $form->getData(),
+        ]);
+    }
+
 }

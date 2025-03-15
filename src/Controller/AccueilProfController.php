@@ -13,18 +13,18 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AccueilProfController extends AbstractController
 {
     #[Route('/accueil/prof', name: 'app_accueil_prof')]
-    public function index(Security $security,MatiereRepository $MatiereRepository, GrilleRepository $grilleRepository, CritereRepository $critereRepository) : response
+    public function index(Security $security,MatiereRepository $matiereRepository, GrilleRepository $grilleRepository, CritereRepository $critereRepository) : response
     {
         $user = $security->getUser();
-        $profId = $user->getId(); // Supposons que l'utilisateur a un getId()
+        $profId = $user->getId(); 
 
-        $matieres = $MatiereRepository->findAllMatiereByProfesseur($profId);
-        $semestre1 = $MatiereRepository->findAllBySemestreAndProfesseur('WR1', $profId);
-        $semestre2 = $MatiereRepository->findAllBySemestreAndProfesseur('WR2', $profId);
-        $semestre3 = $MatiereRepository->findAllBySemestreAndProfesseur('WR3', $profId);
-        $semestre4 = $MatiereRepository->findAllBySemestreAndProfesseur('WR4', $profId);
-        $semestre5 = $MatiereRepository->findAllBySemestreAndProfesseur('WR5', $profId);
-        $semestre6 = $MatiereRepository->findAllBySemestreAndProfesseur('WR6', $profId);
+        $matieres = $matiereRepository->findAllMatiere();
+        $semestre1 = $matiereRepository->findAllBySemestreAndProfesseur('WR1', $profId);
+        $semestre2 = $matiereRepository->findAllBySemestreAndProfesseur('WR2', $profId);
+        $semestre3 = $matiereRepository->findAllBySemestreAndProfesseur('WR3', $profId);
+        $semestre4 = $matiereRepository->findAllBySemestreAndProfesseur('WR4', $profId);
+        $semestre5 = $matiereRepository->findAllBySemestreAndProfesseur('WR5', $profId);
+        $semestre6 = $matiereRepository->findAllBySemestreAndProfesseur('WR6', $profId);
 
         $grilles = $grilleRepository->findAll();
 

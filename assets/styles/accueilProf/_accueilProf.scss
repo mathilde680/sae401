@@ -146,12 +146,14 @@ section#dashboardProf {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 1rem;
+          p{
+            width: 100%;
+          }
           .crudGrille{
             display: flex;
             align-items: center;
             .icons{
-              width: 5%;
+              width: 15%;
             }
           }
         }
