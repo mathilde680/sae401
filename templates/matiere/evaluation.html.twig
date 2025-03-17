@@ -6,18 +6,31 @@
     <div id="notes_evaluation">
         <h1>{{ evaluation.matiere.nom }}</h1>
         <h2>{{ evaluation.nom }}</h2>
-    {% if notes is not empty %}
+        {% if notes is not empty %}
+            <div class="header_notes">
+                <p>Nom</p>
+                <p>Prénom</p>
+                <p>Note</p>
+                <p>Commentaire</p>
+                <p>Action</p>
+            </div>
             {% for note in notes %}
                 <div id="note_eleve">
-                    <p>{{ note.etudiant.nom }}</p>
-                    <p>{{ note.etudiant.prenom }}</p>
-                    <p>{{ note.note }}</p>
-                    <p>{{ note.commentaire }}</p>
+                    <p class="nom">{{ note.etudiant.nom }}</p>
+                    <p class="prenom">{{ note.etudiant.prenom }}</p>
+                    {% if note.note < 8 %}
+                    <p class="note rouge">{{ note.note }}</p>
+                    {% elseif note.note > 10 %}
+                        <p class="note vert">{{ note.note }}</p>
+                        {% else %}
+                            <p class="note orange">{{ note.note }}</p>
+                    {% endif %}
+                    <p class="commentaire">{{ note.commentaire }}</p>
+                    <button class="bouton">Modifier</button>
                 </div>
             {% endfor %}
-
-    {% else %}
-        <p>Aucune note disponible pour cette évaluation.</p>
-    {% endif %}
+        {% else %}
+            <p>Aucune note disponible pour cette évaluation.</p>
+        {% endif %}
     </div>
 {% endblock %}

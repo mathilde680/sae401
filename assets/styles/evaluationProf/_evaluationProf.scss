@@ -1,18 +1,44 @@
-#notes_evaluation{
+#notes_evaluation {
   background-color: $couleurNeutre;
   border-radius: 16px;
   padding: 3%;
 
-  #note_eleve{
+  .header_notes {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 20% 20% 15% 35% 10%;
+    align-items: center;
+    margin-bottom: 2%;
+    font-weight: bold;
+
+    p {
+      margin: 2% 2%;
+    }
+  }
+
+  #note_eleve {
     width: 100%;
     background-color: $couleurNeutre;
-    display: flex;
+    display: grid;
+    grid-template-columns: 20% 20% 15% 35% 10%;
+    align-items: center;
     margin: 1% 0;
     border-radius: 6px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
-    p{
-      margin: 7 2%;
+    p {
+      margin: 1% 2%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bouton {
+      justify-self: center;
+    }
+
+    .note{
+      width: 10%;
     }
   }
 }

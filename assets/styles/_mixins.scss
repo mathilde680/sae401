@@ -6,7 +6,7 @@
   padding: $padding;
 }
 
-@mixin note($couleurNote){
+@mixin note($couleurNote:$couleurNeutre){
   color: $couleurTexte;
   background-color: $couleurNote;
   display: flex;

@@ -150,18 +150,22 @@ final class EvaluationController extends AbstractController
     {
         $evaluation = $evaluationRepository->find($id);
 
-
         if (!$evaluation) {
             throw $this->createNotFoundException('Évaluation non trouvée');
         }
 
         // Récupérer les notes associées à cette évaluation
-        $notes = $evaluation->getNotes();
+        $notes = $evaluation->getNotes()->toArray(); // Convertir la collection en tableau
+
+        // Trier les notes par nom en ordre alphabétique
+        usort($notes, function($a, $b) {
+            // Supposant que vous avez une méthode getEleve()->getNom() pour accéder au nom
+            return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
+        });
 
         return $this->render('matiere/evaluation.html.twig', [
             'evaluation' => $evaluation,
             'notes' => $notes,
-
         ]);
     }
 }
