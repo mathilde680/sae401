@@ -5,7 +5,8 @@
 {% block main %}
 <h1>Vos informations personnelles </h1>
 <div class="infosProfil">
-        <p>{{ etudiant.prenom }} {{ etudiant.nom }}</p>
+
+        <p>{{ utilisateur.prenom }} {{ utilisateur.nom }}</p>
         <a href="{{ path ('app_logout') }}">Déconnexion</a>
 </div>
 
