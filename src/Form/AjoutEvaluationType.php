@@ -17,22 +17,24 @@ class AjoutEvaluationType extends AbstractType
     {
         $builder
             ->add('nom')
+            
             ->add('date', null, [
                 'widget' => 'single_text',
             ])
+
             ->add('coef', null, [
                 'label' => 'Coefficient',  // label
             ])
 
-//            ->add('statut', ChoiceType::class, [
-//                'choices'  => [
-//                    'Publiée' => 'Publiée',
-//                    'En cours' => 'En_cours',
-//                    'Enregistrée' => 'Enregistrée',
-//                ],
-//                'expanded' => false, // false = liste déroulante, true = boutons radio
-//                'multiple' => false, // false = choix unique, true = sélection multiple
-//            ])
+            ->add('statut', ChoiceType::class, [
+                'choices'  => [
+                    'Publiée' => 'Publiée',
+                    'En cours' => 'En_cours',
+                    'Enregistrée' => 'Enregistrée',
+                ],
+                'expanded' => false, // false = liste déroulante, true = boutons radio
+                'multiple' => false, // false = choix unique, true = sélection multiple
+            ])
 
             ->add('statut_groupe', ChoiceType::class, [
                 'choices'  => [
@@ -46,17 +48,17 @@ class AjoutEvaluationType extends AbstractType
 
 //            ->add('taille_max_groupe')
 
-            ->add('professeur', EntityType::class, [
-                'class' => Professeur::class,
-                'choice_label' => 'id',
-                'disabled' => true,
-            ])
-
-            ->add('matiere', EntityType::class, [
-                'class' => Matiere::class,
-                'choice_label' => 'id',
-                'disabled' => true,
-            ])
+//            ->add('professeur', EntityType::class, [
+//                'class' => Professeur::class,
+//                'choice_label' => 'id',
+//                'disabled' => true,
+//            ])
+//
+//            ->add('matiere', EntityType::class, [
+//                'class' => Matiere::class,
+//                'choice_label' => 'id',
+//                'disabled' => true,
+//            ])
         ;
     }
 
