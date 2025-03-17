@@ -1,0 +1,18 @@
+#notes_evaluation{
+  background-color: $couleurNeutre;
+  border-radius: 16px;
+  padding: 3%;
+
+  #note_eleve{
+    width: 100%;
+    background-color: $couleurNeutre;
+    display: flex;
+    margin: 1% 0;
+    border-radius: 6px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    p{
+      margin: 7 2%;
+    }
+  }
+}

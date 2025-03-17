@@ -68,7 +68,7 @@
                         <p>{{ evaluation.statut }} le {{ evaluation.date|date('d/m/Y') }}</p>
                         <p>Statut : {{ evaluation.statutGroupe }}</p>
                         <p>Composition des groupes : {{ evaluation.tailleMaxGroupe }}</p>
-                        <p>Coefficiant : {{ evaluation.coef }}</p>
+                        <p>Coefficient : {{ evaluation.coef }}</p>
                     </div>
                     <div class="notesEvaluation">
                         {% for note in notes %}
@@ -90,7 +90,7 @@
                 <div class="actionEvaluation">
                     <div>
                         <a href="{{ path ('app_evaluation_modif', {'id': evaluation.id}) }}" class="bouton">Modifier</a>
-                        <a href="" class="bouton">Evaluer</a>
+                        <a href="{{ path ('app_fiche_evaluation', {'id': evaluation.id}) }}" class="bouton">Evaluer</a>
                     </div>
                     <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
                         <button class="bouton">

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Évaluation module{% endblock %}
+
+{% block main %}
+    <div id="notes_evaluation">
+        <h1>{{ evaluation.matiere.nom }}</h1>
+        <h2>{{ evaluation.nom }}</h2>
+    {% if notes is not empty %}
+            {% for note in notes %}
+                <div id="note_eleve">
+                    <p>{{ note.etudiant.nom }}</p>
+                    <p>{{ note.etudiant.prenom }}</p>
+                    <p>{{ note.note }}</p>
+                    <p>{{ note.commentaire }}</p>
+                </div>
+            {% endfor %}
+
+    {% else %}
+        <p>Aucune note disponible pour cette évaluation.</p>
+    {% endif %}
+    </div>
+{% endblock %}
