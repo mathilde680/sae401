@@ -6,10 +6,40 @@
     <div class="box">
         <h1>Quelles grilles d'évaluation souhaitez-vous mettre en place ?</h1>
         <div class="boxGrille">
-            <a href="{{ path ('app_grille_ajout') }}">Créer une nouvelle grille</a>
+            <a href="{{ path('app_grille_ajout') }}" class="create-new">Créer une nouvelle grille</a>
             {% for grille in grilles %}
-                <a href="{{ path('app_fiche_grille', {'id': grille.id}) }}">{{ grille.nom }}</a>
+                <a href="#" class="grille-link" data-id="{{ grille.id }}" data-nom="{{ grille.nom }}">{{ grille.nom }}</a>
             {% endfor %}
+        </div>
+
+        <div class="overlay" id="modalOverlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">Grille : TP NOTÉ SYMFONY</h2>
+                    <button class="close-button">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="evaluation-item">
+                        <div class="evaluation-label">Cohérence du code</div>
+                        <div class="evaluation-score">/5</div>
+                    </div>
+                    <div class="evaluation-item">
+                        <div class="evaluation-label">Bonne pratique</div>
+                        <div class="evaluation-score">/5</div>
+                    </div>
+                    <div class="evaluation-item">
+                        <div class="evaluation-label">Organisation du code</div>
+                        <div class="evaluation-score">/10</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteForm" method="POST" style="margin: 0;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete') }}">
+                        <button type="submit" class="button button-danger">Supprimer</button>
+                    </form>
+                    <a href="#" id="useGrilleLink" class="button button-primary">Utiliser</a>
+                </div>
+            </div>
         </div>
 
     </div>

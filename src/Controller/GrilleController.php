@@ -77,13 +77,15 @@ final class GrilleController extends AbstractController
 
     //SUPPRESSION GRILLE
     #[Route('/grille/{id}/supprime', name: 'app_grille_supprime', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function supprime(int $id, EntityManagerInterface $entityManager): Response
+    public function supprime(int $id, Request $request, EntityManagerInterface $entityManager, GrilleRepository $grilleRepository): Response
     {
-        $grille = $entityManager->getRepository(Grille::class)->find($id);
+        //$grille = $entityManager->getRepository(Grille::class)->find($id);
+        $grille = $grilleRepository->find($id);
 
-        $entityManager->remove($grille);
-        $entityManager->flush();
-
+        if ($this->isCsrfTokenValid('delete'.$id, $request->request->get('_token'))) {
+            $entityManager->remove($grille);
+            $entityManager->flush();
+        }
         return $this->redirectToRoute('app_accueil_prof');
     }
 

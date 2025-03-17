@@ -36,6 +36,7 @@ class GrilleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
     //    /**
     //     * @return Grille[] Returns an array of Grille objects
     //     */

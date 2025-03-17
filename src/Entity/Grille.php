@@ -18,42 +18,25 @@ class Grille
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
-//    #[ORM\ManyToOne(inversedBy: 'grilles')]
-//    private ?Professeur $Professeur = null;
-
     /**
      * @var Collection<int, Critere>
      */
-    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: 'Grille', cascade: ["remove"])]
+    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: 'grille', cascade: ["remove"])]
     private Collection $criteres;
 
     /**
      * @var Collection<int, FicheGrille>
      */
-    #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'Grille')]
+    #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'grille', cascade: ["remove"])]
     private Collection $ficheGrilles;
 
-    #[ORM\ManyToOne(inversedBy: 'Grille')]
+    #[ORM\ManyToOne(inversedBy: 'grilles')]
     private ?Professeur $professeur = null;
-
-    /**
-     * @var Collection<int, Critere>
-     */
-//    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: 'grille')]
-//    private Collection $Critere;
-
-    /**
-     * @var Collection<int, FicheGrille>
-     */
-    #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'grille')]
-    private Collection $Fiche_grille;
 
     public function __construct()
     {
         $this->criteres = new ArrayCollection();
         $this->ficheGrilles = new ArrayCollection();
-//        $this->Critere = new ArrayCollection();
-        $this->Fiche_grille = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,21 +126,5 @@ class Grille
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, Critere>
-     */
-    public function getCritere(): Collection
-    {
-        return $this->Critere;
-    }
-
-    /**
-     * @return Collection<int, FicheGrille>
-     */
-    public function getFicheGrille(): Collection
-    {
-        return $this->Fiche_grille;
     }
 }
