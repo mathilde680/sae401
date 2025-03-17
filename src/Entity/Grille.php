@@ -24,7 +24,7 @@ class Grille
     /**
      * @var Collection<int, Critere>
      */
-    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: 'Grille')]
+    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: 'Grille', cascade: ["remove"])]
     private Collection $criteres;
 
     /**

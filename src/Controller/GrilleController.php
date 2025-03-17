@@ -2,15 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Critere;
 use App\Entity\Grille;
-use App\Entity\Matiere;
 use App\Form\AjoutGrilleType;
-use App\Form\MatiereType;
-use App\Repository\EvaluationRepository;
-use App\Repository\FicheGrilleRepository;
+use App\Repository\CritereRepository;
 use App\Repository\GrilleRepository;
-use App\Repository\MatiereRepository;
-use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -33,18 +29,15 @@ final class GrilleController extends AbstractController
         ]);
     }
 
-    #[Route('/fiche/{id}', name: 'app_fiche_matiere', requirements: ['id'=>'\d+'])]
-    public function matiere_fiche(int $id, MatiereRepository $matiereRepository, EvaluationRepository $evaluationRepository, NoteRepository $noteRepository): Response
+    #[Route('/grille/{id}', name: 'app_fiche_grille', requirements: ['id'=>'\d+'])]
+    public function grille_fiche(int $id, GrilleRepository $grilleRepository, CritereRepository $critereRepository): Response
     {
-        $fiches = $matiereRepository->find($id);
-        $evaluations = $evaluationRepository->findBy(['matiere' => $id]);
+        $grille = $grilleRepository->find($id);
+        $criteres = $critereRepository->findCriteresByGrille($id);
 
-        $notes = $noteRepository->findAll();
-
-        return $this->render('matiere/fiche.html.twig', [
-            'fiches' => $fiches,
-            'evaluations' => $evaluations,
-            'notes' => $notes,
+        return $this->render('grille/fiche.html.twig', [
+            'grille' => $grille,
+            'criteres' => $criteres,
         ]);
     }
 
@@ -52,50 +45,49 @@ final class GrilleController extends AbstractController
     public function ajout_grille(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $grille = new Grille();
 
-        // Créer une nouvelle instance de matiere
-        $grilles = new Grille();
+        $grille->setProfesseur($user);
 
-        $grilles->setProfesseur($user);
+        $entityManager->persist($grille);
 
-        // Créer le formulaire
-        $form = $this->createForm(AjoutGrilleType::class,$grilles);
+        $grille->addCritere(new Critere());
+
+        $form = $this->createForm(AjoutGrilleType::class, $grille);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Persister et enregistrer le matiere dans la base de données
-            $grilles->setProfesseur($user);
-            $entityManager->persist($grilles);
+
+            // Associer chaque critère à la grille
+            foreach ($grille->getCriteres() as $critere) {
+                $critere->setGrille($grille);
+                $entityManager->persist($critere);
+            }
+
             $entityManager->flush();
 
-            // Rediriger vers une autre page (par exemple, la liste des matieres)
             return $this->redirectToRoute('app_accueil_prof');
-
         }
 
         return $this->render('grille/ajout.html.twig', [
             'form_grille' => $form->createView(),
-            'grilles' => $grilles,
         ]);
     }
 
 
+    //SUPPRESSION GRILLE
     #[Route('/grille/{id}/supprime', name: 'app_grille_supprime', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function supprime(int $id, EntityManagerInterface $entityManager): Response
     {
-        // Récupérer l'entité Jeu existante
         $grille = $entityManager->getRepository(Grille::class)->find($id);
 
-
-        // Supprimer le jeu de la base de données
         $entityManager->remove($grille);
         $entityManager->flush();
 
-        // Rediriger vers la liste des jeux après la suppression
         return $this->redirectToRoute('app_accueil_prof');
     }
 
-    //modification d'une grille
+    //MODIFICATION d'une grille
     #[Route('/grille/{id}/modif', name: 'app_grille_modif', requirements: ['id' => '\d+'])]
     public function modif(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -105,18 +97,14 @@ final class GrilleController extends AbstractController
         $form = $this->createForm(AjoutGrilleType::class, $grille);
         $form->handleRequest($request);
 
-        // Vérifier si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Persister et enregistrer les modifications dans la base de données
             $entityManager->persist($grille);
             $entityManager->flush();
 
-            // Rediriger vers la fiche du Jeu
             return $this->redirectToRoute('app_accueil_prof', ['code' => $grille->getId()]);
         }
 
-        //affiche le formulaire
         return $this->render('grille/ajout.html.twig', [
             'form_grille' => $form->createView(),
             'id' => $id,

@@ -2,41 +2,33 @@
 
 namespace App\Form;
 
+use App\Entity\Critere;
 use App\Entity\Grille;
-use App\Entity\Professeur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AjoutGrilleType extends AbstractType
+class AjoutCritereType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('nom')
-
-            ->add('professeur', EntityType::class, [
-                'class' => Professeur::class,
+            ->add('note')
+            ->add('commentaire')
+            ->add('grille', EntityType::class, [
+                'class' => Grille::class,
                 'choice_label' => 'id',
                 'disabled' => true,
             ])
-
-            ->add('criteres', CollectionType::class, [
-                'entry_type' => AjoutCritereType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'prototype' => true,
-            ]);
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Grille::class,
+            'data_class' => Critere::class,
         ]);
     }
 }

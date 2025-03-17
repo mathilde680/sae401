@@ -198,7 +198,7 @@
                 <div class="toutesLesGrilles">
                     {% for grille in grilles %}
                         <div class="grillesAffichage">
-                           <p id="openModal">{{ grille.nom }}</p>
+                            <a href="{{ path('app_fiche_grille', {'id': grille.id}) }}">{{ grille.nom }}</a>
                             <div class="crudGrille">
                                 <a href="{{ path ('app_grille_modif', {'id': grille.id}) }}">
                                     <svg class="icons" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
