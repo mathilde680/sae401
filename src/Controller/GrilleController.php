@@ -26,7 +26,7 @@ final class GrilleController extends AbstractController
     }
 
     #[Route('/grille/ajout', name: 'app_grille_ajout')]
-    public function ajout_grille(GrilleRepository $grilleRepository, Request $request, EntityManagerInterface $entityManager): Response
+    public function ajout_grille(Request $request, EntityManagerInterface $entityManager): Response
     {
         // Créer une nouvelle instance de matiere
         $grilles = new Grille();
@@ -47,7 +47,7 @@ final class GrilleController extends AbstractController
 
         return $this->render('grille/ajout.html.twig', [
             'form_grille' => $form->createView(),
-            'grilles' => $grilles,
+            'grilles' => $form->getData(),
         ]);
     }
 

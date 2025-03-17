@@ -16,9 +16,10 @@ class AjoutGrilleType extends AbstractType
         $builder
             ->add('nom')
 
-            ->add('Professeur', EntityType::class, [
+            ->add('professeur', EntityType::class, [
                 'class' => Professeur::class,
                 'choice_label' => 'id',
+                'disabled' => true,
             ])
         ;
     }
