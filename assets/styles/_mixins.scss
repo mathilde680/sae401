@@ -5,3 +5,13 @@
   border-radius: $border-radius;
   padding: $padding;
 }
+
+@mixin note($couleurNote){
+  color: $couleurTexte;
+  background-color: $couleurNote;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5vh 1vh;
+  border-radius: 6px;
+}
