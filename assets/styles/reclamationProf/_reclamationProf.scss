@@ -1,0 +1,52 @@
+.h1, .h2{
+  color: $couleurBouton;
+}
+
+#info_reclamation_prof {
+  background-color: $couleurNeutre;
+  padding: 2vh;
+  border-radius: 15px;
+
+  #info_promo_etudiant{
+    display: flex;
+    width: 10%;
+    justify-content: space-between;
+    .info_promo_etudiant{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $couleurBouton;
+      color: $couleurNeutre;
+      border-radius: 6px;
+      padding: 1vh 1vh;
+    }
+  }
+
+  #info_etudiant{
+    display: flex;
+    justify-content: space-between;
+    min-width: 17%;
+    max-width: 17%;
+    #prenom_etudiant, #nom_etudiant{
+      font-size: 16pt;
+    }
+  }
+
+  #info_note {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 11%;
+    #note_reclamation {
+      @include note($couleurNoteRouge);
+    }
+  }
+
+  #explication{
+    #text_explication_div{
+      #text_explication{
+        color: #363636;
+      }
+    }
+  }
+}

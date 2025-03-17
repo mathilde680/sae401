@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReclamationController!{% endblock %}
+
+{% block main %}
+<h1 class="h1">Réclamation - TP Noté</h1>
+    <h2 class="h2">WR314 : Déploiement de service</h2>
+
+    <div id="info_reclamation_prof">
+        <div id="info_promo_etudiant">
+            <p class="info_promo_etudiant">TP A</p>
+            <p class="info_promo_etudiant">BUT 2</p>
+        </div>
+        <div id="info_etudiant">
+            <p id="prenom_etudiant">Julie</p>
+            <p id="nom_etudiant">COULANDREAU</p>
+        </div>
+        <div id="info_note">
+            <p>A obtenu : </p>
+            <p id="note_reclamation">5,00</p>
+        </div>
+        <div id="explication">
+            <p>Explication de la demande :</p>
+            <div id="text_explication_div">
+                <p id="text_explication">Monsieur je vous jure que j'ai révisé</p>
+            </div>
+        </div>
+
+        <div id="button_reclamation">
+
+        </div>
+
+    </div>
+
+{% endblock %}
