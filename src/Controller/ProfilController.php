@@ -10,12 +10,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ProfilController extends AbstractController
 {
     #[Route('/profil', name: 'app_profil')]
-    public function index(EtudiantRepository $etudiantRepository): Response
+    public function index(): Response
     {
-        $etudiant = $this->getUser();
+        $utilisateur = $this->getUser();
 
         return $this->render('profil/index.html.twig', [
-            'etudiant' => $etudiant,
+            'utilisateur' => $utilisateur,
         ]);
     }
 }
