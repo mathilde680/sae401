@@ -7,6 +7,7 @@ use App\Entity\Matiere;
 use App\Form\AjoutEvaluationGroupeType;
 use App\Form\AjoutEvaluationType;
 use App\Form\MatiereType;
+use App\Repository\EvaluationRepository;
 use App\Repository\MatiereRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -144,4 +145,23 @@ final class EvaluationController extends AbstractController
         ]);
     }
 
+    #[Route('/evaluation/{id}', name: 'app_fiche_evaluation', requirements: ['id'=>'\d+'])]
+    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository): Response
+    {
+        $evaluation = $evaluationRepository->find($id);
+
+
+        if (!$evaluation) {
+            throw $this->createNotFoundException('Évaluation non trouvée');
+        }
+
+        // Récupérer les notes associées à cette évaluation
+        $notes = $evaluation->getNotes();
+
+        return $this->render('matiere/evaluation.html.twig', [
+            'evaluation' => $evaluation,
+            'notes' => $notes,
+
+        ]);
+    }
 }
