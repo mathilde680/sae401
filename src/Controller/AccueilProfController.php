@@ -27,7 +27,7 @@ final class AccueilProfController extends AbstractController
         $semestre5 = $matiereRepository->findAllBySemestreAndProfesseur('WR5', $profId);
         $semestre6 = $matiereRepository->findAllBySemestreAndProfesseur('WR6', $profId);
 
-        $grilles = $grilleRepository->findAll();
+        $grilles = $grilleRepository->findAllByProfesseur($profId);
 
         //$criteres = $critereRepository->findCriteresByGrille($grilleId);
         $criteres = $critereRepository->findAll();

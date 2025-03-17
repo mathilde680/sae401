@@ -29,10 +29,25 @@ try {
 //gestion des modales
 // Sélection des éléments
 const modal = document.getElementById("myModal");
-const openModalBtn = document.getElementById("openModal");
+const openModalBtn = document.querySelector(".openModal");
 const closeModalBtn = document.querySelector(".close");
 
 // Ouvrir la modal
+openModalBtn.onclick = function() {
+    modal.style.display = "flex";
+}
+
+// Fermer la modal quand on clique sur (x)
+closeModalBtn.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Fermer la modal si on clique en dehors du contenu
+window.onclick = function(event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}// Ouvrir la modal
 openModalBtn.onclick = function() {
     modal.style.display = "flex";
 }

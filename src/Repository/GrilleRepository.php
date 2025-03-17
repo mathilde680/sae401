@@ -16,6 +16,26 @@ class GrilleRepository extends ServiceEntityRepository
         parent::__construct($registry, Grille::class);
     }
 
+    public function findAllByProfesseur($profId): array
+    {
+        return $this->createQueryBuilder('g')
+            ->join('g.professeur', 'p')
+
+            ->andWhere('p.id = :profId')
+            ->setParameter('profId', $profId)
+
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByGrille($id)
+    {
+        return $this->createQueryBuilder('g')
+            ->andWhere('g.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Grille[] Returns an array of Grille objects
     //     */

@@ -6,9 +6,14 @@ use App\Entity\Grille;
 use App\Entity\Matiere;
 use App\Form\AjoutGrilleType;
 use App\Form\MatiereType;
+use App\Repository\EvaluationRepository;
+use App\Repository\FicheGrilleRepository;
 use App\Repository\GrilleRepository;
+use App\Repository\MatiereRepository;
+use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,20 +21,42 @@ use Symfony\Component\Routing\Attribute\Route;
 final class GrilleController extends AbstractController
 {
     #[Route('/grille', name: 'app_grille')]
-    public function index(GrilleRepository $grilleRepository): Response
+    public function index(Security $security, GrilleRepository $grilleRepository): Response
     {
-        $grilles = $grilleRepository->findAll();
+        $user = $security->getUser();
+        $profId = $user->getId();
+
+        $grilles = $grilleRepository->findAllByProfesseur($profId);
 
         return $this->render('grille/index.html.twig', [
             'grilles' => $grilles,
         ]);
     }
 
-    #[Route('/grille/ajout', name: 'app_grille_ajout')]
-    public function ajout_grille(GrilleRepository $grilleRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/fiche/{id}', name: 'app_fiche_matiere', requirements: ['id'=>'\d+'])]
+    public function matiere_fiche(int $id, MatiereRepository $matiereRepository, EvaluationRepository $evaluationRepository, NoteRepository $noteRepository): Response
     {
+        $fiches = $matiereRepository->find($id);
+        $evaluations = $evaluationRepository->findBy(['matiere' => $id]);
+
+        $notes = $noteRepository->findAll();
+
+        return $this->render('matiere/fiche.html.twig', [
+            'fiches' => $fiches,
+            'evaluations' => $evaluations,
+            'notes' => $notes,
+        ]);
+    }
+
+    #[Route('/grille/ajout', name: 'app_grille_ajout')]
+    public function ajout_grille(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
         // Créer une nouvelle instance de matiere
         $grilles = new Grille();
+
+        $grilles->setProfesseur($user);
 
         // Créer le formulaire
         $form = $this->createForm(AjoutGrilleType::class,$grilles);
@@ -37,6 +64,7 @@ final class GrilleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Persister et enregistrer le matiere dans la base de données
+            $grilles->setProfesseur($user);
             $entityManager->persist($grilles);
             $entityManager->flush();
 
