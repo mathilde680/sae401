@@ -39,8 +39,8 @@ class Grille
     /**
      * @var Collection<int, Critere>
      */
-    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: 'grille')]
-    private Collection $Critere;
+//    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: 'grille')]
+//    private Collection $Critere;
 
     /**
      * @var Collection<int, FicheGrille>
@@ -52,7 +52,7 @@ class Grille
     {
         $this->criteres = new ArrayCollection();
         $this->ficheGrilles = new ArrayCollection();
-        $this->Critere = new ArrayCollection();
+//        $this->Critere = new ArrayCollection();
         $this->Fiche_grille = new ArrayCollection();
     }
 

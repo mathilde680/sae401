@@ -63,3 +63,23 @@ input, select {
   width: 25px;
   height: 25px;
 }
+
+
+//couleurs notes
+.vert, .orange, .rouge{
+  padding: 0.3rem 1rem;
+  color: $couleurTexte;
+  border-radius: 5px;
+}
+
+.vert{
+  background-color: #15C377;
+}
+
+.orange{
+  background-color: #FAA64B;
+}
+
+.rouge{
+  background-color: #FF6363;
+}

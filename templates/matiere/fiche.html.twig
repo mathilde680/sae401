@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MatiereController!{% endblock %}
+{% block title %}{{ fiches.nom }}{% endblock %}
 
 {% block main %}
     <a class="boutonRetour" href="{{ path ('app_accueil_prof') }}">
@@ -62,25 +62,43 @@
         <div class="box2">
         {% for evaluation in evaluations %}
             <div class="boxEvaluation">
+                <h2>{{ evaluation.nom }}</h2>
                 <div class="infoEvaluation">
-                    <h2>{{ evaluation.nom }}</h2>
-                    <p>{{ evaluation.statut }} le {{ evaluation.date|date('d/m/Y') }}</p>
-                    <p>{{ evaluation.statutGroupe }}</p>
-                    <div class="actionEvaluation">
-                        <a href="{{ path ('app_evaluation_modif', {'id': evaluation.id}) }}" class="bouton">Modifier</a>
-                        <a href="" class="bouton">Evaluer</a>
-                        <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
-                            <button class="bouton">
-                                Supprimer
-                            </button>
-                        </form>
+                    <div class="caracteristiqueEvaluation">
+                        <p>{{ evaluation.statut }} le {{ evaluation.date|date('d/m/Y') }}</p>
+                        <p>Statut : {{ evaluation.statutGroupe }}</p>
+                        <p>Composition des groupes : {{ evaluation.tailleMaxGroupe }}</p>
+                        <p>Coefficiant : {{ evaluation.coef }}</p>
+                    </div>
+                    <div class="notesEvaluation">
+                        {% for note in notes %}
+                            <div class="note">
+                                <p>Moyenne</p>
+                                <p class="vert">{{ note.note }}</p>
+                            </div>
+                            <div class="note">
+                                <p>Note mini</p>
+                                <p class="orange">{{ note.note }}</p>
+                            </div>
+                            <div class="note">
+                                <p>Note maxi</p>
+                                <p class="rouge">{{ note.note }}</p>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-                <div class="notesEvaluation">
-                    <p>Moyenne</p>
-                    <p>Note maxi</p>
-                    <p>Note mini</p>
+                <div class="actionEvaluation">
+                    <div>
+                        <a href="{{ path ('app_evaluation_modif', {'id': evaluation.id}) }}" class="bouton">Modifier</a>
+                        <a href="" class="bouton">Evaluer</a>
+                    </div>
+                    <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
+                        <button class="bouton">
+                            Supprimer
+                        </button>
+                    </form>
                 </div>
+
             </div>
 
         {% endfor %}

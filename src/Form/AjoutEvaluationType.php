@@ -34,8 +34,8 @@ class AjoutEvaluationType extends AbstractType
 
             ->add('statut_groupe', ChoiceType::class, [
                 'choices'  => [
-                    'Groupe' => 'groupe',
-                    'Individuel' => 'individuel',
+                    'Groupe' => 'Groupe',
+                    'Individuel' => 'Individuel',
                 ],
                 'expanded' => false, // false = liste déroulante, true = boutons radio
                 'multiple' => false, // false = choix unique, true = sélection multiple

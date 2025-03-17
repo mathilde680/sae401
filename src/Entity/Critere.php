@@ -22,8 +22,8 @@ class Critere
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $commentaire = null;
 
-    #[ORM\ManyToOne(inversedBy: 'criteres')]
-    private ?Grille $Grille = null;
+//    #[ORM\ManyToOne(inversedBy: 'criteres')]
+//    private ?Grille $Grille = null;
 
     #[ORM\ManyToOne(inversedBy: 'Critere')]
     private ?Grille $grille = null;
@@ -71,13 +71,13 @@ class Critere
 
     public function getGrille(): ?Grille
     {
-        return $this->Grille;
+        return $this->grille;
     }
 
-    public function setGrille(?Grille $Grille): static
+    public function setGrille(?Grille $grille): static
     {
-        $this->Grille = $Grille;
-
+        $this->grille = $grille;
         return $this;
     }
+
 }

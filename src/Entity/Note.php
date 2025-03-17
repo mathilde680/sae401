@@ -14,7 +14,7 @@ class Note
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $note = null;
+    private ?float $note = null;
 
     #[ORM\Column(length: 255)]
     private ?string $commentaire = null;
@@ -25,11 +25,11 @@ class Note
     #[ORM\ManyToOne(inversedBy: 'notes')]
     private ?Evaluation $Evaluation = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Note')]
-    private ?Evaluation $evaluation = null;
-
-    #[ORM\ManyToOne(inversedBy: 'Note')]
-    private ?Etudiant $etudiant = null;
+//    #[ORM\ManyToOne(inversedBy: 'Note')]
+//    private ?Evaluation $evaluation = null;
+//
+//    #[ORM\ManyToOne(inversedBy: 'Note')]
+//    private ?Etudiant $etudiant = null;
 
     public function getId(): ?int
     {
