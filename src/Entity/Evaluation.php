@@ -49,8 +49,8 @@ class Evaluation
     #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'Evaluation')]
     private Collection $ficheGrilles;
 
-    #[ORM\ManyToOne(inversedBy: 'evaluations')]
-    private ?Professeur $Professeur = null;
+//    #[ORM\ManyToOne(inversedBy: 'evaluations')]
+//    private ?Professeur $Professeur = null;
 
     /**
      * @var Collection<int, Groupe>
@@ -64,8 +64,8 @@ class Evaluation
     #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'evaluation')]
     private Collection $Fiche_grille;
 
-//    #[ORM\ManyToOne(inversedBy: 'Evaluation')]
-//    private ?Professeur $professeur = null;
+    #[ORM\ManyToOne(inversedBy: 'Evaluation')]
+    private ?Professeur $professeur = null;
 
     #[ORM\ManyToOne(inversedBy: 'Evaluation')]
     private ?Matiere $matiere = null;
@@ -243,12 +243,12 @@ class Evaluation
 
     public function getProfesseur(): ?Professeur
     {
-        return $this->Professeur;
+        return $this->professeur;
     }
 
-    public function setProfesseur(?Professeur $Professeur): static
+    public function setProfesseur(?Professeur $professeur): static
     {
-        $this->Professeur = $Professeur;
+        $this->professeur = $professeur;
 
         return $this;
     }

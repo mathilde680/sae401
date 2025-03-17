@@ -46,7 +46,9 @@ class AjoutEvaluationType extends AbstractType
             ->add('professeur', EntityType::class, [
                 'class' => Professeur::class,
                 'choice_label' => 'id',
+                'disabled' => true,
             ])
+
             ->add('matiere', EntityType::class, [
                 'class' => Matiere::class,
                 'choice_label' => 'id',

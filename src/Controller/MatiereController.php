@@ -107,7 +107,9 @@ final class MatiereController extends AbstractController
 
     //pour ajouter une évaluation
     #[Route('/evaluation/ajout/{id}', name: 'app_evaluation_ajout')]
-    public function ajout_evaluation(int $id, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository,): Response {
+    public function ajout_evaluation(int $id, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository,): Response
+    {
+        $user = $this->getUser();
 
         // Récupérer la matière associée
         $matiere = $matiereRepository->find($id);
@@ -115,13 +117,13 @@ final class MatiereController extends AbstractController
         // Création d'une nouvelle évaluation
         $evaluation = new Evaluation();
         $evaluation->setMatiere($matiere); // Associe la matière
+        $evaluation->setProfesseur($user);
 
         // Création du formulaire avec l'évaluation pré-remplie
         $form = $this->createForm(AjoutEvaluationType::class, $evaluation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $entityManager->persist($evaluation);
             $entityManager->flush();
 

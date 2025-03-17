@@ -18,8 +18,8 @@ class Grille
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
-    #[ORM\ManyToOne(inversedBy: 'grilles')]
-    private ?Professeur $Professeur = null;
+//    #[ORM\ManyToOne(inversedBy: 'grilles')]
+//    private ?Professeur $Professeur = null;
 
     /**
      * @var Collection<int, Critere>
@@ -75,12 +75,12 @@ class Grille
 
     public function getProfesseur(): ?Professeur
     {
-        return $this->Professeur;
+        return $this->professeur;
     }
 
-    public function setProfesseur(?Professeur $Professeur): static
+    public function setProfesseur(?Professeur $professeur): static
     {
-        $this->Professeur = $Professeur;
+        $this->professeur = $professeur;
 
         return $this;
     }

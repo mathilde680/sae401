@@ -28,8 +28,12 @@ final class GrilleController extends AbstractController
     #[Route('/grille/ajout', name: 'app_grille_ajout')]
     public function ajout_grille(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+
         // Créer une nouvelle instance de matiere
         $grilles = new Grille();
+
+        $grilles->setProfesseur($user);
 
         // Créer le formulaire
         $form = $this->createForm(AjoutGrilleType::class,$grilles);
@@ -37,6 +41,7 @@ final class GrilleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Persister et enregistrer le matiere dans la base de données
+            $grilles->setProfesseur($user);
             $entityManager->persist($grilles);
             $entityManager->flush();
 
@@ -47,7 +52,7 @@ final class GrilleController extends AbstractController
 
         return $this->render('grille/ajout.html.twig', [
             'form_grille' => $form->createView(),
-            'grilles' => $form->getData(),
+            'grilles' => $grilles,
         ]);
     }
 
