@@ -6,9 +6,14 @@ use App\Entity\Grille;
 use App\Entity\Matiere;
 use App\Form\AjoutGrilleType;
 use App\Form\MatiereType;
+use App\Repository\EvaluationRepository;
+use App\Repository\FicheGrilleRepository;
 use App\Repository\GrilleRepository;
+use App\Repository\MatiereRepository;
+use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,12 +21,30 @@ use Symfony\Component\Routing\Attribute\Route;
 final class GrilleController extends AbstractController
 {
     #[Route('/grille', name: 'app_grille')]
-    public function index(GrilleRepository $grilleRepository): Response
+    public function index(Security $security, GrilleRepository $grilleRepository): Response
     {
-        $grilles = $grilleRepository->findAll();
+        $user = $security->getUser();
+        $profId = $user->getId();
+
+        $grilles = $grilleRepository->findAllByProfesseur($profId);
 
         return $this->render('grille/index.html.twig', [
             'grilles' => $grilles,
+        ]);
+    }
+
+    #[Route('/fiche/{id}', name: 'app_fiche_matiere', requirements: ['id'=>'\d+'])]
+    public function matiere_fiche(int $id, MatiereRepository $matiereRepository, EvaluationRepository $evaluationRepository, NoteRepository $noteRepository): Response
+    {
+        $fiches = $matiereRepository->find($id);
+        $evaluations = $evaluationRepository->findBy(['matiere' => $id]);
+
+        $notes = $noteRepository->findAll();
+
+        return $this->render('matiere/fiche.html.twig', [
+            'fiches' => $fiches,
+            'evaluations' => $evaluations,
+            'notes' => $notes,
         ]);
     }
 
