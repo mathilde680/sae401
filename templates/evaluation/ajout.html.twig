@@ -8,22 +8,19 @@
             {{ form_start(form_evaluation) }}
             <h1>Nouvelle évaluation dans le module : {{ matiere.nom }}</h1>
 
-            {# Accéder aux champs du formulaire correctement #}
             {{ form_row(form_evaluation.nom) }}
             {{ form_row(form_evaluation.date) }}
             {{ form_row(form_evaluation.coef) }}
+            {{ form_row(form_evaluation.statut) }}
             {{ form_row(form_evaluation.statut_groupe) }}
-            {{ form_row(form_evaluation.professeur) }}
-            {{ form_row(form_evaluation.matiere) }}
 
-            <a href="{{ path('app_evaluation_groupe_ajout', {'id': matiere.id}) }}">
-                <button class="btn bouton" type="button">
-                    {{ button_label|default('Ajouter') }}
-                    <svg width="15" height="8" viewBox="0 0 20 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M15.25 1.25L19 5M19 5L15.25 8.75M19 5H1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-            </a>
+
+            <button class="btn bouton" type="submit">
+                {{ button_label|default('Ajouter') }}
+                <svg width="15" height="8" viewBox="0 0 20 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.25 1.25L19 5M19 5L15.25 8.75M19 5H1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
 
             {{ form_end(form_evaluation) }}
         {% endblock %}

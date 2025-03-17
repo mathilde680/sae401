@@ -19,20 +19,17 @@ class AjoutEvaluationGroupeType extends AbstractType
             ->add('type_groupe')
             ->add('formation_groupe')
 
-            ->add('professeur', EntityType::class, [
-                'class' => Professeur::class,
-                'choice_label' => 'id',
-                'disabled' => true,
-            ])
-
-            ->add('matiere', EntityType::class, [
-                'class' => Matiere::class,
-                'choice_label' => 'id',
-                'disabled' => true,
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Soumettre'
-            ])
+//            ->add('professeur', EntityType::class, [
+//                'class' => Professeur::class,
+//                'choice_label' => 'id',
+//                'disabled' => true,
+//            ])
+//
+//            ->add('matiere', EntityType::class, [
+//                'class' => Matiere::class,
+//                'choice_label' => 'id',
+//                'disabled' => true,
+//            ])
         ;
     }
 

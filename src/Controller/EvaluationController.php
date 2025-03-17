@@ -7,6 +7,7 @@ use App\Entity\Matiere;
 use App\Form\AjoutEvaluationGroupeType;
 use App\Form\AjoutEvaluationType;
 use App\Form\MatiereType;
+use App\Repository\EvaluationRepository;
 use App\Repository\MatiereRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class EvaluationController extends AbstractController
 {
-    //pour ajouter une évaluation
+    // pour ajouter une évaluation
     #[Route('/evaluation/ajout/{id}', name: 'app_evaluation_ajout')]
     public function ajout_evaluation(int $id, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, SessionInterface $session): Response {
 
@@ -35,11 +36,19 @@ final class EvaluationController extends AbstractController
         $form = $this->createForm(AjoutEvaluationType::class, $evaluation);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
             // Stocker les données dans la session
-            $session->set('evaluation_data', $form->getData());
+            if ($form->get('statut_groupe')->getData() === 'groupe') {
+                $session->set('evaluation_data', $form->getData());
+                return $this->redirectToRoute('app_evaluation_groupe_ajout', ['id' => $id]);
+            }else{
+                $entityManager->persist($evaluation);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_evaluation_groupe_ajout', ['id' => $id]);
+                $session->remove('evaluation_data');
+                return $this->redirectToRoute('app_fiche_matiere', ['id' => $id]);
+            }
         }
 
         return $this->render('evaluation/ajout.html.twig', [
@@ -52,19 +61,25 @@ final class EvaluationController extends AbstractController
     public function ajout_groupe_evaluation(int $id, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, SessionInterface $session): Response {
 
         $user = $this->getUser();
+        $matiere = $matiereRepository->find($id);
 
         // Récupérer les données de réservation stockées dans la session
-        $data = $session->get('evaluation_data', []);
-
-        // Récupérer la matière associée
-        $matiere = $matiereRepository->find($id);
+        $evaluationData = $session->get('evaluation_data');
 
         // Création d'une nouvelle évaluation
         $evaluation = new Evaluation();
         $evaluation->setMatiere($matiere); // Associe la matière
         $evaluation->setProfesseur($user);
 
-
+        $evaluation->setNom($evaluationData->getNom()); // Exemple
+        $evaluation->setDate($evaluationData->getDate());
+        $evaluation->setCoef($evaluationData->getCoef());
+        if ($evaluationData->getStatut() !== null) {
+            $evaluation->setStatut($evaluationData->getStatut());
+        } else {
+            $evaluation->setStatut('Publiée');
+        }
+        $evaluation->setStatutGroupe($evaluationData->getStatutGroupe());
 
         // Création du formulaire avec l'évaluation pré-remplie
         $form = $this->createForm(AjoutEvaluationGroupeType::class, $evaluation);
@@ -74,10 +89,11 @@ final class EvaluationController extends AbstractController
             $entityManager->persist($evaluation);
             $entityManager->flush();
 
+            $session->remove('evaluation_data');
             return $this->redirectToRoute('app_fiche_matiere', ['id' => $id]);
         }
 
-        return $this->render('evaluation/ajout.html.twig', [
+        return $this->render('evaluation/ajoutGroupe.html.twig', [
             'form_evaluation' => $form->createView(),
             'matiere' => $matiere,
         ]);
@@ -129,4 +145,23 @@ final class EvaluationController extends AbstractController
         ]);
     }
 
+    #[Route('/evaluation/{id}', name: 'app_fiche_evaluation', requirements: ['id'=>'\d+'])]
+    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository): Response
+    {
+        $evaluation = $evaluationRepository->find($id);
+
+
+        if (!$evaluation) {
+            throw $this->createNotFoundException('Évaluation non trouvée');
+        }
+
+        // Récupérer les notes associées à cette évaluation
+        $notes = $evaluation->getNotes();
+
+        return $this->render('matiere/evaluation.html.twig', [
+            'evaluation' => $evaluation,
+            'notes' => $notes,
+
+        ]);
+    }
 }
