@@ -8,6 +8,7 @@ use App\Form\AjoutEvaluationType;
 use App\Form\MatiereType;
 use App\Repository\EvaluationRepository;
 use App\Repository\MatiereRepository;
+use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,14 +19,17 @@ final class MatiereController extends AbstractController
 {
 
     #[Route('/fiche/{id}', name: 'app_fiche_matiere', requirements: ['id'=>'\d+'])]
-    public function matiere_fiche(int $id, MatiereRepository $matiereRepository, EvaluationRepository $evaluationRepository): Response
+    public function matiere_fiche(int $id, MatiereRepository $matiereRepository, EvaluationRepository $evaluationRepository, NoteRepository $noteRepository): Response
     {
         $fiches = $matiereRepository->find($id);
         $evaluations = $evaluationRepository->findBy(['matiere' => $id]);
 
+        $notes = $noteRepository->findAll();
+
         return $this->render('matiere/fiche.html.twig', [
             'fiches' => $fiches,
             'evaluations' => $evaluations,
+            'notes' => $notes,
         ]);
     }
 

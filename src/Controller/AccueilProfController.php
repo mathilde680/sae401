@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\CritereRepository;
 use App\Repository\GrilleRepository;
 use App\Repository\MatiereRepository;
+use App\Repository\NoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AccueilProfController extends AbstractController
 {
     #[Route('/accueil/prof', name: 'app_accueil_prof')]
-    public function index(Security $security,MatiereRepository $matiereRepository, GrilleRepository $grilleRepository, CritereRepository $critereRepository) : response
+    public function index(Security $security,MatiereRepository $matiereRepository, GrilleRepository $grilleRepository, CritereRepository $critereRepository, NoteRepository $noteRepository) : response
     {
         $user = $security->getUser();
         $profId = $user->getId(); 
