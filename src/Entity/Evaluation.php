@@ -82,6 +82,12 @@ class Evaluation
     #[ORM\OneToMany(targetEntity: Groupe::class, mappedBy: 'evaluation')]
     private Collection $Groupe;
 
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $formation_groupe = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $type_groupe = null;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -305,5 +311,29 @@ class Evaluation
     public function getGroupe(): Collection
     {
         return $this->Groupe;
+    }
+
+    public function getFormationGroupe(): ?string
+    {
+        return $this->formation_groupe;
+    }
+
+    public function setFormationGroupe(?string $formation_groupe): static
+    {
+        $this->formation_groupe = $formation_groupe;
+
+        return $this;
+    }
+
+    public function getTypeGroupe(): ?string
+    {
+        return $this->type_groupe;
+    }
+
+    public function setTypeGroupe(?string $type_groupe): static
+    {
+        $this->type_groupe = $type_groupe;
+
+        return $this;
     }
 }

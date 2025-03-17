@@ -20,33 +20,38 @@ class AjoutEvaluationType extends AbstractType
             ->add('date', null, [
                 'widget' => 'single_text',
             ])
-            ->add('coef')
-
-            ->add('statut', ChoiceType::class, [
-                'choices'  => [
-                    'Publiée' => 'Publiée',
-                    'En cours' => 'En_cours',
-                    'Enregistrée' => 'Enregistrée',
-                ],
-                'expanded' => false, // false = liste déroulante, true = boutons radio
-                'multiple' => false, // false = choix unique, true = sélection multiple
+            ->add('coef', null, [
+                'label' => 'Coefficient',  // label
             ])
+
+//            ->add('statut', ChoiceType::class, [
+//                'choices'  => [
+//                    'Publiée' => 'Publiée',
+//                    'En cours' => 'En_cours',
+//                    'Enregistrée' => 'Enregistrée',
+//                ],
+//                'expanded' => false, // false = liste déroulante, true = boutons radio
+//                'multiple' => false, // false = choix unique, true = sélection multiple
+//            ])
 
             ->add('statut_groupe', ChoiceType::class, [
                 'choices'  => [
                     'Groupe' => 'Groupe',
                     'Individuel' => 'Individuel',
                 ],
+                'label' => 'Le travail est',
                 'expanded' => false, // false = liste déroulante, true = boutons radio
                 'multiple' => false, // false = choix unique, true = sélection multiple
             ])
 
-            ->add('taille_max_groupe')
+//            ->add('taille_max_groupe')
 
             ->add('professeur', EntityType::class, [
                 'class' => Professeur::class,
                 'choice_label' => 'id',
+                'disabled' => true,
             ])
+
             ->add('matiere', EntityType::class, [
                 'class' => Matiere::class,
                 'choice_label' => 'id',
