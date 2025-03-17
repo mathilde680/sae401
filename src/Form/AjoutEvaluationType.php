@@ -8,6 +8,7 @@ use App\Entity\Professeur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,32 +17,38 @@ class AjoutEvaluationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            
+            ->add('nom', TextType::class, [
+                'label' => 'Nom',
+                'attr' => ['placeholder' => 'Entrez le nom de l\'évaluation']
+            ])
+
             ->add('date', null, [
                 'widget' => 'single_text',
+                'label' => 'Date de l\'évaluation',
             ])
 
             ->add('coef', null, [
                 'label' => 'Coefficient',  // label
+                'attr' => ['placeholder' => 'Coefficiant']
             ])
 
             ->add('statut', ChoiceType::class, [
+                'label' => 'Statut',
                 'choices'  => [
+                    'Enregistrée' => 'Enregistrée',
                     'Publiée' => 'Publiée',
                     'En cours' => 'En_cours',
-                    'Enregistrée' => 'Enregistrée',
                 ],
                 'expanded' => false, // false = liste déroulante, true = boutons radio
                 'multiple' => false, // false = choix unique, true = sélection multiple
             ])
 
             ->add('statut_groupe', ChoiceType::class, [
+                'label' => 'L\'évaluation est par',
                 'choices'  => [
                     'Groupe' => 'Groupe',
                     'Individuel' => 'Individuel',
                 ],
-                'label' => 'Le travail est',
                 'expanded' => false, // false = liste déroulante, true = boutons radio
                 'multiple' => false, // false = choix unique, true = sélection multiple
             ])
