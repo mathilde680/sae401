@@ -49,21 +49,16 @@ final class GrilleController extends AbstractController
 
         $grille->setProfesseur($user);
 
-        $entityManager->persist($grille);
-
-        $grille->addCritere(new Critere());
 
         $form = $this->createForm(AjoutGrilleType::class, $grille);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // Associer chaque critère à la grille
             foreach ($grille->getCriteres() as $critere) {
                 $critere->setGrille($grille);
-                $entityManager->persist($critere);
+                $entityManager->persist($critere); // Ajout explicite de chaque critère
             }
-
+            $entityManager->persist($grille);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_accueil_prof');

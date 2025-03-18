@@ -1,4 +1,4 @@
-.ajoutEvaluation{
+.ajoutGrille{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,21 +10,12 @@
   form{
     display: flex;
     flex-direction: column;
-    div{
-      width: 100%;
-      margin-top: 0.3rem;
-    }
-    .duo{
+    .criteres{
       display: flex;
-      justify-content: space-between;
-      gap: 30px;
-      .coef{
-        width: 35%;
-      }
+      gap: 10px;
     }
-    .duo_bouton{
-      margin-top: 3rem;
+    button{
+      margin: 1rem 0px;
     }
   }
-
 }

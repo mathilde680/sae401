@@ -14,7 +14,7 @@ final class AccueilEtudiantController extends AbstractController
     {
         $matieres = $matiereRepository->findAllMatiere();
 
-        return $this->render('accueil_etudiant/etudiant.html.twig', [
+        return $this->render('accueil_etudiant/index.html.twig', [
             'controller_name' => 'AccueilEtudiantController',
             'matieres' => $matieres,
         ]);

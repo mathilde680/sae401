@@ -22,14 +22,14 @@ class FicheGrille
     #[ORM\ManyToOne(inversedBy: 'ficheGrilles')]
     private ?Etudiant $Etudiant = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Fiche_grille')]
+/*    #[ORM\ManyToOne(inversedBy: 'Fiche_grille')]
     private ?Grille $grille = null;
 
     #[ORM\ManyToOne(inversedBy: 'Fiche_grille')]
     private ?Evaluation $evaluation = null;
 
     #[ORM\ManyToOne(inversedBy: 'Fiche_grille')]
-    private ?Etudiant $etudiant = null;
+    private ?Etudiant $etudiant = null;*/
 
     public function getId(): ?int
     {

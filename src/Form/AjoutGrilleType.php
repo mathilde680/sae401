@@ -7,6 +7,7 @@ use App\Entity\Professeur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,14 +23,13 @@ class AjoutGrilleType extends AbstractType
                 'choice_label' => 'id',
                 'disabled' => true,
             ])
-
             ->add('criteres', CollectionType::class, [
                 'entry_type' => AjoutCritereType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'prototype' => true,
-            ]);
+            ])
+
         ;
     }
 

@@ -3,17 +3,23 @@
 {% block title %}Ajout Grille{% endblock %}
 
 {% block main %}
-    <div class="ajoutMatiere">
+    <div class="ajoutGrille">
+        <h1>Ajout d'une grille</h1>
         {% block form %}
             {{ form_start(form_grille) }}
-            <h1>Ajout d'une grille</h1>
+
             {{ form_row(form_grille.nom) }}
             {{ form_row(form_grille.professeur) }}
-            <div id="criteres">
-                {{ form_row(form_grille.criteres) }}
+
+            <div class="criteres"
+                data-index="{{ form_grille.criteres|length > 0 ? form_grille.criteres|last.vars.name + 1 : 0 }}"
+                data-prototype="{{ form_widget(form_grille.criteres.vars.prototype)|e('html_attr') }}">
             </div>
+            <button type="button" class="add_item_link" data-collection-holder-class="criteres">Ajouter un critère</button>
+
+
             <button class="btn bouton">
-                {{ button_label|default('Ajouter') }}
+                {{ button_label|default('Publier') }}
                 <svg width="15" height="8" viewBox="0 0 20 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15.25 1.25L19 5M19 5L15.25 8.75M19 5H1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>

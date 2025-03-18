@@ -19,11 +19,6 @@ class FicheCours
     #[ORM\ManyToOne(inversedBy: 'ficheCours')]
     private ?Matiere $Matiere = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Fiche_cours')]
-    private ?Etudiant $etudiant = null;
-
-    #[ORM\ManyToOne(inversedBy: 'Fiche_cours')]
-    private ?Matiere $matiere = null;
 
     public function getId(): ?int
     {
