@@ -92,15 +92,15 @@
                     </div>
                 </div>
                 <div class="actionEvaluation">
+                    <a href="{{ path ('app_fiche_evaluation', {'id': evaluation.id}) }}" class="bouton">Evaluer</a>
                     <div>
                         <a href="{{ path ('app_evaluation_modif', {'id': evaluation.id}) }}" class="bouton">Modifier</a>
-                        <a href="{{ path ('app_fiche_evaluation', {'id': evaluation.id}) }}" class="bouton">Evaluer</a>
+                        <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
+                            <button class="bouton">
+                                Supprimer
+                            </button>
+                        </form>
                     </div>
-                    <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
-                        <button class="bouton">
-                            Supprimer
-                        </button>
-                    </form>
                 </div>
 
             </div>

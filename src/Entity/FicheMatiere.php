@@ -13,10 +13,10 @@ class FicheMatiere
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ficheMatieres')]
-    private ?Matiere $Matiere = null;
+    #[ORM\ManyToOne(inversedBy: 'ficheMatiere')]
+    private ?Matiere $matiere = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ficheMatieres')]
+    #[ORM\ManyToOne(inversedBy: 'ficheMatiere')]
     private ?Professeur $Professeur = null;
 
 //    #[ORM\ManyToOne(inversedBy: 'Fiche_matiere')]
@@ -32,12 +32,12 @@ class FicheMatiere
 
     public function getMatiere(): ?Matiere
     {
-        return $this->Matiere;
+        return $this->matiere;
     }
 
-    public function setMatiere(?Matiere $Matiere): static
+    public function setMatiere(?Matiere $matiere): static
     {
-        $this->Matiere = $Matiere;
+        $this->matiere = $matiere;
 
         return $this;
     }

@@ -10,12 +10,27 @@
   form{
     display: flex;
     flex-direction: column;
-    .criteres{
+    width: 60%;
+    .critere-item {
       display: flex;
-      gap: 10px;
+      gap: 30px;
+      align-items: center;
     }
+
+
     button{
       margin: 1rem 0px;
+    }
+
+    .duo_bouton{
+      display: flex;
+      justify-content: space-between;
+      button{
+        @include bouton();
+        a{
+          color: $couleurBackground;
+        }
+      }
     }
   }
 }

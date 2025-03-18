@@ -80,24 +80,31 @@ document
         btn.addEventListener("click", addFormToCollection)
     });
 
+document
+    .querySelectorAll('.criteres')
+    .forEach(collection => {
+        collection.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-item")) {
+                e.target.closest('.critere-item').remove();
+            }
+        });
+    });
 
 function addFormToCollection(e) {
     const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+    const item = document.createElement('div');
 
-    const item = document.createElement('li');
+    item.classList.add("critere-item");
 
     item.innerHTML = collectionHolder
-        .dataset
-        .prototype
-        .replace(
-            /__name__/g,
-            collectionHolder.dataset.index
-        );
+            .dataset
+            .prototype
+            .replace(/__name__/g, collectionHolder.dataset.index) +
+        '<button type="button" class="remove-item">X</button>';
 
     collectionHolder.appendChild(item);
-
     collectionHolder.dataset.index++;
-};
+}
 
 
 

@@ -17,11 +17,6 @@ class AjoutCritereType extends AbstractType
             ->add('nom')
             ->add('note')
             ->add('commentaire')
-            ->add('grille', EntityType::class, [
-                'class' => Grille::class,
-                'choice_label' => 'id',
-                'disabled' => true,
-            ])
         ;
     }
 

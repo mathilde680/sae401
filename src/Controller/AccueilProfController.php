@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CritereRepository;
+use App\Repository\FicheMatiereRepository;
 use App\Repository\GrilleRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\NoteRepository;
@@ -14,18 +15,17 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AccueilProfController extends AbstractController
 {
     #[Route('/accueil/prof', name: 'app_accueil_prof')]
-    public function index(Security $security,MatiereRepository $matiereRepository, GrilleRepository $grilleRepository, CritereRepository $critereRepository, NoteRepository $noteRepository) : response
+    public function index(Security $security, FicheMatiereRepository $ficheMatiereRepository, GrilleRepository $grilleRepository, CritereRepository $critereRepository, NoteRepository $noteRepository) : response
     {
         $user = $security->getUser();
         $profId = $user->getId(); 
 
-        $matieres = $matiereRepository->findAllMatiere();
-        $semestre1 = $matiereRepository->findAllBySemestreAndProfesseur('WR1', $profId);
-        $semestre2 = $matiereRepository->findAllBySemestreAndProfesseur('WR2', $profId);
-        $semestre3 = $matiereRepository->findAllBySemestreAndProfesseur('WR3', $profId);
-        $semestre4 = $matiereRepository->findAllBySemestreAndProfesseur('WR4', $profId);
-        $semestre5 = $matiereRepository->findAllBySemestreAndProfesseur('WR5', $profId);
-        $semestre6 = $matiereRepository->findAllBySemestreAndProfesseur('WR6', $profId);
+        $semestre1 = $ficheMatiereRepository->findAllBySemestreAndProfesseur('WR1', $profId);
+        $semestre2 = $ficheMatiereRepository->findAllBySemestreAndProfesseur('WR2', $profId);
+        $semestre3 = $ficheMatiereRepository->findAllBySemestreAndProfesseur('WR3', $profId);
+        $semestre4 = $ficheMatiereRepository->findAllBySemestreAndProfesseur('WR4', $profId);
+        $semestre5 = $ficheMatiereRepository->findAllBySemestreAndProfesseur('WR5', $profId);
+        $semestre6 = $ficheMatiereRepository->findAllBySemestreAndProfesseur('WR6', $profId);
 
         $grilles = $grilleRepository->findAllByProfesseur($profId);
 
@@ -34,7 +34,6 @@ final class AccueilProfController extends AbstractController
 
 
         return $this->render('accueil_prof/index.html.twig', [
-            'matieres' => $matieres,
             'semestre1' => $semestre1,
             'semestre2' => $semestre2,
             'semestre3' => $semestre3,

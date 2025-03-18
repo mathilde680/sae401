@@ -140,12 +140,32 @@ section#dashboardProf {
       grid-row: 2 / 3;
 
       .toutesLesGrilles{
+        overflow-y: scroll;
+        height: 100%;
         width: 100%;
+        &::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: none;
+          border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #a4a4a4;
+          border-radius: 50px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: #8c8c8c;
+        }
 
         .grillesAffichage{
           display: flex;
           justify-content: space-between;
           align-items: center;
+          margin: 0.7rem 0;
           a{
             width: 100%;
           }

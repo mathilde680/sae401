@@ -25,7 +25,7 @@ class Critere
 //    #[ORM\ManyToOne(inversedBy: 'criteres')]
 //    private ?Grille $Grille = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Critere')]
+    #[ORM\ManyToOne(inversedBy: 'criteres', cascade: ["remove"])]
     private ?Grille $grille = null;
 
     public function getId(): ?int

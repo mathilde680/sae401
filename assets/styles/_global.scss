@@ -7,6 +7,10 @@ body{
 }
 
 //textes
+h1, h2{
+  color: $couleurBouton;
+}
+
 a{
   text-decoration: none;
 }
@@ -85,6 +89,12 @@ input, select {
   background-color: #FF6363;
 }
 
-h1, h2{
-  color: $couleurBouton;
+
+
+//DISPLAY NONE
+.display-none{
+  display: none;
 }
+
+
+

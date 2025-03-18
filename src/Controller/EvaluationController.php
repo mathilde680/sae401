@@ -7,7 +7,7 @@ use App\Entity\Matiere;
 use App\Entity\Note;
 use App\Form\AjoutEvaluationGroupeType;
 use App\Form\AjoutEvaluationType;
-use App\Form\MatiereType;
+use App\Form\FicheMatiereType;
 use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\MatiereRepository;

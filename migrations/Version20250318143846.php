@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250318124109 extends AbstractMigration
+final class Version20250318143846 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,14 @@ final class Version20250318124109 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE critere CHANGE grille_id grille_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE critere DROP FOREIGN KEY FK_7F6A8053985C2966');
+        $this->addSql('ALTER TABLE critere ADD CONSTRAINT FK_7F6A8053985C2966 FOREIGN KEY (grille_id) REFERENCES grille (id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE critere CHANGE grille_id grille_id INT NOT NULL');
+        $this->addSql('ALTER TABLE critere DROP FOREIGN KEY FK_7F6A8053985C2966');
+        $this->addSql('ALTER TABLE critere ADD CONSTRAINT FK_7F6A8053985C2966 FOREIGN KEY (grille_id) REFERENCES grille (id) ON DELETE CASCADE');
     }
 }
