@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Evaluation;
 use App\Entity\Matiere;
+use App\Entity\Note;
 use App\Form\AjoutEvaluationGroupeType;
 use App\Form\AjoutEvaluationType;
 use App\Form\MatiereType;
+use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\MatiereRepository;
+use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,17 +23,27 @@ final class EvaluationController extends AbstractController
 {
     // pour ajouter une évaluation
     #[Route('/evaluation/ajout/{id}', name: 'app_evaluation_ajout')]
-    public function ajout_evaluation(int $id, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, SessionInterface $session): Response {
+    public function ajout_evaluation(int $id, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, EtudiantRepository $etudiantRepository, NoteRepository $noteRepository, SessionInterface $session): Response {
 
         $user = $this->getUser();
 
         // Récupérer la matière associée
         $matiere = $matiereRepository->find($id);
+        $etudiants = $etudiantRepository->findEtudiantsByMatiereId($id);
 
         // Création d'une nouvelle évaluation
         $evaluation = new Evaluation();
         $evaluation->setMatiere($matiere); // Associe la matière
         $evaluation->setProfesseur($user);
+
+        // Création des étudiants selon le semestre et la matière
+        foreach ($etudiants as $etudiant) {
+            $note = new Note();
+            $note->setEtudiant($etudiant);
+            $note->setEvaluation($evaluation);
+            $entityManager->persist($note);
+           // dd($note);
+        }
 
         // Création du formulaire avec l'évaluation pré-remplie
         $form = $this->createForm(AjoutEvaluationType::class, $evaluation);
@@ -38,14 +51,16 @@ final class EvaluationController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Stocker les données dans la session
-            if ($form->get('statut_groupe')->getData() === 'groupe') {
+
+            if ($form->get('statut_groupe')->getData() === 'Groupe') {
+                // Stocker les données dans la session
                 $session->set('evaluation_data', $form->getData());
                 return $this->redirectToRoute('app_evaluation_groupe_ajout', ['id' => $id]);
             }else{
+                // Envoie à la bdd
                 $entityManager->persist($evaluation);
                 $entityManager->flush();
-
+                // Vide la session
                 $session->remove('evaluation_data');
                 return $this->redirectToRoute('app_fiche_matiere', ['id' => $id]);
             }
@@ -101,14 +116,23 @@ final class EvaluationController extends AbstractController
 
     //pour supprimer une évaluation
     #[Route('/evaluation/{id}/supprime', name: 'app_evaluation_supprime', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function supprime_evaluation(int $id, EntityManagerInterface $entityManager): Response
+    public function supprime_evaluation(int $id, EntityManagerInterface $entityManager, NoteRepository $noteRepository): Response
     {
         // Récupérer l'entité Evaluation existante
         $evaluation = $entityManager->getRepository(Evaluation::class)->find($id);
 
         // Supprimer l'évaluation de la base de données
-        $entityManager->remove($evaluation);
-        $entityManager->flush();
+        if ($evaluation) {
+            // Supprimer les notes associées à l'évaluation
+            $notes = $noteRepository->findBy(['Evaluation' => $evaluation]);
+            foreach ($notes as $note) {
+                $entityManager->remove($note);
+            }
+
+            // Supprimer l'évaluation
+            $entityManager->remove($evaluation);
+            $entityManager->flush();
+        }
 
         // Rediriger vers la liste des évaluations après la suppression
         return $this->redirectToRoute('app_accueil_prof');

@@ -13,10 +13,10 @@ class Note
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $note = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,nullable: true)]
     private ?string $commentaire = null;
 
     #[ORM\ManyToOne(inversedBy: 'notes')]

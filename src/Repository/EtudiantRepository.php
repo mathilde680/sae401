@@ -43,6 +43,19 @@ class EtudiantRepository extends ServiceEntityRepository implements PasswordUpgr
             ->getResult()
             ;
     }
+    public function findEtudiantsByMatiereId(int $matiereId): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT e
+            FROM App\Entity\Etudiant e
+            JOIN App\Entity\Matiere m WITH e.promotion = m.promotion
+            WHERE m.id = :matiereId'
+        )->setParameter('matiereId', $matiereId);
+
+        return $query->getResult();
+    }
 
     //    /**
     //     * @return Etudiant[] Returns an array of Etudiant objects

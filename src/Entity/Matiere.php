@@ -54,6 +54,9 @@ class Matiere
     #[ORM\OneToMany(targetEntity: Evaluation::class, mappedBy: 'matiere')]
     private Collection $Evaluation;
 
+    #[ORM\Column(length: 4)]
+    private ?string $promotion = null;
+
     public function __construct()
     {
         $this->evaluations = new ArrayCollection();
@@ -185,5 +188,17 @@ class Matiere
     public function getEvaluation(): Collection
     {
         return $this->Evaluation;
+    }
+
+    public function getPromotion(): ?string
+    {
+        return $this->promotion;
+    }
+
+    public function setPromotion(string $promotion): static
+    {
+        $this->promotion = $promotion;
+
+        return $this;
     }
 }
