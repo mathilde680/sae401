@@ -73,7 +73,7 @@
                     {% for semestre in semestre1 %}
                         <div class="ressourcesAffichage">
                             <div>
-                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.nom }}</a>
+                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.matiere.nom }}</a>
                             </div>
                             <div class="crudRessource">
                                 <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
@@ -92,7 +92,7 @@
                     {% for semestre in semestre2 %}
                         <div class="ressourcesAffichage">
                             <div>
-                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.nom }}</a>
+                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.matiere.nom }}</a>
                             </div>
                             <div class="crudRessource">
                                 <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
@@ -111,7 +111,7 @@
                     {% for semestre in semestre3 %}
                         <div class="ressourcesAffichage">
                             <div>
-                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.nom }}</a>
+                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.matiere.nom }}</a>
                             </div>
                             <div class="crudRessource">
                                 <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
@@ -130,7 +130,7 @@
                     {% for semestre in semestre4 %}
                         <div class="ressourcesAffichage">
                             <div>
-                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.nom }}</a>
+                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.matiere.nom }}</a>
                             </div>
                             <div class="crudRessource">
                                 <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
@@ -149,7 +149,7 @@
                     {% for semestre in semestre5 %}
                         <div class="ressourcesAffichage">
                             <div>
-                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.nom }}</a>
+                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.matiere.nom }}</a>
                             </div>
                             <div class="crudRessource">
                                 <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
@@ -168,7 +168,7 @@
                     {% for semestre in semestre6 %}
                         <div class="ressourcesAffichage">
                             <div>
-                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.nom }}</a>
+                                <a href="{{ path('app_fiche_matiere', {'id': semestre.id}) }}">{{ semestre.matiere.nom }}</a>
                             </div>
                             <div class="crudRessource">
                                 <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">

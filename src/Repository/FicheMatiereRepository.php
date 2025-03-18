@@ -16,6 +16,26 @@ class FicheMatiereRepository extends ServiceEntityRepository
         parent::__construct($registry, FicheMatiere::class);
     }
 
+
+    public function findAllBySemestreAndProfesseur($nom, $profId): array
+    {
+        return $this->createQueryBuilder('fm')
+            ->join('fm.matiere', 'm')
+
+            ->where('m.nom LIKE :nom')
+            ->setParameter('nom', '%'.$nom.'%')
+
+            ->andWhere('fm.Professeur = :profId')
+            ->setParameter('profId', $profId)
+
+            ->orderBy('m.nom', 'ASC')
+
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
     //    /**
     //     * @return FicheMatiere[] Returns an array of FicheMatiere objects
     //     */

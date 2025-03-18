@@ -36,7 +36,7 @@ class Grille
     public function __construct()
     {
         $this->criteres = new ArrayCollection();
-        $this->criteres->add(new Critere());
+        //$this->criteres->add(new Critere());
         $this->ficheGrilles = new ArrayCollection();
     }
 
@@ -90,12 +90,10 @@ class Grille
     public function removeCritere(Critere $critere): static
     {
         if ($this->criteres->removeElement($critere)) {
-            // set the owning side to null (unless already changed)
             if ($critere->getGrille() === $this) {
                 $critere->setGrille(null);
             }
         }
-
         return $this;
     }
 

@@ -3,9 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Evaluation;
+use App\Entity\FicheMatiere;
 use App\Entity\Matiere;
 use App\Form\AjoutEvaluationType;
-use App\Form\MatiereType;
+use App\Form\FicheMatiereType;
 use App\Repository\EvaluationRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\NoteRepository;
@@ -36,16 +37,21 @@ final class MatiereController extends AbstractController
     #[Route('/matiere/ajout', name: 'app_matiere_ajout')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+
         // Créer une nouvelle instance de matiere
-        $matiere = new Matiere();
+        $ficheMatiere = new FicheMatiere();
+
+        $ficheMatiere->setProfesseur($user);
 
         // Créer le formulaire
-        $form = $this->createForm(MatiereType::class,$matiere);
+        $form = $this->createForm(FicheMatiereType::class,$ficheMatiere);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             // Persister et enregistrer le matiere dans la base de données
-            $entityManager->persist($matiere);
+            $entityManager->persist($ficheMatiere);
             $entityManager->flush();
 
             // Rediriger vers une autre page (par exemple, la liste des matieres)
@@ -55,8 +61,8 @@ final class MatiereController extends AbstractController
 
         // Afficher le formulaire
         return $this->render('matiere/ajout.html.twig', [
-            'form_matiere' => $form->createView(),
-            'matiere' => $form->getData(),
+            'form_ficheMatiere' => $form->createView(),
+            'ficheMatiere' => $form->getData(),
         ]);
     }
 
@@ -64,11 +70,11 @@ final class MatiereController extends AbstractController
     public function supprime(int $id, EntityManagerInterface $entityManager): Response
     {
         // Récupérer l'entité Jeu existante
-        $matiere = $entityManager->getRepository(Matiere::class)->find($id);
+        $ficheMatiere = $entityManager->getRepository(FicheMatiere::class)->find($id);
 
 
         // Supprimer le jeu de la base de données
-        $entityManager->remove($matiere);
+        $entityManager->remove($ficheMatiere);
         $entityManager->flush();
 
         // Rediriger vers la liste des jeux après la suppression
@@ -79,11 +85,9 @@ final class MatiereController extends AbstractController
     public function modif(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $matiere = $entityManager->getRepository(Matiere::class)->find($id);
-        if (!$matiere) {
-            throw $this->createNotFoundException('Matière Inexistant');
-        }
 
-        $form = $this->createForm(MatiereType::class, $matiere);
+
+        $form = $this->createForm(FicheMatiereType::class, $matiere);
         $form->handleRequest($request);
 
         // Vérifier si le formulaire est soumis et valide
