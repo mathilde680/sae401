@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Évaluation module{% endblock %}
+
+{% block main %}
+        <div>
+                <h1>{{ evaluation.matiere.nom }}</h1>
+                <h2>{{ evaluation.nom }}</h2>
+                <h2>test</h2>
+
+                {{ form_start(form_ajout_note) }}
+                {% for noteForm in form_ajout_note.notes %}
+                        <div>
+                                <p>{{ notes[loop.index0].etudiant.nom }}</p>
+                                <p>{{ notes[loop.index0].etudiant.prenom }}</p>
+                                {{ form_row(noteForm.note) }}
+                                {{ form_row(noteForm.commentaire) }}
+                        </div>
+                {% endfor %}
+                <button type="submit">Enregistrer</button>
+                {{ form_end(form_ajout_note) }}
+        </div>
+{% endblock %}
