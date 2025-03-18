@@ -3,21 +3,37 @@
 {% block title %}Grille{% endblock %}
 
 {% block main %}
-    <a class="boutonRetour" href="{{ path ('app_grille') }}">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
-        </svg>
-        Retour
-    </a>
     <div id="boxGrille">
+        <a class="boutonRetour" href="{{ path ('app_grille') }}">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+            </svg>
+            Retour
+        </a>
+
         <h1>{{ grille.nom }}</h1>
-        {% for critere in criteres %}
-            <div class="critere">
-                <p>{{ critere.nom }}</p>
-                <p>{{ critere.note }}</p>
-                <p>{{ critere.commentaire }}</p>
-            </div>
-        {% endfor %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Note</th>
+                <th>Commentaire</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for critere in criteres %}
+                <tr>
+                    <td>{{ critere.nom }}</td>
+                    <td>{{ critere.note }}</td>
+                    <td>{{ critere.commentaire }}</td>
+                    <td><a href="#">Modifier</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
+
+
 
 {% endblock %}

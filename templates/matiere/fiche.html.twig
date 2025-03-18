@@ -53,7 +53,7 @@
                 </div>
             </div>-->
             <div class="actions">
-                <a class="boutonSecondaire bouton_fiche" href="{{ path('app_evaluation_ajout', {'id': fiches.id}) }}">Ajouter une note</a>
+                <a class="boutonSecondaire bouton_fiche" href="{{ path('app_evaluation_ajout', {'id': fiches.id}) }}">Ajouter une évaluation</a>
                 <a class="boutonSecondaire bouton_fiche" href="{{ path ('app_grille') }}">Ajouter une grille d'évaluation</a>
 
                 <!--<a class="boutonSecondaire" href="">Supprimer une note</a>-->
@@ -74,22 +74,25 @@
                             {% endif %}
                             <p>Coefficient : {{ evaluation.coef }}</p>
                         </div>
-                        <!--<div class="notesEvaluation">
-                        {% for note in notes %}
+                        <div class="notesEvaluation">
                             <div class="note">
                                 <p>Moyenne</p>
-                                <p class="vert">{{ note.note }}</p>
+                                <p class="vert">{{ notesMoy }}</p>
                             </div>
-                            <div class="note">
-                                <p>Note mini</p>
-                                <p class="orange">{{ note.note }}</p>
-                            </div>
-                            <div class="note">
-                                <p>Note maxi</p>
-                                <p class="rouge">{{ note.note }}</p>
-                            </div>
-                        {% endfor %}
-                    </div>-->
+                            {% if notesMin %}
+                                <div class="note">
+                                    <p>Note mini</p>
+                                    <p class="orange">{{ notesMin.note }}</p>
+                                </div>
+                            {% endif %}
+                            {% if notesMax %}
+                                <div class="note">
+                                    <p>Note maxi</p>
+                                    <p class="rouge">{{ notesMax.note }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
                     </div>
                     <div class="actionEvaluation">
                         <a href="{{ path ('app_fiche_evaluation', {'id': evaluation.id}) }}" class="bouton">Evaluer</a>
@@ -102,14 +105,9 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
 
             {% endfor %}
         </div>
     </div>
-
-
 {% endblock %}
-message.txt
-6 Ko

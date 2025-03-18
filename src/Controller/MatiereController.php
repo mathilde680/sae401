@@ -25,12 +25,17 @@ final class MatiereController extends AbstractController
         $fiches = $matiereRepository->find($id);
         $evaluations = $evaluationRepository->findBy(['matiere' => $id]);
 
-        $notes = $noteRepository->findAll();
+        $notesMoy = $noteRepository->findNoteByMoyenne();
+        $notesMin = $noteRepository->findNoteByMin();
+        $notesMax = $noteRepository->findNoteByMax();
+
 
         return $this->render('matiere/fiche.html.twig', [
             'fiches' => $fiches,
             'evaluations' => $evaluations,
-            'notes' => $notes,
+            'notesMoy' => $notesMoy,
+            'notesMin' => $notesMin,
+            'notesMax' => $notesMax,
         ]);
     }
 

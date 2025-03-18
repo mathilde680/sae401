@@ -1,7 +1,17 @@
 #boxGrille{
-  .critere{
-    display: flex;
-    justify-content: space-between;
-    width: 50%;
+  table{
+    width: 100%;
+    text-align: left;
+    thead{
+      background-color: $couleurBouton;
+      color: $couleurBackground;
+      th{
+        padding: 1rem;
+      }
+    }
+    td{
+      padding: 1rem;
+      border-bottom: 1px solid #D9D9D9;
+    }
   }
 }

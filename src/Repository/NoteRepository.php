@@ -25,6 +25,32 @@ class NoteRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findNoteByMin()
+    {
+        return $this->createQueryBuilder('n')
+            ->orderBy('n.note', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findNoteByMax()
+    {
+        return $this->createQueryBuilder('n')
+            ->orderBy('n.note', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findNoteByMoyenne()
+    {
+        return $this->createQueryBuilder('n')
+            ->select('AVG(n.note) as moyenne')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return Note[] Returns an array of Note objects
     //     */
