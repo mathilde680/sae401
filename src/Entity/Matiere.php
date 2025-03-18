@@ -57,6 +57,9 @@ class Matiere
     #[ORM\Column(length: 4)]
     private ?string $promotion = null;
 
+    #[ORM\Column(length: 2)]
+    private ?string $semestre = null;
+
     public function __construct()
     {
         $this->evaluations = new ArrayCollection();
@@ -198,6 +201,18 @@ class Matiere
     public function setPromotion(string $promotion): static
     {
         $this->promotion = $promotion;
+
+        return $this;
+    }
+
+    public function getSemestre(): ?string
+    {
+        return $this->semestre;
+    }
+
+    public function setSemestre(string $semestre): static
+    {
+        $this->semestre = $semestre;
 
         return $this;
     }
