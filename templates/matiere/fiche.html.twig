@@ -53,10 +53,12 @@
                 </div>
             </div>-->
             <div class="actions">
-                <a class="boutonSecondaire" href="{{ path('app_evaluation_ajout', {'id': fiches.id}) }}">Ajouter une note</a>
-                <a class="boutonSecondaire" href="{{ path ('app_grille') }}">Ajouter une grille d'évaluation</a>
+                <a class="boutonSecondaire bouton_fiche" href="{{ path('app_evaluation_ajout', {'id': fiches.id}) }}">Ajouter une note</a>
+                <a class="boutonSecondaire bouton_fiche" href="{{ path ('app_grille') }}">Ajouter une grille d'évaluation</a>
+
                 <!--<a class="boutonSecondaire" href="">Supprimer une note</a>-->
             </div>
+            <button class="supprimer">Supprimer la ressource</button>
         </div>
 
         <div class="box2">
@@ -107,5 +109,5 @@
         </div>
     </div>
 
-    <button class="supprimer">Supprimer la ressource</button>
+
 {% endblock %}
