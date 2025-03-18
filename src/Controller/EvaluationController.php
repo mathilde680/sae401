@@ -36,15 +36,6 @@ final class EvaluationController extends AbstractController
         $evaluation->setMatiere($matiere); // Associe la matière
         $evaluation->setProfesseur($user);
 
-        // Création des étudiants selon le semestre et la matière
-        foreach ($etudiants as $etudiant) {
-            $note = new Note();
-            $note->setEtudiant($etudiant);
-            $note->setEvaluation($evaluation);
-            $entityManager->persist($note);
-           // dd($note);
-        }
-
         // Création du formulaire avec l'évaluation pré-remplie
         $form = $this->createForm(AjoutEvaluationType::class, $evaluation);
         $form->handleRequest($request);
@@ -57,6 +48,16 @@ final class EvaluationController extends AbstractController
                 $session->set('evaluation_data', $form->getData());
                 return $this->redirectToRoute('app_evaluation_groupe_ajout', ['id' => $id]);
             }else{
+
+                // Création des étudiants selon le semestre et la matière
+                foreach ($etudiants as $etudiant) {
+                    $note = new Note();
+                    $note->setEtudiant($etudiant);
+                    $note->setEvaluation($evaluation);
+                    $entityManager->persist($note);
+                    // dd($note);
+                }
+
                 // Envoie à la bdd
                 $entityManager->persist($evaluation);
                 $entityManager->flush();
@@ -73,7 +74,7 @@ final class EvaluationController extends AbstractController
     }
 
     #[Route('/evaluation/ajout/groupe/{id}', name: 'app_evaluation_groupe_ajout')]
-    public function ajout_groupe_evaluation(int $id, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, SessionInterface $session): Response {
+    public function ajout_groupe_evaluation(int $id, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, SessionInterface $session, EtudiantRepository $etudiantRepository): Response {
 
         $user = $this->getUser();
         $matiere = $matiereRepository->find($id);
@@ -86,6 +87,7 @@ final class EvaluationController extends AbstractController
         $evaluation->setMatiere($matiere); // Associe la matière
         $evaluation->setProfesseur($user);
 
+        // RECUPERER LES INFOS DANS LA SESSION
         $evaluation->setNom($evaluationData->getNom()); // Exemple
         $evaluation->setDate($evaluationData->getDate());
         $evaluation->setCoef($evaluationData->getCoef());
@@ -95,6 +97,16 @@ final class EvaluationController extends AbstractController
             $evaluation->setStatut('Publiée');
         }
         $evaluation->setStatutGroupe($evaluationData->getStatutGroupe());
+
+        // Création des étudiants selon le semestre et la matière
+        $etudiants = $etudiantRepository->findEtudiantsByMatiereId($id);
+        foreach ($etudiants as $etudiant) {
+            $note = new Note();
+            $note->setEtudiant($etudiant);
+            $note->setEvaluation($evaluation);
+            $entityManager->persist($note);
+            // dd($note);
+        }
 
         // Création du formulaire avec l'évaluation pré-remplie
         $form = $this->createForm(AjoutEvaluationGroupeType::class, $evaluation);
