@@ -98,6 +98,9 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'etudiant')]
     private Collection $Note;
 
+    #[ORM\Column(length: 2)]
+    private ?string $semestre = null;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -388,6 +391,18 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     public function getNote(): Collection
     {
         return $this->Note;
+    }
+
+    public function getSemestre(): ?string
+    {
+        return $this->semestre;
+    }
+
+    public function setSemestre(string $semestre): static
+    {
+        $this->semestre = $semestre;
+
+        return $this;
     }
 
 }  

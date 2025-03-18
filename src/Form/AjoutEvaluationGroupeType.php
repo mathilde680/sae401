@@ -7,6 +7,7 @@ use App\Entity\Professeur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,20 +17,27 @@ class AjoutEvaluationGroupeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('taille_max_groupe')
-            ->add('type_groupe', ChoiceType::class,[
-                'choices' => [
-                    'TP'=>'TP',
-                    'TD'=>'TD',
-                    'Promotion'=>'Promotion'
+            ->add('taille_max_groupe', IntegerType::class, [
+                'label' => 'Nombre maximum d\'étudiants par groupe',
+                'attr' => [
+                    'min' => 1
                 ]
             ])
-            ->add('formation_groupe',ChoiceType::class,[
+            ->add('type_groupe', ChoiceType::class, [
                 'choices' => [
-                    'Choix'=>'Choix',
-                    'Aléatoire'=>'Aléatoire',
-                ]
+                    'TP' => 'TP',
+                    'TD' => 'TD',
+                    'Promotion' => 'Promotion'
+                ],
+                'label' => 'Type de groupe'
             ])
+            ->add('formation_groupe', ChoiceType::class, [
+                'choices' => [
+                    'Choix' => 'Choix',
+                    'Aléatoire' => 'Aléatoire',
+                ],
+                'label' => 'Méthode de formation des groupes'
+            ]);
 
 //            ->add('professeur', EntityType::class, [
 //                'class' => Professeur::class,

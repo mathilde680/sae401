@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\GroupeRepository;
@@ -8,38 +7,32 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
-class Groupe
-{
+class Groupe {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
-    #[ORM\ManyToOne(inversedBy: 'groupes')]
-    private ?Evaluation $Evaluation = null;
-
-    /**
-     * @var Collection<int, FicheGroupe>
-     */
-    #[ORM\OneToMany(targetEntity: FicheGroupe::class, mappedBy: 'Groupe')]
-    private Collection $ficheGroupes;
-
-    #[ORM\ManyToOne(inversedBy: 'Groupe')]
+    // Correction: utiliser un nom de propriété en minuscule et cohérent
+    #[ORM\ManyToOne(targetEntity: Evaluation::class, inversedBy: 'groupes')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Evaluation $evaluation = null;
 
     /**
      * @var Collection<int, FicheGroupe>
      */
     #[ORM\OneToMany(targetEntity: FicheGroupe::class, mappedBy: 'groupe')]
-    private Collection $Fiche_groupe;
+    private Collection $ficheGroupes;
+
+    #[ORM\Column]
+    private ?int $taille = null;
 
     public function __construct()
     {
         $this->ficheGroupes = new ArrayCollection();
-        $this->Fiche_groupe = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -55,19 +48,19 @@ class Groupe
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
+    // Correction: méthode mise à jour pour utiliser la propriété en minuscule
     public function getEvaluation(): ?Evaluation
     {
-        return $this->Evaluation;
+        return $this->evaluation;
     }
 
-    public function setEvaluation(?Evaluation $Evaluation): static
+    // Correction: méthode mise à jour pour utiliser la propriété en minuscule
+    public function setEvaluation(?Evaluation $evaluation): static
     {
-        $this->Evaluation = $Evaluation;
-
+        $this->evaluation = $evaluation;
         return $this;
     }
 
@@ -85,27 +78,26 @@ class Groupe
             $this->ficheGroupes->add($ficheGroupe);
             $ficheGroupe->setGroupe($this);
         }
-
         return $this;
     }
 
     public function removeFicheGroupe(FicheGroupe $ficheGroupe): static
     {
         if ($this->ficheGroupes->removeElement($ficheGroupe)) {
-            // set the owning side to null (unless already changed)
-            if ($ficheGroupe->getGroupe() === $this) {
-                $ficheGroupe->setGroupe(null);
-            }
+            // Pas besoin de cette ligne, elle est redondante
+            // $this->ficheGroupes->removeElement($ficheGroupe);
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, FicheGroupe>
-     */
-    public function getFicheGroupe(): Collection
+    public function getTaille(): ?int
     {
-        return $this->Fiche_groupe;
+        return $this->taille;
+    }
+
+    public function setTaille(int $taille): static
+    {
+        $this->taille = $taille;
+        return $this;
     }
 }
