@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Etudiant;
 use App\Entity\Evaluation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -15,7 +16,17 @@ class EvaluationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Evaluation::class);
     }
-
+    public function findGroupEvaluationsByEtudiant(Etudiant $etudiant)
+    {
+        return $this->createQueryBuilder('e')
+            ->join('e.matiere', 'm')
+            ->where('m.semestre = :semestre')
+            ->andWhere('e.statut_groupe = :statutGroupe')
+            ->setParameter('semestre', $etudiant->getSemestre())
+            ->setParameter('statutGroupe', 'groupe')
+            ->getQuery()
+            ->getResult();
+    }
 
     //    /**
     //     * @return Evaluation[] Returns an array of Evaluation objects

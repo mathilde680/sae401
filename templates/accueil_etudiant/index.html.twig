@@ -81,6 +81,14 @@
                         </div>
                         <a class="ajouter" href="#">+</a>
                     </div>
+                    <div>
+                        {% for evaluation in evaluations %}
+                            <div>
+                                <p>{{ evaluation.nom }}</p>
+                                <a href="">Voir</a>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
 
                 <!--box progression-->

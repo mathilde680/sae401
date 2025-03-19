@@ -96,10 +96,10 @@ class EtudiantRepository extends ServiceEntityRepository implements PasswordUpgr
 
         $query = $entityManager->createQuery(
             'SELECT e
-        FROM App\Entity\Etudiant e
-        JOIN App\Entity\Matiere m WITH e.semestre = m.semestre
-        WHERE m.id = :matiereId
-        ORDER BY e.TD'
+            FROM App\Entity\Etudiant e
+            JOIN App\Entity\Matiere m WITH e.semestre = m.semestre
+            WHERE m.id = :matiereId
+            ORDER BY e.TD'
         )->setParameter('matiereId', $matiereId);
 
         $etudiants = $query->getResult();
