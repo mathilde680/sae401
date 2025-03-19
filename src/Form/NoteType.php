@@ -16,10 +16,13 @@ class NoteType extends AbstractType
         $builder
             ->add('note', NumberType::class, [
                 'required' => false,
+                'attr' => ['class' => 'input_note'],
             ])
             ->add('commentaire', TextareaType::class, [
                 'required' => false,
-            ]);;
+                'attr' => ['class' => 'input_commentaire'],
+                'row_attr' => ['class' => 'commentaire-wrapper'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

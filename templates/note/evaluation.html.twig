@@ -3,7 +3,8 @@
 {% block title %}Évaluation module{% endblock %}
 
 {% block main %}
-    <div id="notes_evaluation">
+
+    <div id="notes_evaluation" class="div_blanche">
         <h1>{{ evaluation.matiere.nom }}</h1>
         <h2>{{ evaluation.nom }}</h2>
         <a class="bouton" href="{{ path('app_note', {'id': evaluation.id}) }}">Évaluer</a>
@@ -38,4 +39,5 @@
             </div>
         {% endfor %}
     </div>
+
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block title %}Évaluation module{% endblock %}
 
 {% block main %}
-    <div>
+    <div class="div_blanche">
         <h1>{{ evaluation.matiere.nom }}</h1>
         <h2>{{ evaluation.nom }}</h2>
 
@@ -17,13 +17,15 @@
                         <p class="nom">{{ note.etudiant.nom }}</p>
                         <p class="prenom">{{ note.etudiant.prenom }}</p>
                         <p class="note">{{ form_row(note_form.note) }}</p>
+                        <div class="commentaire_note">
                         <p class="commentaire">{{ form_row(note_form.commentaire) }}</p>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
 
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <button type="submit" class="btn btn-primary bouton bouton_note">Enregistrer</button>
         {{ form_end(form_ajout_note) }}
     </div>
 {% endblock %}

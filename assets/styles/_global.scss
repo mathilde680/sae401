@@ -15,6 +15,12 @@ a{
   text-decoration: none;
 }
 
+// div blanche
+.div_blanche{
+  @extend %div_blanche;
+}
+
+
 //input pour les formulaires
 input, select {
   width: 100%;
