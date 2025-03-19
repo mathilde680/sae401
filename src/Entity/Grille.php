@@ -21,13 +21,13 @@ class Grille
     /**
      * @var Collection<int, Critere>
      */
-    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: 'grille', cascade: ["persist", "remove"])]
+    #[ORM\OneToMany(targetEntity: Critere::class, mappedBy: 'Grille', cascade: ["persist", "remove"])]
     private Collection $criteres;
 
     /**
      * @var Collection<int, FicheGrille>
      */
-    #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'grille', cascade: ["persist", "remove"])]
+    #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'Grille', cascade: ["persist", "remove"])]
     private Collection $ficheGrilles;
 
     #[ORM\ManyToOne(inversedBy: 'grilles')]

@@ -72,13 +72,15 @@ final class GrilleController extends AbstractController
 
     //SUPPRESSION GRILLE
     #[Route('/grille/{id}/supprime', name: 'app_grille_supprime', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function supprime(int $id, Request $request, EntityManagerInterface $entityManager, GrilleRepository $grilleRepository): Response
+    public function supprime(int $id, Request $request, EntityManagerInterface $entityManager, GrilleRepository $grilleRepository, CritereRepository $critereRepository): Response
     {
-        $grille = $grilleRepository->find($id);
+        //$grille = $grilleRepository->find($id);
+        $grille = $entityManager->getRepository(Grille::class)->find($id);
 
-        if ($this->isCsrfTokenValid('delete'.$id, $request->request->get('_token'))) {
+        if ($grille) {
             // Supprimer tous les critères liés à la grille
-            foreach ($grille->getCriteres() as $critere) {
+            $criteres = $critereRepository->findBy(['Grille' => $grille]);
+            foreach ($criteres as $critere) {
                 $entityManager->remove($critere);
             }
 
