@@ -1,0 +1,48 @@
+
+
+.noteBox{
+
+  padding-left: 5vh;
+  .titre_note{
+    gap: 2%;
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+    svg{
+      height: 4vh;
+      transition: transform 0.3s ease;
+    }
+
+    h3{
+      color: $couleurTexte;
+    }
+  }
+
+  .notes_matiere{
+
+    padding-left: 7vh;
+    transition: height 0.3s ease-in-out;
+
+    .note_evaluation{
+
+      display: flex;
+      align-items: center;
+      gap: 2%;
+
+
+      .note{
+        width: fit-content;
+      }
+      a{
+        color: $couleurTexte;
+        width: 15%;
+      }
+
+      svg{
+        height: 3vh;
+      }
+    }
+  }
+
+
+}

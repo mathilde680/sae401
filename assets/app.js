@@ -106,8 +106,32 @@ function addFormToCollection(e) {
     collectionHolder.dataset.index++;
 }
 
+// Affichage des notes
+
+document.addEventListener('DOMContentLoaded', function() {
+    const titresNotes = document.querySelectorAll('.titre_note');
+
+    titresNotes.forEach(titre => {
+        const notesMatiereDiv = titre.nextElementSibling;
 
 
+        notesMatiereDiv.style.height = '0';
+        notesMatiereDiv.style.overflow = 'hidden';
 
+        titre.addEventListener('click', function() {
+            const notesMatiereDiv = this.nextElementSibling;
 
+            if (notesMatiereDiv.style.height === '0px') {
+                // Obtenir la hauteur réelle du contenu
+                const height = notesMatiereDiv.scrollHeight + 'px';
+                notesMatiereDiv.style.height = height;
+                this.querySelector('svg').style.transform = 'rotate(90deg)';
+            } else {
+                notesMatiereDiv.style.height = '0';
+                this.querySelector('svg').style.transform = 'rotate(0deg)';
+            }
+        });
 
+        titre.style.cursor = 'pointer';
+    });
+});

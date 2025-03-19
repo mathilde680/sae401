@@ -3,12 +3,23 @@
 {% block title %}Notes{% endblock %}
 
 {% block main %}
+    <div class="div_blanche">
     <h1>Mes Notes</h1>
     {% for matiere in matieres %}
         <div class="noteBox">
-            <h2>{{ matiere.nom }}</h2>
+            <div class="titre_note">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+                <h3>{{ matiere.nom }}</h3>
+            </div>
+            <div class="notes_matiere">
             {% for evaluation in matiere.Evaluation %}
-                <a href="{{ path ('app_note_detail', {'id': evaluation.id}) }}">Évaluation : {{ evaluation.nom }}</a>
+                <div class="note_evaluation">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+                    </svg>
+                    <a href="{{ path ('app_note_detail', {'id': evaluation.id}) }}" title="Voir le détail de ma note">{{ evaluation.nom }}</a>
                 {% if evaluation.notes is not empty %}
                     {% for note in evaluation.notes %}
                         {% if note.note < 8 %}
@@ -18,14 +29,16 @@
                         {% else %}
                             <p class="note orange">{{ note.note }}</p>
                         {% endif %}
-                        <p>Commentaire : {{ note.commentaire }}</p>
                     {% endfor %}
                 {% else %}
                     <p>{{ evaluation.statut }}</p>
                 {% endif %}
+                </div>
             {% endfor %}
+            </div>
         </div>
     {% endfor %}
+    </div>
 {% endblock %}
 
 
