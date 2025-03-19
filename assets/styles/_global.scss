@@ -6,6 +6,17 @@ body{
   font-family: "Inter", sans-serif;
 }
 
+main{
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.header, header{
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+
 //textes
 h1, h2{
   color: $couleurBouton;
