@@ -16,7 +16,6 @@ class Groupe {
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
-    // Correction: utiliser un nom de propriété en minuscule et cohérent
     #[ORM\ManyToOne(targetEntity: Evaluation::class, inversedBy: 'groupes')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Evaluation $evaluation = null;
@@ -24,7 +23,7 @@ class Groupe {
     /**
      * @var Collection<int, FicheGroupe>
      */
-    #[ORM\OneToMany(targetEntity: FicheGroupe::class, mappedBy: 'groupe')]
+    #[ORM\OneToMany(targetEntity: FicheGroupe::class, mappedBy: 'Groupe')]
     private Collection $ficheGroupes;
 
     #[ORM\Column]

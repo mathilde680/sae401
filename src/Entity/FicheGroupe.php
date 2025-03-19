@@ -13,17 +13,17 @@ class FicheGroupe
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ficheGroupes')]
+//    #[ORM\ManyToOne(inversedBy: 'ficheGroupes')]
+//    private ?Groupe $Groupe = null;
+
+//    #[ORM\ManyToOne(inversedBy: 'ficheGroupes')]
+//    private ?Etudiant $Etudiant = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Fiche_groupe')]
     private ?Groupe $Groupe = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ficheGroupes')]
+    #[ORM\ManyToOne(inversedBy: 'Fiche_groupe')]
     private ?Etudiant $Etudiant = null;
-
-    #[ORM\ManyToOne(inversedBy: 'Fiche_groupe')]
-    private ?Groupe $groupe = null;
-
-    #[ORM\ManyToOne(inversedBy: 'Fiche_groupe')]
-    private ?Etudiant $etudiant = null;
 
     public function getId(): ?int
     {

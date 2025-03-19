@@ -42,7 +42,7 @@ class GroupeRepository extends ServiceEntityRepository
         // jointures pour récupérer les étudiants de chaque groupe
         $qb->select('g', 'fg', 'e')
             ->leftJoin('g.ficheGroupes', 'fg')
-            ->leftJoin('fg.etudiant', 'e')
+            ->leftJoin('fg.Etudiant', 'e')
             ->where('g.evaluation = :idEvaluation')
             ->setParameter('idEvaluation', $idEvaluation);
 
