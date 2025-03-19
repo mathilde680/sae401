@@ -1,7 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Notes{% endblock %}
+{% block title %}Notes Détail{% endblock %}
 
 {% block main %}
-    <h1>Fiche DEtail</h1>
+    <h1>Détails de la note</h1>
+    {% if details is not empty %}
+        <h2>{{ evaluation.matiere.nom }}</h2>
+        <h3>{{ evaluation.nom }}</h3>
+        <h4>Evaluation saisie par : {{ evaluation.professeur.prenom }} {{ evaluation.professeur.nom }}</h4>
+        {% for detail in details %}
+        <p>Commentaire : {{ detail.commentaire }}</p>
+        {% endfor %}
+        <div>
+            {% for detail in details %}
+                <div>
+                    <p>Note de l'élève : {{ detail.note }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <a href="{{ path ('app_reclamation_etudiant') }}" class="bouton">Faire une réclamation</a>
+
+    {% else %}
+        <p>Statut de l'évaluation : {{ evaluation.statut }}</p>
+    {% endif %}
+
 {% endblock %}

@@ -29,14 +29,17 @@ final class NoteController extends AbstractController
     }
 
     #[Route('/note/detail/{id}', name: 'app_note_detail', requirements: ['id' => '\d+'])]
-    public function notes_detail(NoteRepository $noteRepository, MatiereRepository $matiereRepository): Response
+    public function notes_detail(int $id, NoteRepository $noteRepository, EvaluationRepository $evaluationRepository): Response
     {
         $user = $this->getUser();
+        $evaluation = $evaluationRepository->find($id);
 
-        $matieres = $matiereRepository->findMatiereAndNoteByEtudiant($user);
+        $details = $noteRepository->findAllDetails($evaluation, $user);
+
 
         return $this->render('note/noteDetailEtudiant.html.twig', [
-            'matieres' => $matieres,
+            'details' => $details,
+            'evaluation' => $evaluation,
         ]);
     }
 
