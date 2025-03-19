@@ -75,24 +75,52 @@
                             <p>Coefficient : {{ evaluation.coef }}</p>
                         </div>
                         <div class="notesEvaluation">
+                            {% set stat = notesStats[evaluation.id] ?? null %}
                             <div class="note">
                                 <p>Moyenne</p>
-                                <p class="vert">{{ notesMoy }}</p>
+                                {% if stat.notesMoy is not null %}
+                                    {% if stat.notesMoy < 8 %}
+                                        <p class="rouge">{{ stat.notesMoy }}</p>
+                                    {% elseif stat.notesMoy > 8 and stat.notesMoy < 10 %}
+                                        <p class="orange">{{ stat.notesMoy }}</p>
+                                    {% else %}
+                                        <p class="vert">{{ stat.notesMoy }}</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p>0</p>
+                                {% endif %}
                             </div>
-                            {% if notesMin %}
-                                <div class="note">
-                                    <p>Note mini</p>
-                                    <p class="orange">{{ notesMin.note }}</p>
-                                </div>
-                            {% endif %}
-                            {% if notesMax %}
-                                <div class="note">
-                                    <p>Note maxi</p>
-                                    <p class="rouge">{{ notesMax.note }}</p>
-                                </div>
-                            {% endif %}
-                        </div>
 
+                            <div class="note">
+                                <p>Note mini</p>
+                                {% if stat.notesMin is not null and stat.notesMin.note is not null %}
+                                    {% if stat.notesMin.note < 8 %}
+                                        <p class="rouge">{{ stat.notesMin.note }}</p>
+                                    {% elseif stat.notesMin.note > 8 and stat.notesMin.note < 10 %}
+                                        <p class="orange">{{ stat.notesMin.note }}</p>
+                                    {% else %}
+                                        <p class="vert">{{ stat.notesMin.note }}</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p>0</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="note">
+                                <p>Note maxi</p>
+                                {% if stat.notesMax is not null and stat.notesMax.note is not null %}
+                                    {% if stat.notesMax.note < 8 %}
+                                        <p class="rouge">{{ stat.notesMax.note }}</p>
+                                    {% elseif stat.notesMax.note > 8 and stat.notesMax.note < 10 %}
+                                        <p class="orange">{{ stat.notesMax.note }}</p>
+                                    {% else %}
+                                        <p class="vert">{{ stat.notesMax.note }}</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p>0</p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                     <div class="actionEvaluation">
                         <a href="{{ path ('app_fiche_evaluation', {'id': evaluation.id}) }}" class="bouton">Evaluer</a>
@@ -106,7 +134,6 @@
                         </div>
                     </div>
                 </div>
-
             {% endfor %}
         </div>
     </div>
