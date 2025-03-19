@@ -7,8 +7,28 @@
    <h1>Rejoindre un groupe</h1>
     <h2>SAE 401</h2>
     <div id="groupes_grid">
-       <!-- mettre un for pour afficher les groupes-->
-       <div class="groupe_grid">
+        {% for groupe in groupes %}
+        <div class="groupe_grid">
+            <!---Titre-->
+            {% if groupe.taille >= 2 %}
+                <h3>{{ groupe.nom }} / {{ groupe.taille }} personnes</h3>
+            {% else %}
+                <h3>{{ groupe.nom }} / {{ groupe.taille }} personne</h3>
+            {% endif %}
+
+            <!---Personne du groupe-->
+            <div class="eleve_grid">
+                {% for fiche_groupe in groupe.ficheGroupes %}
+                    <div class="élève_groupe">
+                        <p>{{ fiche_groupe.etudiant.prenom }}</p>
+                        <p>{{ fiche_groupe.etudiant.nom }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="bouton bouton_groupe">Rejoindre</button>
+        </div>
+        {% endfor %}
+       <!--<div class="groupe_grid">
            <h3>Groupe 1 - 5 personnes</h3>
            <div class="eleve_grid">
                   <div class="élève_groupe">
@@ -21,9 +41,9 @@
                    </div>
            </div>
            <button class="bouton bouton_groupe">Rejoindre</button>
-       </div>
+       </div>-->
 
-        <div class="groupe_grid">
+        <!--<div class="groupe_grid">
             <h3>Groupe 1 - 5 personnes</h3>
             <div class="eleve_grid">
                 <div class="élève_groupe">
@@ -54,7 +74,7 @@
                 </div>
             </div>
             <button class="bouton bouton_groupe">Rejoindre</button>
-        </div>
+        </div>-->
 
 
 

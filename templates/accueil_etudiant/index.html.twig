@@ -79,6 +79,14 @@
                             <h2>Mes groupes</h2>
                         </div>
                     </div>
+                    <div>
+                        {% for evaluation in evaluations %}
+                            <div>
+                                <p>{{ evaluation.nom }}</p>
+                                <a href="{{ path('app_groupe', {'id': evaluation.id}) }}">Voir</a>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
 
                 <!--box progression-->

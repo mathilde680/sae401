@@ -21,8 +21,8 @@ class EvaluationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
             ->join('e.matiere', 'm')
             ->where('m.semestre = :semestre')
-            ->andWhere('e.statut_groupe = :statutGroupe')
             ->setParameter('semestre', $etudiant->getSemestre())
+            ->andWhere('e.statut_groupe = :statutGroupe')
             ->setParameter('statutGroupe', 'groupe')
             ->getQuery()
             ->getResult();
