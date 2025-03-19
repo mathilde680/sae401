@@ -4,26 +4,55 @@
 
 {% block main %}
     <h1>Détails de la note</h1>
-    {% if details is not empty %}
-        <h2>{{ evaluation.matiere.nom }}</h2>
-        <h3>{{ evaluation.nom }}</h3>
-        <h4>Evaluation saisie par : {{ evaluation.professeur.prenom }} {{ evaluation.professeur.nom }}</h4>
+    <div class="boxNoteDetails">
+        <div class="infosGeneraleNoteDetails">
+            <div class="infosGenerales">
+                <h2>{{ evaluation.matiere.nom }}</h2>
+                <h2>{{ evaluation.nom }}</h2>
+                <h3>Evaluation saisie par : {{ evaluation.professeur.prenom }} {{ evaluation.professeur.nom }}</h3>
+            </div>
+        {% if details is not empty %}
         {% for detail in details %}
-        <p>Commentaire : {{ detail.commentaire }}</p>
+            <div class="commentaireNoteDetails">
+                <p>Commentaire : {{ detail.commentaire }}</p>
+            </div>
         {% endfor %}
+        </div>
         <div>
             {% for detail in details %}
-                <div>
-                    <p>Note de l'élève : {{ detail.note }}</p>
-                </div>
+                {% if detail.note < 8 %}
+                    <div class="row">
+                        <p>Note de l'élève </p>
+                        <p class="note rouge">{{ detail.note }}</p>
+                    </div>
+                {% elseif detail.note > 10 %}
+                    <div class="row">
+                        <p>Note de l'élève</p>
+                        <p class="note vert">{{ detail.note }}</p>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <p>Note de l'élève</p>
+                        <p class="note orange">{{ detail.note }}</p>
+                    </div>
+
+                {% endif %}
             {% endfor %}
         </div>
 
-
         <a href="{{ path ('app_reclamation_etudiant') }}" class="bouton">Faire une réclamation</a>
 
-    {% else %}
-        <p>Statut de l'évaluation : {{ evaluation.statut }}</p>
-    {% endif %}
+        {% else %}
+            <div class="statutnoteDetails">
+                <p>Statut de l'évaluation</p>
+                <div>
+                    <p class="gris">{{ evaluation.statut }}</p>
+                </div>
+
+            </div>
+
+        {% endif %}
+    </div>
+
 
 {% endblock %}

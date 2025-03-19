@@ -88,7 +88,7 @@ input, select {
 
 
 //couleurs notes
-.vert, .orange, .rouge{
+.vert, .orange, .rouge, .gris{
   padding: 0.3rem 1rem;
   color: $couleurTexte;
   border-radius: 5px;
@@ -97,17 +97,21 @@ input, select {
 }
 
 .vert{
-  background-color: #15C377;
+  background-color: $couleurNoteVerte;
 }
 
 .orange{
-  background-color: #FAA64B;
+  background-color: $couleurNoteOrange;
 }
 
 .rouge{
-  background-color: #FF6363;
+  background-color: $couleurNoteRouge;
 }
 
+.gris{
+  background-color: $couleurGris;
+  color: $couleurNeutre;
+}
 
 
 //DISPLAY NONE
