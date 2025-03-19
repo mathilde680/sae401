@@ -4,12 +4,11 @@
 
 {% block main %}
     <h1>Mes Notes</h1>
-
     {% for matiere in matieres %}
         <div class="noteBox">
             <h2>{{ matiere.nom }}</h2>
             {% for evaluation in matiere.Evaluation %}
-                <p>Évaluation : {{ evaluation.nom }}</p>
+                <a href="{{ path ('app_note_detail', {'id': evaluation.id}) }}">Évaluation : {{ evaluation.nom }}</a>
                 {% if evaluation.notes is not empty %}
                     {% for note in evaluation.notes %}
                         {% if note.note < 8 %}
