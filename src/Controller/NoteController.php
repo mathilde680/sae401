@@ -6,6 +6,7 @@ use App\Entity\Evaluation;
 use App\Entity\Note;
 use App\Form\AjoutNoteType;
 use App\Repository\EvaluationRepository;
+use App\Repository\GroupeRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,9 +46,13 @@ final class NoteController extends AbstractController
 
 
     #[Route('/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
-    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository): Response
+    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository, GroupeRepository $groupeRepository): Response
     {
         $evaluation = $evaluationRepository->find($id);
+        //$evaluationStatutGroupe = $evaluation->getEvaluationStatutGroupe();
+
+        $groupes = $groupeRepository->findGroupeByEvaluationProf($id);
+
 
         if (!$evaluation) {
             throw $this->createNotFoundException('Évaluation non trouvée');
@@ -65,6 +70,7 @@ final class NoteController extends AbstractController
         return $this->render('note/evaluation.html.twig', [
             'evaluation' => $evaluation,
             'notes' => $notes,
+            'groupes' => $groupes,
         ]);
     }
 
@@ -72,9 +78,12 @@ final class NoteController extends AbstractController
     public function modif_ajout_note(
         int $id, EvaluationRepository $evaluationRepository, Request $request,
         NoteRepository $noteRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        GroupeRepository $groupeRepository
     ): Response {
+
         $evaluation = $evaluationRepository->find($id);
+        $groupes = $groupeRepository->findGroupeByEvaluationProf($id);
 
         if (!$evaluation) {
             throw $this->createNotFoundException('Évaluation non trouvée');
@@ -96,6 +105,18 @@ final class NoteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
+
+            if ($evaluation->getStatutGroupe() == "Groupe") {
+                $notesByGroupeId = [];
+
+                foreach ($formData['notes'] as $note) {
+                    $etudiant = $note->getEtudiant();
+
+                }
+
+            }else{
+
+            }
             foreach ($formData['notes'] as $note) {
                 $entityManager->persist($note);
             }
@@ -111,6 +132,7 @@ final class NoteController extends AbstractController
             'evaluation' => $evaluation,
             'notes' => $notes,
             'form_ajout_note' => $form,
+            'groupes' => $groupes,
         ]);
 }
 

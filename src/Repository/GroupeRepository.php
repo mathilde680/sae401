@@ -61,6 +61,20 @@ class GroupeRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findGroupeByEvaluationProf($idEvaluation){
+
+        $qb = $this->createQueryBuilder('g');
+
+        return $this->createQueryBuilder('g')
+            ->select('g', 'fg', 'e')
+            ->leftJoin('g.ficheGroupes', 'fg')
+            ->leftJoin('fg.Etudiant', 'e')
+            ->where('g.evaluation = :idEvaluation')
+            ->setParameter('idEvaluation', $idEvaluation)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Groupe[] Returns an array of Groupe objects
     //     */
