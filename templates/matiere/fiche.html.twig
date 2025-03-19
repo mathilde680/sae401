@@ -3,6 +3,7 @@
 {% block title %}{{ fiches.nom }}{% endblock %}
 
 {% block main %}
+    <div class="div_blanche">
     <a class="boutonRetour" href="{{ path ('app_accueil_prof') }}">
         <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
@@ -52,13 +53,15 @@
                     </select>
                 </div>
             </div>-->
+            <div id="bouton_fiche_flex">
             <div class="actions">
                 <a class="boutonSecondaire bouton_fiche" href="{{ path('app_evaluation_ajout', {'id': fiches.id}) }}">Ajouter une évaluation</a>
                 <a class="boutonSecondaire bouton_fiche" href="{{ path ('app_grille') }}">Ajouter une grille d'évaluation</a>
-
                 <!--<a class="boutonSecondaire" href="">Supprimer une note</a>-->
             </div>
-            <button class="supprimer">Supprimer la ressource</button>
+                <div id="bouton_supprimer_fiche">
+            <button class="supprimer">Supprimer la ressource</button></div>
+            </div>
         </div>
 
         <div class="box2">
@@ -136,5 +139,7 @@
                 </div>
             {% endfor %}
         </div>
+    </div>
+
     </div>
 {% endblock %}
