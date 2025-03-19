@@ -24,6 +24,7 @@ final class GrilleController extends AbstractController
 
         $grilles = $grilleRepository->findAllByProfesseur($profId);
 
+
         return $this->render('grille/index.html.twig', [
             'grilles' => $grilles,
         ]);
