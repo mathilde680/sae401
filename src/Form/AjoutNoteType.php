@@ -17,16 +17,12 @@ class AjoutNoteType extends AbstractType
     {
         $builder
             ->add('notes', CollectionType::class, [
-                'entry_type' => AjoutNoteType::class,
+                'entry_type' => NoteType::class, // Formulaire pour une seule note
                 'entry_options' => ['label' => false],
+                'allow_add' => false,
+                'allow_delete' => false,
                 'by_reference' => false,
-            ])
-            ->add('commentaires', CollectionType::class, [
-                'entry_type' => AjoutNoteType::class,
-                'entry_options' => ['label' => false],
-                'by_reference' => false,
-            ])
-
+            ]);
 
         ;
     }

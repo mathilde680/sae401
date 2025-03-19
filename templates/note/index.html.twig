@@ -3,21 +3,27 @@
 {% block title %}Évaluation module{% endblock %}
 
 {% block main %}
-        <div>
-                <h1>{{ evaluation.matiere.nom }}</h1>
-                <h2>{{ evaluation.nom }}</h2>
-                <h2>test</h2>
+    <div>
+        <h1>{{ evaluation.matiere.nom }}</h1>
+        <h2>{{ evaluation.nom }}</h2>
 
-                {{ form_start(form_ajout_note) }}
-                {% for noteForm in form_ajout_note.notes %}
-                        <div>
-                                <p>{{ notes[loop.index0].etudiant.nom }}</p>
-                                <p>{{ notes[loop.index0].etudiant.prenom }}</p>
-                                {{ form_row(noteForm.note) }}
-                                {{ form_row(noteForm.commentaire) }}
-                        </div>
-                {% endfor %}
-                <button type="submit">Enregistrer</button>
-                {{ form_end(form_ajout_note) }}
+        {{ form_start(form_ajout_note) }}
+        <div>
+            {% for note_form in form_ajout_note.notes %}
+                <div id="note_eleve">
+                    {% set note_vars = note_form.vars %}
+                    {% set note = note_vars.data %}
+                    <div class="note-entry">
+                        <p class="nom">{{ note.etudiant.nom }}</p>
+                        <p class="prenom">{{ note.etudiant.prenom }}</p>
+                        <p class="note">{{ form_row(note_form.note) }}</p>
+                        <p class="commentaire">{{ form_row(note_form.commentaire) }}</p>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        {{ form_end(form_ajout_note) }}
+    </div>
 {% endblock %}

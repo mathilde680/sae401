@@ -15,7 +15,31 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class NoteController extends AbstractController
 {
-    #[Route('/note/{id}', name: 'app_note')]
+    #[Route('/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
+    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository): Response
+    {
+        $evaluation = $evaluationRepository->find($id);
+
+        if (!$evaluation) {
+            throw $this->createNotFoundException('Évaluation non trouvée');
+        }
+
+        // Récupérer les notes associées à cette évaluation
+        $notes = $evaluation->getNotes()->toArray(); // Convertir la collection en tableau
+
+        // Trier les notes par nom en ordre alphabétique
+        usort($notes, function ($a, $b) {
+            // Supposant que vous avez une méthode getEleve()->getNom() pour accéder au nom
+            return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
+        });
+
+        return $this->render('note/evaluation.html.twig', [
+            'evaluation' => $evaluation,
+            'notes' => $notes,
+        ]);
+    }
+
+    #[Route('/note/evaluer/{id}', name: 'app_note')]
     public function modif_ajout_note(
         int $id, EvaluationRepository $evaluationRepository, Request $request,
         NoteRepository $noteRepository,
@@ -38,21 +62,27 @@ final class NoteController extends AbstractController
 
         //dd($notes);
 
-        $form = $this->createForm(AjoutNoteType::class, $notes);
+        $form = $this->createForm(AjoutNoteType::class, ['notes' => $notes]);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($notes as $note) {
-                $note->setEtudiant($evaluation->getEtudiant());
+            $formData = $form->getData();
+            foreach ($formData['notes'] as $note) {
                 $entityManager->persist($note);
-                $entityManager->flush();
             }
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Les notes ont été enregistrées avec succès.');
+
+            return $this->redirectToRoute('app_note', ['id' => $id]);
 
         }
 
         return $this->render('note/index.html.twig', [
             'evaluation' => $evaluation,
             'notes' => $notes,
-            'form_ajout_note' => $form->createView(),
+            'form_ajout_note' => $form,
         ]);
 }
+
 }
