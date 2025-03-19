@@ -1,0 +1,43 @@
+h3{
+  color: $couleurBouton;
+}
+
+#groupes_grid{
+  width: 100%;
+  //display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2vh;
+  .groupe_grid{
+    //background-color: lightcoral;
+    border-radius: 12px;
+    border: 1px solid #D9D9D9;
+    padding: 1vh;
+    height: fit-content;
+    background-color: $couleurNeutre;
+
+    .eleve_grid{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1vh;
+      .élève_groupe{
+        display: flex;
+        gap: 1vh;
+        border: 1px solid #D9D9D9;
+        border-radius: 8px;
+        width: fit-content;
+        padding: 0 1vh;
+
+      }
+    }
+  .bouton_groupe{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1vh;
+  }
+
+
+  }
+}
