@@ -23,6 +23,10 @@
       display: grid;
       grid-row: 1/2;
       grid-column: 2/3;
+      span{
+        font-style: italic;
+      }
+
     }
     .statutnoteDetails{
       div{
@@ -31,5 +35,33 @@
         }
       }
     }
+  }
+
+  .noteEleve{
+    display: grid;
+    grid-column: 1/2;
+    grid-row: 2/3;
+    margin: 3rem 0;
+    width: 80%;
+    .row{
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .statsNoteDetails{
+    display: grid;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    margin: 3rem 0;
+    width: 80%;
+  }
+
+  a{
+    display: grid;
+    grid-column: 1/2;
+    grid-row: 3/4;
+    width: 25%;
+    justify-content: flex-end;
   }
 }

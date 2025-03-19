@@ -19,7 +19,7 @@ class CritereRepository extends ServiceEntityRepository
     public function findCriteresByGrille(int $id)
     {
         return $this->createQueryBuilder('c')
-            ->where('c.grille = :id') // Filtrer par la clé étrangère grille_id
+            ->where('c.Grille = :id') // Filtrer par la clé étrangère grille_id
             ->setParameter('id', $id)
             ->getQuery()
             ->getResult();

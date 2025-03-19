@@ -14,11 +14,11 @@
         {% if details is not empty %}
         {% for detail in details %}
             <div class="commentaireNoteDetails">
-                <p>Commentaire : {{ detail.commentaire }}</p>
+                <p>Commentaire : <span>{{ detail.commentaire }}</span> </p>
             </div>
         {% endfor %}
         </div>
-        <div>
+        <div class="noteEleve">
             {% for detail in details %}
                 {% if detail.note < 8 %}
                     <div class="row">
@@ -38,6 +38,16 @@
 
                 {% endif %}
             {% endfor %}
+            <div class="criteresNoteDetails">
+                <div class="row">
+                    <p>Critère blabla</p>
+                    <p>note</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="statsNoteDetails">
+            <p>test</p>
         </div>
 
         <a href="{{ path ('app_reclamation_etudiant') }}" class="bouton">Faire une réclamation</a>

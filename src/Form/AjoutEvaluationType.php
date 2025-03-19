@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 class AjoutEvaluationType extends AbstractType
 {
@@ -19,7 +22,22 @@ class AjoutEvaluationType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'Nom',
-                'attr' => ['placeholder' => 'Entrez le nom de l\'évaluation']
+                'attr' => [
+                    'placeholder' => 'Entrez le nom de l\'évaluation.'
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir le nom de l\'évaluation.',
+                    ]),
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'Veuillez saisir au minimum {{ limit }} caractères.',
+                        'max' => 255,
+                        'maxMessage' => 'Veuillez saisir au maximum {{ limit }} caractères.',
+
+                    ]),
+                ]
+
             ])
 
             ->add('date', null, [
@@ -29,7 +47,17 @@ class AjoutEvaluationType extends AbstractType
 
             ->add('coef', null, [
                 'label' => 'Coefficient',  // label
-                'attr' => ['placeholder' => 'Coefficiant']
+                'attr' => ['placeholder' => 'Coefficiant'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir le coefficiant de l\'évaluation.',
+                    ]),
+                    new Range([
+                        'min' => 1,
+                        'max' => 20,
+                        'notInRangeMessage' => 'Le coefficient doit être compris entre {{ min }} et {{ max }}.',
+                    ]),
+                ]
             ])
 
             ->add('statut', ChoiceType::class, [

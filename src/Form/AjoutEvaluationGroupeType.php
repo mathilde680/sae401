@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 class AjoutEvaluationGroupeType extends AbstractType
 {
@@ -21,6 +24,13 @@ class AjoutEvaluationGroupeType extends AbstractType
                 'label' => 'Nombre maximum d\'étudiants par groupe',
                 'attr' => [
                     'min' => 1
+                ],
+                'constraints' => [
+                    new Range([
+                        'min' => 1,
+                        'max' => 255,
+                        'notInRangeMessage' => 'Le nombre d\'étudiants par groupe doit être compris entre {{ min }} et {{ max }}',
+                    ]),
                 ]
             ])
             ->add('type_groupe', ChoiceType::class, [

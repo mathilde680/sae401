@@ -9,8 +9,13 @@
 
             {{ form_start(form_evaluation) }}
                 {{ form_row(form_evaluation.formation_groupe) }}
+                <div class="alert">{{ form_errors(form_evaluation.formation_groupe) }}</div>
+
                 {{ form_row(form_evaluation.type_groupe) }}
+                <div class="alert">{{ form_errors(form_evaluation.type_groupe) }}</div>
+
                 {{ form_row(form_evaluation.taille_max_groupe) }}
+                <div class="alert">{{ form_errors(form_evaluation.taille_max_groupe) }}</div>
                 <!--<button class="btn bouton" type="submit">Ajouter</button>-->
 
             <div class="duo">

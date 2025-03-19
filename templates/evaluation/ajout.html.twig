@@ -9,14 +9,37 @@
         {% block form %}
             {{ form_start(form_evaluation) }}
 
-                <div class="nom">{{ form_row(form_evaluation.nom) }}</div>
+                <div class="nom">
+                    {{ form_label(form_evaluation.nom) }}
+                    {{ form_widget(form_evaluation.nom) }}
+                    <div class="alert">{{ form_errors(form_evaluation.nom) }}</div>
+                </div>
+
                 <div class="duo">
-                    <div class="statut">{{ form_row(form_evaluation.statut) }} </div>
-                    <div class="statut_groupe">{{ form_row(form_evaluation.statut_groupe) }} </div>
+                    <div class="statut">
+                        {{ form_label(form_evaluation.statut) }}
+                        {{ form_widget(form_evaluation.statut) }}
+                        <div class="alert">{{ form_errors(form_evaluation.statut) }}</div>
+                    </div>
+                    <div class="statut_groupe">
+                        {{ form_label(form_evaluation.statut_groupe) }}
+                        {{ form_widget(form_evaluation.statut_groupe) }}
+                        <div class="alert">{{ form_errors(form_evaluation.statut_groupe) }}</div>
+                    </div>
+
                 </div>
                 <div class="duo">
-                    <div class="coef">{{ form_row(form_evaluation.coef) }}</div>
-                    <div class="date">{{ form_row(form_evaluation.date) }}</div>
+                    <div class="coef">
+                        {{ form_label(form_evaluation.coef) }}
+                        {{ form_widget(form_evaluation.coef) }}
+                        <div class="alert">{{ form_errors(form_evaluation.coef) }}</div>
+                    </div>
+
+                    <div class="date">
+                        {{ form_label(form_evaluation.date) }}
+                        {{ form_widget(form_evaluation.date) }}
+                        <div class="alert">{{ form_errors(form_evaluation.date) }}</div>
+                    </div>
                 </div>
 
             <div class="duo duo_bouton">

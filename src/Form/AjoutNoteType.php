@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Range;
 
 class AjoutNoteType extends AbstractType
 {
@@ -22,6 +23,14 @@ class AjoutNoteType extends AbstractType
                 'allow_add' => false,
                 'allow_delete' => false,
                 'by_reference' => false,
+                'constraints' => [
+                    new Range([
+                        'min' => 1,
+                        'max' => 20,
+                        'notInRangeMessage' => 'La note doit être comprise entre {{ min }} et {{ max }}.',
+                    ]),
+                ]
+
             ]);
 
         ;
