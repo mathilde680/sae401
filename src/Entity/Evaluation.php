@@ -61,7 +61,7 @@ class Evaluation
     /**
      * @var Collection<int, FicheGrille>
      */
-    #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'evaluation')]
+    #[ORM\OneToMany(targetEntity: FicheGrille::class, mappedBy: 'Evaluation')]
     private Collection $Fiche_grille;
 
     #[ORM\ManyToOne(inversedBy: 'Evaluation')]
@@ -73,13 +73,13 @@ class Evaluation
     /**
      * @var Collection<int, Note>
      */
-    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'evaluation')]
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'Evaluation')]
     private Collection $Note;
 
     /**
      * @var Collection<int, Groupe>
      */
-    #[ORM\OneToMany(targetEntity: Groupe::class, mappedBy: 'evaluation')]
+    #[ORM\OneToMany(targetEntity: Groupe::class, mappedBy: 'Evaluation')]
     private Collection $Groupe;
 
     #[ORM\Column(length: 10, nullable: true)]
@@ -212,7 +212,6 @@ class Evaluation
 
     public function setMatiere(?Matiere $matiere): static
     {
-        $this->matiere = $matiere;
         $this->matiere = $matiere;
         return $this;
     }

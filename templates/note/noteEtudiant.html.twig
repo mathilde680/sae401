@@ -4,15 +4,30 @@
 
 {% block main %}
     <h1>Mes Notes</h1>
-    {% for note in notes %}
+
+    {% for matiere in matieres %}
         <div class="noteBox">
-            <h2>{{ note.evaluation.matiere.nom }}</h2>
-            <p>Évaluation : {{ note.evaluation.nom }}</p>
-            <p>Note : {{ note.note }}</p>
-            <p>Commentaire : {{ note.commentaire }}</p>
+            <h2>{{ matiere.nom }}</h2>
+            {% for evaluation in matiere.Evaluation %}
+                <p>Évaluation : {{ evaluation.nom }}</p>
+                {% if evaluation.notes is not empty %}
+                    {% for note in evaluation.notes %}
+                        {% if note.note < 8 %}
+                            <p class="note rouge">{{ note.note }}</p>
+                        {% elseif note.note > 10 %}
+                            <p class="note vert">{{ note.note }}</p>
+                        {% else %}
+                            <p class="note orange">{{ note.note }}</p>
+                        {% endif %}
+                        <p>Commentaire : {{ note.commentaire }}</p>
+                    {% endfor %}
+                {% else %}
+                    <p>{{ evaluation.statut }}</p>
+                {% endif %}
+            {% endfor %}
         </div>
-    {% else %}
-        <p>Aucune note disponible.</p>
     {% endfor %}
 {% endblock %}
+
+
 

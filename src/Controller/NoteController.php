@@ -6,6 +6,7 @@ use App\Entity\Evaluation;
 use App\Entity\Note;
 use App\Form\AjoutNoteType;
 use App\Repository\EvaluationRepository;
+use App\Repository\MatiereRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,14 +17,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class NoteController extends AbstractController
 {
     #[Route('/note', name: 'app_note_etudiant')]
-    public function notes(NoteRepository $noteRepository): Response
+    public function notes(NoteRepository $noteRepository, MatiereRepository $matiereRepository): Response
     {
         $user = $this->getUser();
 
-        $notes = $noteRepository->findAllEvaluationByEtudiant($user);
+        $matieres = $matiereRepository->findMatiereAndNoteByEtudiant($user);
 
         return $this->render('note/noteEtudiant.html.twig', [
-            'notes' => $notes,
+            'matieres' => $matieres,
         ]);
     }
 

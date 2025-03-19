@@ -21,20 +21,20 @@ class Matiere
     /**
      * @var Collection<int, Evaluation>
      */
-    #[ORM\OneToMany(targetEntity: Evaluation::class, mappedBy: 'Matiere')]
-    private Collection $evaluations;
+//    #[ORM\OneToMany(targetEntity: Evaluation::class, mappedBy: 'Matiere')]
+//    private Collection $evaluations;
 
     /**
      * @var Collection<int, FicheMatiere>
      */
-    #[ORM\OneToMany(targetEntity: FicheMatiere::class, mappedBy: 'Matiere')]
-    private Collection $ficheMatieres;
+//    #[ORM\OneToMany(targetEntity: FicheMatiere::class, mappedBy: 'Matiere')]
+//    private Collection $ficheMatieres;
 
     /**
      * @var Collection<int, FicheCours>
      */
-    #[ORM\OneToMany(targetEntity: FicheCours::class, mappedBy: 'Matiere')]
-    private Collection $ficheCours;
+//    #[ORM\OneToMany(targetEntity: FicheCours::class, mappedBy: 'Matiere')]
+//    private Collection $ficheCours;
 
     /**
      * @var Collection<int, FicheCours>

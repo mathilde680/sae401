@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Etudiant;
 use App\Entity\Matiere;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,6 +24,59 @@ class MatiereRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findMatiereByEtudiant(Etudiant $user)
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.semestre = :semestre')  // On filtre les matières par le même semestre que l'étudiant
+            ->setParameter('semestre', $user->getSemestre())
+            ->orderBy('m.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findMatiereBySemestre(Etudiant $user)
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.semestre = :semestre')
+            ->setParameter('semestre', $user->getSemestre())
+            ->orderBy('m.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findMatiereAndNoteByEtudiant(Etudiant $user)
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.Evaluation', 'e') // Joindre les évaluations
+            ->leftJoin('e.notes', 'n') // Joindre les notes
+            ->addSelect('e', 'n') // Sélectionner les évaluations et notes
+            ->where('m.semestre = :semestre')
+            ->setParameter('semestre', $user->getSemestre())
+            ->andWhere('n.Etudiant = :etudiant OR n.id IS NULL') // Inclure les matières sans notes
+            ->setParameter('etudiant', $user->getId())
+            ->orderBy('m.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+//    public function findAllEvaluationByEtudiant($user)
+//    {
+//        return $this->createQueryBuilder('n')
+//            ->join('n.Evaluation', 'e')
+//
+//            ->join('e.matiere', 'm')
+//
+//            ->addSelect('e', 'm')
+//
+//            ->where('n.Etudiant = :user')
+//            ->setParameter('user', $user)
+//
+//            ->getQuery()
+//            ->getResult();
+//    }
 
 
     //    /**

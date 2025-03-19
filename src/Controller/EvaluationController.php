@@ -232,7 +232,7 @@ final class EvaluationController extends AbstractController
         }
 
         //affiche le formulaire
-        return $this->render('evaluation/ajout.html.twig', [
+        return $this->render('evaluation/modif.html.twig', [
             'form_evaluation' => $form->createView(),
             'id' => $id,
             'evaluation' => $form->getData(),
