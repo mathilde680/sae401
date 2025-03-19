@@ -25,6 +25,23 @@ class NoteRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllEvaluationByEtudiant($user)
+    {
+        return $this->createQueryBuilder('n')
+            ->join('n.Evaluation', 'e')
+
+            ->join('e.matiere', 'm')
+
+            ->addSelect('e', 'm')
+
+            ->where('n.Etudiant = :user')
+            ->setParameter('user', $user)
+
+            ->getQuery()
+            ->getResult();
+    }
+
+
     public function findNoteByMin($id)
     {
         return $this->createQueryBuilder('n')

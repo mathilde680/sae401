@@ -27,7 +27,7 @@
                     <td>{{ critere.nom }}</td>
                     <td>{{ critere.note }}</td>
                     <td>{{ critere.commentaire }}</td>
-                    <td><a href="#">Modifier</a></td>
+                    <td><a href="{{ path ('app_grille_modif', {'id': grille.id}) }}">Modifier</a></td>
                 </tr>
             {% endfor %}
             </tbody>

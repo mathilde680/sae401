@@ -15,6 +15,19 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class NoteController extends AbstractController
 {
+    #[Route('/note', name: 'app_note_etudiant')]
+    public function notes(NoteRepository $noteRepository): Response
+    {
+        $user = $this->getUser();
+
+        $notes = $noteRepository->findAllEvaluationByEtudiant($user);
+
+        return $this->render('note/noteEtudiant.html.twig', [
+            'notes' => $notes,
+        ]);
+    }
+
+
     #[Route('/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
     public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository): Response
     {
@@ -74,7 +87,7 @@ final class NoteController extends AbstractController
 
             $this->addFlash('success', 'Les notes ont été enregistrées avec succès.');
 
-            return $this->redirectToRoute('app_note', ['id' => $id]);
+            return $this->redirectToRoute('app_fiche_evaluation', ['id' => $evaluation->getId()]);
 
         }
 

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notes{% endblock %}
+
+{% block main %}
+    <h1>Mes Notes</h1>
+    {% for note in notes %}
+        <div class="noteBox">
+            <h2>{{ note.evaluation.matiere.nom }}</h2>
+            <p>Évaluation : {{ note.evaluation.nom }}</p>
+            <p>Note : {{ note.note }}</p>
+            <p>Commentaire : {{ note.commentaire }}</p>
+        </div>
+    {% else %}
+        <p>Aucune note disponible.</p>
+    {% endfor %}
+{% endblock %}
+
