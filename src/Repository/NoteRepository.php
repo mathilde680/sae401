@@ -71,6 +71,21 @@ class NoteRepository extends ServiceEntityRepository
         return round($result, 2);
     }
 
+    public function findNoteByEtudiantMatiere($etudiantId, $matiereId)
+    {
+        $result = $this->createQueryBuilder('n')
+            ->select('AVG(n.note) as moyenne')
+            ->join('n.Evaluation', 'e')  // Join avec la table Evaluation
+            ->where('e.Matiere = :matiereId')  // Filtrer par matière
+            ->andWhere('n.Etudiant = :etudiantId')  // Filtrer par étudiant
+            ->setParameter('matiereId', $matiereId)
+            ->setParameter('etudiantId', $etudiantId)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return round($result, 2);
+    }
+
     //    /**
     //     * @return Note[] Returns an array of Note objects
     //     */

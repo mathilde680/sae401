@@ -16,6 +16,13 @@
     h3{
       color: $couleurTexte;
     }
+
+    .moyenne_eleve{
+      background-color: $couleurGrisClair;
+      padding: 1vh;
+      border-radius: 6px;
+      font-size: 10pt;
+    }
   }
 
   .notes_matiere{
