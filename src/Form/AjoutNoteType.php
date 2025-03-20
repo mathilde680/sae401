@@ -23,16 +23,7 @@ class AjoutNoteType extends AbstractType
                 'allow_add' => false,
                 'allow_delete' => false,
                 'by_reference' => false,
-                'constraints' => [
-                    new Range([
-                        'min' => 1,
-                        'max' => 20,
-                        'notInRangeMessage' => 'La note doit être comprise entre {{ min }} et {{ max }}.',
-                    ]),
-                ]
-
             ]);
-
         ;
     }
 

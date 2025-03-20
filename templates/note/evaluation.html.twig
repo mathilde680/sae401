@@ -42,7 +42,29 @@
                 </div>
             {% endfor %}
         {% else %}
-            {% for groupe in groupes %}
+            {% for note in notes %}
+                <div id="note_eleve">
+                    <p class="nom">{{ note.etudiant.nom }}</p>
+                    <p class="prenom">{{ note.etudiant.prenom }}</p>
+                    {% if note.note is defined and note.note is not null %}
+                        {% if note.note < 8 %}
+                            <p class="note rouge">{{ note.note }}</p>
+                        {% elseif note.note > 10 %}
+                            <p class="note vert">{{ note.note }}</p>
+                        {% else %}
+                            <p class="note orange">{{ note.note }}</p>
+                        {% endif %}
+                    {% else %}
+                        <p class="note non_note">Pas de note</p>
+                    {% endif %}
+                    {% if note.commentaire is defined and note.commentaire is not null %}
+                        <p class="commentaire">{{ note.commentaire }}</p>
+                    {% else %}
+                        <p class="commentaire">Pas de commentaire</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {#{% for groupe in groupes %}
                 <p>{{ groupe.nom }} --- {{ groupe.taille }} personnes</p>
                 {% for fiche_groupe in groupe.ficheGroupes %}
                     <div class="élève_groupe">
@@ -50,7 +72,7 @@
                         <p>{{ fiche_groupe.etudiant.nom }}</p>
                     </div>
                 {% endfor %}
-            {% endfor %}
+            {% endfor %}#}
         {% endif %}
     </div>
 

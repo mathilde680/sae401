@@ -206,7 +206,7 @@ final class EvaluationController extends AbstractController
             }
 
             $entityManager->persist($evaluation);
-            //$entityManager->flush();
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_evaluation_grille_ajout', ['id' => $id]);
         }

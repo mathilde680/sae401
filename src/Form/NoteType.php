@@ -33,15 +33,11 @@ class NoteType extends AbstractType
                 'attr' => ['class' => 'input_commentaire'],
                 'row_attr' => ['class' => 'commentaire-wrapper'],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir un commentaire',
-                    ]),
                     new Length([
                         'min' => 2,
                         'minMessage' => 'Veuillez saisir au minimum {{ limit }} caractères',
                         'max' => 600,
                         'maxMessage' => 'Veuillez saisir au maximum {{ limit }} caractères',
-
                     ]),
                 ]
             ]);

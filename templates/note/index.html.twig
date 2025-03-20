@@ -26,7 +26,22 @@
                     </div>
                 {% endfor %}
             {% else %}
-                {% for groupe in groupes %}
+
+                {% for note_form in form_ajout_note.notes %}
+                    <div id="note_eleve">
+                        {% set note_vars = note_form.vars %}
+                        {% set note = note_vars.data %}
+                        <div class="note-entry">
+                            <p class="nom">{{ note.etudiant.nom }}</p>
+                            <p class="prenom">{{ note.etudiant.prenom }}</p>
+                            <p class="note">{{ form_row(note_form.note) }}</p>
+                            <div class="commentaire_note">
+                                <p class="commentaire">{{ form_row(note_form.commentaire) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {#{% for groupe in groupes %}
                     <div class="groupe-container">
                         <h3>{{ groupe.nom }} ({{ groupe.taille }} personne{{ groupe.taille > 1 ? 's' : '' }})</h3>
 
@@ -38,7 +53,7 @@
                         </div>
 
                     </div>
-                {% endfor %}
+                {% endfor %}#}
             {% endif %}
         </div>
 

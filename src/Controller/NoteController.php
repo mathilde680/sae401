@@ -92,16 +92,22 @@ final class NoteController extends AbstractController
             return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
         });
 
-        //dd($notes);
-
         $form = $this->createForm(AjoutNoteType::class, ['notes' => $notes]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
+            dump($formData);
+
             foreach ($formData['notes'] as $note) {
-                $entityManager->persist($note);
+                // Vérifiez que $note est bien une instance de Note
+                if ($note instanceof Note) {
+                    // Assurez-vous que la note est liée à l'évaluation
+                    $note->setEvaluation($evaluation);
+                    $entityManager->persist($note);
+                }
             }
+
             $entityManager->flush();
 
             $this->addFlash('success', 'Les notes ont été enregistrées avec succès.');
