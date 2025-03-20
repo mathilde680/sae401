@@ -60,16 +60,16 @@ class AjoutEvaluationType extends AbstractType
                 ]
             ])
 
-            ->add('statut', ChoiceType::class, [
-                'label' => 'Statut',
-                'choices'  => [
-                    'Enregistrée' => 'Enregistrée',
-                    'Publiée' => 'Publiée',
-                    'En cours' => 'En_cours',
-                ],
-                'expanded' => false, // false = liste déroulante, true = boutons radio
-                'multiple' => false, // false = choix unique, true = sélection multiple
-            ])
+//            ->add('statut', ChoiceType::class, [
+//                'label' => 'Statut',
+//                'choices'  => [
+//                    'Enregistrée' => 'Enregistrée',
+//                    'Publiée' => 'Publiée',
+//                    'En cours' => 'En_cours',
+//                ],
+//                'expanded' => false, // false = liste déroulante, true = boutons radio
+//                'multiple' => false, // false = choix unique, true = sélection multiple
+//            ])
 
             ->add('statut_groupe', ChoiceType::class, [
                 'label' => 'L\'évaluation est par',

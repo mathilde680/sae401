@@ -22,7 +22,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
                                 </svg>
                                 <a title="Afficher l'évaluation" class="eval_nom" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{ evaluation.nom }}</a>
-                                <!--<p class="eval_statut">{{ evaluation.statut }}</p>-->
+                                <!--<p class="eval_statutaa">{{ evaluation.statut }}</p>-->
                                 {% if evaluation.date|date('Y-m-d') < "now"|date('Y-m-d') %}
                                     {% if evaluation.note is not empty and evaluation.note != null %}
                                         <a title="Afficher l'évaluation" class="eval_statut note vert" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">Publiée</a>
@@ -58,15 +58,15 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
                                     </svg>
                                     <a title="Afficher l'évaluation" class="eval_nom" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{ evaluation.nom }}</a>
-                                    <!--<p class="eval_statut">{{ evaluation.statut }}</p>-->
+                                    <!--<p class="eval_statutbb">{{ evaluation.statut }}</p>-->
                                     {% if evaluation.date|date('Y-m-d') < "now"|date('Y-m-d') %}
                                         {% if evaluation.note is not empty and evaluation.note != null %}
-                                            <a title="Afficher l'évaluation" class="eval_statut note vert" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">Publiée</a>
+                                            <a title="Afficher l'évaluation" class="eval_statut note vert" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{evaluation.statut}}</a>
                                         {% else %}
-                                            <a title="Afficher l'évaluation" class="eval_statut note rouge" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">À corriger</a>
+                                            <a title="Afficher l'évaluation" class="eval_statut note rouge" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{evaluation.statut}}</a>
                                         {% endif %}
                                     {% elseif evaluation.date|date('Y-m-d') > "now"|date('Y-m-d') %}
-                                        <a title="Afficher l'évaluation" class="eval_statut note orange" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">À venir</a>
+                                        <a title="Afficher l'évaluation" class="eval_statut note orange" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{evaluation.statut}}</a>
                                     {% endif %}
                                 </div>
                             {% endfor %}
@@ -94,15 +94,18 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
                                     </svg>
                                     <a title="Afficher l'évaluation" class="eval_nom" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{ evaluation.nom }}</a>
-                                    <!--<p class="eval_statut">{{ evaluation.statut }}</p>-->
+                                    <!--<p class="eval_statutcc">{{ evaluation.statut }}</p>-->
                                     {% if evaluation.date|date('Y-m-d') < "now"|date('Y-m-d') %}
                                         {% if evaluation.note is not empty and evaluation.note != null %}
-                                            <a title="Afficher l'évaluation" class="eval_statut note vert" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">Publiée</a>
+                                            <!---Publiée--->
+                                            <a title="Afficher l'évaluation" class="eval_statut note vert" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{evaluation.statut}}</a>
                                         {% else %}
-                                            <a title="Afficher l'évaluation" class="eval_statut note rouge" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">À corriger</a>
+                                            <!---À corriger--->
+                                            <a title="Afficher l'évaluation" class="eval_statut note rouge" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{evaluation.statut}}</a>
                                         {% endif %}
                                     {% elseif evaluation.date|date('Y-m-d') > "now"|date('Y-m-d') %}
-                                        <a title="Afficher l'évaluation" class="eval_statut note orange" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">À venir</a>
+                                        <!----À venir--->
+                                        <a title="Afficher l'évaluation" class="eval_statut note orange" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{evaluation.statut}}</a>
                                     {% endif %}
                                 </div>
                             {% endfor %}

@@ -52,6 +52,21 @@ final class EvaluationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // Gestion du statut en fonction de la date
+            $currentDate = new \DateTime(); // Date actuelle
+            $evaluationDate = $evaluation->getDate(); // Date de l'évaluation
+
+            if ($evaluationDate > $currentDate) {
+                // Si éval est à venir
+                $evaluation->setStatut('À venir');
+            } elseif ($evaluationDate < $currentDate && $evaluation->getNotes()->isEmpty()) {
+                // Si éval est déjà passée et il n'y a pas encore de notes
+                $evaluation->setStatut('En correction');
+            } elseif ($evaluationDate < $currentDate && !$evaluation->getNotes()->isEmpty()) {
+                // Si éval est déjà passée et qu'il y a des notes
+                $evaluation->setStatut('Noté');
+            }
+
             if ($form->get('statut_groupe')->getData() === 'Groupe') {
                 // Stocker les données dans la session toute l'eval
                 $session->set('evaluation_data', $form->getData());
@@ -345,6 +360,21 @@ final class EvaluationController extends AbstractController
 
         // Vérifier si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Gestion du statut en fonction de la date
+            $currentDate = new \DateTime(); // Date actuelle
+            $evaluationDate = $evaluation->getDate(); // Date de l'évaluation
+
+            if ($evaluationDate > $currentDate) {
+                // Si éval est à venir
+                $evaluation->setStatut('À venir');
+            } elseif ($evaluationDate < $currentDate && $evaluation->getNotes()->isEmpty()) {
+                // Si éval est déjà passée et il n'y a pas encore de notes
+                $evaluation->setStatut('En correction');
+            } elseif ($evaluationDate < $currentDate && !$evaluation->getNotes()->isEmpty()) {
+                // Si éval est déjà passée et qu'il y a des notes
+                $evaluation->setStatut('Noté');
+            }
 
             // Persister et enregistrer les modifications dans la base de données
             $entityManager->persist($evaluation);
