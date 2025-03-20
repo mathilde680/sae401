@@ -108,20 +108,15 @@ final class NoteController extends AbstractController
 
             if ($evaluation->getStatutGroupe() == "Groupe") {
                 $notesByGroupeId = [];
-
                 foreach ($formData['notes'] as $note) {
                     $etudiant = $note->getEtudiant();
-
                 }
-
             }else{
-
-            }
-            foreach ($formData['notes'] as $note) {
-                $entityManager->persist($note);
+                foreach ($formData['notes'] as $note) {
+                    $entityManager->persist($note);
+                }
             }
             $entityManager->flush();
-
             $this->addFlash('success', 'Les notes ont été enregistrées avec succès.');
 
             return $this->redirectToRoute('app_fiche_evaluation', ['id' => $evaluation->getId()]);

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'une grille{% endblock %}
+
+{% block main %}
+    <div class="box">
+        <h1>Quelles grilles d'évaluation souhaitez-vous mettre en place ?</h1>
+        <div class="boxGrille">
+            {# <a href="{{ path('app_grille_ajout') }}" class="create-new">Créer une nouvelle grille</a> #}
+            {% for grille in grilles %}
+                <a href="#" class="grille-link"
+                   data-id="{{ grille.id }}"
+                   data-nom="{{ grille.nom }}"
+                   data-criteres="{{ grille.criteres|map(c => {
+                       'id': c.id,
+                       'nom': c.nom,
+                       'note': c.note,
+                       'commentaire': c.commentaire
+                   })|json_encode|e('html_attr') }}"
+                >{{ grille.nom }}</a>
+
+            {% endfor %}
+        </div>
+        {{ form_start(form_evaluation) }}
+            {{ form_row(form_evaluation) }}
+        <button class="btn bouton">
+            {{ button_label|default('Ajouter') }}
+            <svg width="15" height="8" viewBox="0 0 20 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.25 1.25L19 5M19 5L15.25 8.75M19 5H1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        {{ form_end(form_evaluation) }}
+
+        <div class="overlay" id="modalOverlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">Grille : TP NOTÉ SYMFONY</h2>
+                    <button class="close-button">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="evaluation-item">
+                        <div class="evaluation-header">
+                            <p class="evaluation-label">Cohérence du code</p>
+                            <p class="evaluation-score">/5</p>
+                        </div>
+                        <p>commentaire</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteForm" method="POST" action="">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete') }}">
+                        <button type="submit" id="delete-button" class="delete-button">Supprimer</button>
+                    </form>
+
+                    <a href="" id="useGrilleUtiliser" class="bouton">Utiliser</a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

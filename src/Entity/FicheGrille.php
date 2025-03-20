@@ -16,7 +16,7 @@ class FicheGrille
     #[ORM\ManyToOne(inversedBy: 'ficheGrilles')]
     private ?Grille $Grille = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ficheGrilles')]
+    #[ORM\ManyToOne(inversedBy: 'ficheGrilles', cascade: ['persist'])]
     private ?Evaluation $Evaluation = null;
 
     #[ORM\ManyToOne(inversedBy: 'ficheGrilles')]

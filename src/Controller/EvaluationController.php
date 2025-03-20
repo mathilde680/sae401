@@ -3,17 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\Evaluation;
+use App\Entity\FicheGrille;
 use App\Entity\Groupe;
 use App\Entity\Matiere;
 use App\Entity\Note;
 use App\Form\AjoutEvaluationGroupeType;
 use App\Form\AjoutEvaluationType;
 use App\Form\FicheMatiereType;
+use App\Form\GrilleType;
 use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
+use App\Repository\FicheGrilleRepository;
+use App\Repository\GrilleRepository;
 use App\Repository\GroupeRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\NoteRepository;
+use App\Repository\ProfesseurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,7 +56,6 @@ final class EvaluationController extends AbstractController
                 $session->set('evaluation_data', $form->getData());
                 return $this->redirectToRoute('app_evaluation_groupe_ajout', ['id' => $id]);
             } else {
-
                 // Création des étudiants selon le semestre et la matière
                 foreach ($etudiants as $etudiant) {
                     $note = new Note();
@@ -60,13 +64,12 @@ final class EvaluationController extends AbstractController
                     $entityManager->persist($note);
                     // dd($note);
                 }
-
+                $session->set('evaluation_data', $form->getData());
                 // Envoie à la bdd
                 $entityManager->persist($evaluation);
-                $entityManager->flush();
-                // Vide la session
-                $session->remove('evaluation_data');
-                return $this->redirectToRoute('app_fiche_matiere', ['id' => $id]);
+                //$entityManager->flush();
+
+                return $this->redirectToRoute('app_evaluation_grille_ajout', ['id' => $id]);
             }
         }
 
@@ -168,9 +171,9 @@ final class EvaluationController extends AbstractController
             }
 
             $entityManager->persist($evaluation);
-            $entityManager->flush();
-            $session->remove('evaluation_data');
-            return $this->redirectToRoute('app_fiche_matiere', ['id' => $id]);
+            //$entityManager->flush();
+
+            return $this->redirectToRoute('app_evaluation_grille_ajout', ['id' => $id]);
         }
 
         return $this->render('evaluation/ajoutGroupe.html.twig', [
@@ -179,9 +182,72 @@ final class EvaluationController extends AbstractController
         ]);
     }
 
+    #[Route('/evaluation/ajout/grille/{id}', name: 'app_evaluation_grille_ajout')]
+    public function ajout_grille_evaluation(int $id, Request $request, GrilleRepository $grilleRepository, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, EtudiantRepository $etudiantRepository, EvaluationRepository $evaluationRepository, ProfesseurRepository $professeurRepository,  SessionInterface $session): Response
+    {
+        // Recupere id prof
+        $user = $this->getUser();
+        $profId = $user->getId();
+
+        // Recupere la matiére
+        $matiere = $matiereRepository->find($id);
+
+        // Recupere les etudiants
+        $etudiants = $etudiantRepository->findEtudiantsByMatiereId($id);
+
+        // Recupere les grilles du profs
+        $grilleProf = $grilleRepository->findAllByProfesseur($profId);
+
+        // Récupérer les données d'évaluation stockées dans la session
+        $evaluationData = $session->get('evaluation_data');
+
+        // Création d'une nouvelle évaluation
+        $evaluation = new Evaluation();
+        $evaluation->setMatiere($matiere);
+        $evaluation->setProfesseur($user);
+
+        // RECUPERER LES INFOS DANS LA SESSION
+        $evaluation->setNom($evaluationData->getNom());
+        $evaluation->setDate($evaluationData->getDate());
+        $evaluation->setCoef($evaluationData->getCoef());
+        $evaluation->setStatutGroupe($evaluationData->getStatutGroupe());
+        if ($evaluationData->getStatut() !== null) {
+            $evaluation->setStatut($evaluationData->getStatut());
+        } else {
+            $evaluation->setStatut('Publiée');
+        }
+
+        // pour chaque étudiant on instancie une nouvelle fiche relier à l'eval et à la grille
+        foreach ($etudiants as $etudiant) {
+            $ficheGrille = new FicheGrille();
+            $ficheGrille->setEtudiant($etudiant);
+            $ficheGrille->setEvaluation($evaluation);
+
+            $entityManager->persist($ficheGrille);
+        }
+
+        $form = $this->createForm(GrilleType::class, $ficheGrille, [
+            'grilles' =>$grilleProf,
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->flush();
+            // Vide la session
+            $session->remove('evaluation_data');
+            return $this->redirectToRoute('app_fiche_matiere', ['id' => $id]);
+        }
+
+        return $this->render('evaluation/formEvaluationGrille.html.twig', [
+            'form_evaluation' => $form->createView(),
+            'grilles' => $grilleProf,
+        ]);
+    }
+
     //pour supprimer une évaluation
     #[Route('/evaluation/{id}/supprime', name: 'app_evaluation_supprime', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function supprime_evaluation(int $id, EntityManagerInterface $entityManager, NoteRepository $noteRepository, GroupeRepository $groupeRepository): Response
+    public function supprime_evaluation(int $id, FicheGrilleRepository $ficheGrilleRepository, EntityManagerInterface $entityManager, NoteRepository $noteRepository, GroupeRepository $groupeRepository): Response
     {
         // Récupérer l'entité Evaluation existante
         $evaluation = $entityManager->getRepository(Evaluation::class)->find($id);
@@ -197,6 +263,13 @@ final class EvaluationController extends AbstractController
             $groupes = $groupeRepository->findBy(['evaluation' => $evaluation]);
             foreach ($groupes as $groupe) {
                 $entityManager->remove($groupe);
+            }
+
+            $ficheGrilles = $ficheGrilleRepository->findBy(['Evaluation' => $evaluation]);
+            if($ficheGrilles){
+                foreach ($ficheGrilles as $ficheGrille) {
+                    $entityManager->remove($ficheGrille);
+                }
             }
 
             // Supprimer l'évaluation

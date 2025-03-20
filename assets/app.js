@@ -31,6 +31,7 @@ try {
     const deleteForm = document.getElementById('deleteForm');
     const deleteButton = document.getElementById('delete-button');
     const useGrilleLink = document.getElementById('useGrilleLink');
+    const useGrilleUtiliser = document.getElementById('useGrilleUtiliser');
     const modalBody = document.querySelector('.modal-body');
 
 // Ajouter les événements sur tous les liens de grilles
@@ -47,15 +48,15 @@ try {
             // Mise à jour du titre de la modal
             modalTitle.textContent = 'Grille : ' + grilleName;
 
+            // Mise à jour du titre de la modal
             const deleteUrl = `/grille/${grilleId}/supprime`;
             deleteForm.action = deleteUrl;
 
-            useGrilleLink.href = `/grille/${grilleId}/modif`;
+            // Modifier du titre de la modal
+            useGrilleUtiliser.href = `/evaluation/ajout/grille/${grilleId}`;
 
-            // Mise à jour des actions de la modal
-            //deleteForm.action = "{{ path('app_grille_supprime', {'id': 'GRILLE_ID'}) }}".replace('GRILLE_ID', grilleId);
+            // Utiliser
 
-            //useGrilleLink.href = "{{ path('app_fiche_grille', {'id': 'GRILLE_ID'}) }}".replace('GRILLE_ID', grilleId);
 
             // Vider le contenu actuel de la modal
             modalBody.innerHTML = '';
