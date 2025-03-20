@@ -76,7 +76,7 @@ class Critere
 
     public function setGrille(?Grille $Grille): static
     {
-        $this->grille = $Grille;
+        $this->Grille = $Grille;
         return $this;
     }
 
