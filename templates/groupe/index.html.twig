@@ -26,18 +26,25 @@
                 {% endfor %}
             </div>
 
-            {% if groupeActuel and groupeActuel.id == groupe.id %}
-                <!--- L'étudiant est dans un groupe - COULEUR ROUGE  -->
-                <form method="post" class="quitter" action="{{ path('app_groupe_quitter', {'id': groupe.id}) }}" onsubmit="return confirm('Voulez-vous vraiment quitter ce groupe ?');">
-                    <button class="bouton bouton_groupe">Quitter</button>
-                </form>
-            {% elseif not groupeActuel %}
-                <!---L'étudiant veut rejoindre - COULEUR BLEUE  -->
-                <form method="post" class="rejoindre" action="{{ path('app_groupe_ajout', {'id': groupe.id}) }}" onsubmit="return confirm('Voulez-vous vraiment rejoindre ce groupe ?');">
-                    <button class="bouton bouton_groupe">Rejoindre</button>
-                </form>
+            {% if evaluation.formationGroupe == 'Choix' %}
+                {% if groupeActuel and groupeActuel.id == groupe.id %}
+                    <!--- L'étudiant est dans un groupe - COULEUR ROUGE  -->
+                    <form method="post" class="quitter" action="{{ path('app_groupe_quitter', {'id': groupe.id}) }}" onsubmit="return confirm('Voulez-vous vraiment quitter ce groupe ?');">
+                        <button class="bouton bouton_groupe">Quitter</button>
+                    </form>
+                {% elseif not groupeActuel %}
+                    <!---L'étudiant veut rejoindre - COULEUR BLEUE  -->
+                    <form method="post" class="rejoindre" action="{{ path('app_groupe_ajout', {'id': groupe.id}) }}" onsubmit="return confirm('Voulez-vous vraiment rejoindre ce groupe ?');">
+                        <button class="bouton bouton_groupe">Rejoindre</button>
+                    </form>
+                {% else %}
+                    <!---L'étudiant est dans un autre groupe - COULEUR GRIS / HOVER BLOQUER -->
+                    <div class="bloquer">
+                        <button class="bouton bouton_groupe" disabled title="Vous devez d'abord quitter votre groupe actuel">Rejoindre</button>
+                    </div>
+                {% endif %}
             {% else %}
-                <!---L'étudiant est dans un autre groupe - COULEUR GRIS / HOVER BLOQUER -->
+                <!---L'étudiant est dans un groupe et ne peux pas le quitter car groupe aleatoie - COULEUR GRIS / HOVER BLOQUER -->
                 <div class="bloquer">
                     <button class="bouton bouton_groupe" disabled title="Vous devez d'abord quitter votre groupe actuel">Rejoindre</button>
                 </div>
