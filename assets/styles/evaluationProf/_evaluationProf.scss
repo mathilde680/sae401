@@ -1,10 +1,22 @@
 #notes_evaluation {
-
+#titre_bouton_eval{
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  .bouton{
+    width: 20vh;
+    height: fit-content;
+    margin-top: 3vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 
   .header_notes {
     width: 100%;
     display: grid;
-    grid-template-columns: 20% 20% 15% 35% 10%;
+    grid-template-columns: 1fr 1fr 1fr 2fr;
     align-items: center;
     margin-bottom: 2%;
     font-weight: bold;
@@ -20,7 +32,7 @@
     height: 8vh;
     background-color: $couleurNeutre;
     display: grid;
-    grid-template-columns: 20% 20% 15% 35% 10%;
+    grid-template-columns: 1fr 1fr 1fr 2fr;
     align-items: center;
     margin: 1% 0;
     padding: 0.5%;
@@ -34,9 +46,7 @@
       text-overflow: ellipsis;
     }
 
-    .bouton {
-      justify-self: center;
-    }
+
 
     .note{
       width: 10%;

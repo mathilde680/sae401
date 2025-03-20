@@ -5,15 +5,18 @@
 {% block main %}
 
     <div id="notes_evaluation" class="div_blanche">
-        <h1>{{ evaluation.matiere.nom }}</h1>
-        <h2>{{ evaluation.nom }}</h2>
-        <a class="bouton" href="{{ path('app_note', {'id': evaluation.id}) }}">Évaluer</a>
+        <div id="titre_bouton_eval">
+            <div id="titre_evaluation">
+                <h1>{{ evaluation.matiere.nom }}</h1>
+                <h2>{{ evaluation.nom }}</h2>
+            </div>
+            <a class="bouton" href="{{ path('app_note', {'id': evaluation.id}) }}">Évaluer</a>
+        </div>
         <div class="header_notes">
             <p>Nom</p>
             <p>Prénom</p>
             <p>Note</p>
             <p>Commentaire</p>
-            <p>Action</p>
         </div>
         {% if evaluation.statutGroupe == "Individuel"  %}
             {% for note in notes %}
@@ -36,7 +39,6 @@
                             {% else %}
                                 <p class="commentaire">Pas de commentaire</p>
                         {% endif %}
-                    <button class="bouton">Modifier</button>
                 </div>
             {% endfor %}
         {% else %}

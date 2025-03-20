@@ -37,5 +37,31 @@ h3{
       align-items: center;
       margin-top: 1vh;
     }
+
+    .quitter{
+      .bouton_groupe{
+        background-color: $couleurAlerte;
+        border: $couleurAlerte;
+
+        &:hover{
+          background-color: $couleurAlerteHover;
+          border: $couleurAlerteHover;
+        }
+      }
+    }
+
+    .bloquer{
+      .bouton_groupe{
+        background-color: $couleurGris2;
+        border: $couleurGris2;
+        &:hover{
+          cursor: not-allowed;
+          background-color: $couleurGris;
+          border: $couleurGris2;
+        }
+      }
+    }
+
   }
+
 }

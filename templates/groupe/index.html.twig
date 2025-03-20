@@ -3,9 +3,9 @@
 {% block title %}Création groupe{% endblock %}
 
 {% block main %}
-
+<div class="div_blanche">
    <h1>Rejoindre un groupe</h1>
-    <h2>SAE 401</h2>
+    <h2>{{ evaluation.nom }}</h2>
     <div id="groupes_grid">
         {% for groupe in groupes %}
         <div class="groupe_grid">
@@ -99,4 +99,5 @@
 
 
     </div>
+</div>
 {% endblock %}
