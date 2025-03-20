@@ -9,6 +9,7 @@
       font-size: 17pt;
       color: $couleurBouton;
       font-weight: 700;
+
     }
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -16,29 +17,51 @@
     .ressources_carte{
       height: fit-content;
       padding: 2vh;
-      background-color: lightblue;
-      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
+
+      //background-color: lightblue;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
       border-radius: 12pt;
 
+
       .evaluation_box_nom{
+        padding: 2vh 0 2vh 5vh;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        padding-left: 5vh;
-        background-color: lightgreen;
+
+        //padding-left: 5vh;
+        //background-color: lightgreen;
         width: 80%;
 
         .eval_nom{
           width: 50%;
+          font-size: 12pt;
+          color: $couleurTexte;
+          font-weight: 400;
         }
 
         .eval_statut{
-          width: 30%;
+          width: 25%;
+          padding: 1vh 0.5vh;
+          font-size: 11pt;
+          font-weight: 400;
+          color: $couleurTexte;
         }
 
         svg{
           height: 3vh;
+        }
+      }
+
+      .pas_de_note{
+
+        p{
+          background-color: $couleurNoteRouge;
+          border-radius: 6px;
+          width: fit-content;
+          padding: 1vh;
         }
       }
     }

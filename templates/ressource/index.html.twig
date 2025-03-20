@@ -15,15 +15,30 @@
                         <a title="Afficher la ressource" href="{{ path('app_fiche_matiere', {'id': semestre.matiere.id}) }}">
                             {{ semestre.matiere.nom }}
                         </a>
+                        {% if semestre.matiere.evaluation is not empty %}
                         {% for evaluation in semestre.matiere.evaluation %}
                             <div class="evaluation_box_nom">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
                                 </svg>
-                                <a class="eval_nom" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{ evaluation.nom }}</a>
-                                <p class="eval_statut">{{ evaluation.statut }}</p>
+                                <a title="Afficher l'évaluation" class="eval_nom" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{ evaluation.nom }}</a>
+                                <!--<p class="eval_statut">{{ evaluation.statut }}</p>-->
+                                {% if evaluation.date|date('Y-m-d') < "now"|date('Y-m-d') %}
+                                    {% if evaluation.note is not empty and evaluation.note != null %}
+                                        <a title="Afficher l'évaluation" class="eval_statut note vert" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">Publiée</a>
+                                    {% else %}
+                                        <a title="Afficher l'évaluation" class="eval_statut note rouge" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">À corriger</a>
+                                    {% endif %}
+                                {% elseif evaluation.date|date('Y-m-d') > "now"|date('Y-m-d') %}
+                                    <a title="Afficher l'évaluation" class="eval_statut note orange" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">À venir</a>
+                                {% endif %}
                             </div>
                         {% endfor %}
+                        {% else %}
+                            <div class="evaluation_box_nom pas_de_note">
+                                <p>Pas d'évaluation enregistrée</p>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
@@ -36,12 +51,30 @@
                         <a title="Afficher la ressource" href="{{ path('app_fiche_matiere', {'id': semestre.matiere.id}) }}">
                             {{ semestre.matiere.nom }}
                         </a>
-                        {% for evaluation in semestre.matiere.evaluation %}
-                            <div class="evaluation_box_nom">
-                                <p>{{ evaluation.nom }}</p>
-                                <p>{{ evaluation.statut }}</p>
+                        {% if semestre.matiere.evaluation is not empty %}
+                            {% for evaluation in semestre.matiere.evaluation %}
+                                <div class="evaluation_box_nom">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+                                    </svg>
+                                    <a title="Afficher l'évaluation" class="eval_nom" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{ evaluation.nom }}</a>
+                                    <!--<p class="eval_statut">{{ evaluation.statut }}</p>-->
+                                    {% if evaluation.date|date('Y-m-d') < "now"|date('Y-m-d') %}
+                                        {% if evaluation.note is not empty and evaluation.note != null %}
+                                            <p class="eval_statut note vert">Publiée</p>
+                                        {% else %}
+                                            <p class="eval_statut note rouge">À corriger</p>
+                                        {% endif %}
+                                    {% elseif evaluation.date|date('Y-m-d') > "now"|date('Y-m-d') %}
+                                        <p class="eval_statut note orange">À venir</p>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="evaluation_box_nom pas_de_note">
+                                <p>Pas d'évaluation enregistrée</p>
                             </div>
-                        {% endfor %}
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
@@ -54,10 +87,30 @@
                         <a title="Afficher la ressource" href="{{ path('app_fiche_matiere', {'id': semestre.matiere.id}) }}">
                             {{ semestre.matiere.nom }}
                         </a>
-                        {% for evaluation in semestre.matiere.evaluation %}
-                            <p>{{ evaluation.nom }}</p>
-                            <p>{{ evaluation.statut }}</p>
-                        {% endfor %}
+                        {% if semestre.matiere.evaluation is not empty %}
+                            {% for evaluation in semestre.matiere.evaluation %}
+                                <div class="evaluation_box_nom">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+                                    </svg>
+                                    <a title="Afficher l'évaluation" class="eval_nom" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">{{ evaluation.nom }}</a>
+                                    <!--<p class="eval_statut">{{ evaluation.statut }}</p>-->
+                                    {% if evaluation.date|date('Y-m-d') < "now"|date('Y-m-d') %}
+                                        {% if evaluation.note is not empty and evaluation.note != null %}
+                                            <a title="Afficher l'évaluation" class="eval_statut note vert" href="{{ path('app_fiche_evaluation', {'id': evaluation.id}) }}">Publiée</a>
+                                        {% else %}
+                                            <p class="eval_statut note rouge">À corriger</p>
+                                        {% endif %}
+                                    {% elseif evaluation.date|date('Y-m-d') > "now"|date('Y-m-d') %}
+                                        <p class="eval_statut note orange">À venir</p>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="evaluation_box_nom pas_de_note">
+                                <p>Pas d'évaluation enregistrée</p>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
