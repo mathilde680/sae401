@@ -61,12 +61,14 @@ class NoteRepository extends ServiceEntityRepository
 
     public function findNoteByMoyenne($id)
     {
-        return $this->createQueryBuilder('n')
+        $result = $this->createQueryBuilder('n')
             ->select('AVG(n.note) as moyenne')
             ->where('n.Evaluation = :id')
             ->setParameter('id', $id)
             ->getQuery()
             ->getSingleScalarResult();
+
+        return round($result, 2);
     }
 
     //    /**

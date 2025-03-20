@@ -186,7 +186,46 @@
                 <div class="toutesLesGrilles">
                     {% for grille in grilles %}
                         <div class="grillesAffichage">
-                            <a href="{{ path('app_fiche_grille', {'id': grille.id}) }}">{{ grille.nom }}</a>
+
+                            <!-- MODAL -->
+                            <a href="#" class="grille-link"
+                               data-id="{{ grille.id }}"
+                               data-nom="{{ grille.nom }}"
+                               data-criteres="{{ grille.criteres|map(c => {
+                                   'id': c.id,
+                                   'nom': c.nom,
+                                   'note': c.note,
+                                   'commentaire': c.commentaire
+                               })|json_encode|e('html_attr') }}"
+                            >{{ grille.nom }}</a>
+
+                            <div class="overlay" id="modalOverlay">
+                                <div class="modal">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title" id="modalTitle">Grille : TP NOTÉ SYMFONY</h2>
+                                        <button class="close-button">×</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="evaluation-item">
+                                            <div class="evaluation-header">
+                                                <p class="evaluation-label">Cohérence du code</p>
+                                                <p class="evaluation-score">/5</p>
+                                            </div>
+                                            <p>commentaire</p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form id="deleteForm" method="POST" action="">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete') }}">
+                                            <button type="submit" id="delete-button" class="delete-button">Supprimer</button>
+                                        </form>
+
+                                        <a href="" id="useGrilleLink" class="bouton">Modifier</a>
+
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="crudGrille">
                                 <a href="{{ path ('app_grille_modif', {'id': grille.id}) }}">
                                     <svg class="icons" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

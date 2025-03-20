@@ -48,14 +48,19 @@ class MatiereRepository extends ServiceEntityRepository
     public function findMatiereAndNoteByEtudiant(Etudiant $user)
     {
         return $this->createQueryBuilder('m')
-            ->leftJoin('m.Evaluation', 'e') // Joindre les évaluations
-            ->leftJoin('e.notes', 'n') // Joindre les notes
-            ->addSelect('e', 'n') // Sélectionner les évaluations et notes
-            ->where('m.semestre = :semestre')
+            ->leftJoin('m.Evaluation', 'e') // joint les évaluations
+            ->leftJoin('e.notes', 'n') // joint les notes
+
+            ->addSelect('e', 'n')
+
+            ->where('m.semestre = :semestre') // lien avec le semestre
             ->setParameter('semestre', $user->getSemestre())
-            ->andWhere('n.Etudiant = :etudiant OR n.id IS NULL') // Inclure les matières sans notes
+
+            ->andWhere('n.Etudiant = :etudiant OR n.id IS NULL') // lien avec l'étudiant meme si les notes sont null
             ->setParameter('etudiant', $user->getId())
-            ->orderBy('m.nom', 'ASC')
+
+            ->orderBy('m.nom', 'ASC') //trie
+
             ->getQuery()
             ->getResult();
     }
