@@ -18,7 +18,7 @@
             <p>Note</p>
             <p>Commentaire</p>
         </div>
-        {% if evaluation.statutGroupe == "Individuel"  %}
+        {#{% if evaluation.statutGroupe == "Individuel"  %}#}
             {% for note in notes %}
                 <div id="note_eleve">
                     <p class="nom">{{ note.etudiant.nom }}</p>
@@ -33,15 +33,19 @@
                         {% endif %}
                     {% else %}
                         <p class="note non_note">Pas de note</p>
-                        {% endif %}
-                        {% if note.commentaire is defined and note.commentaire is not null %}
-                            <p class="commentaire">{{ note.commentaire }}</p>
-                            {% else %}
-                                <p class="commentaire">Pas de commentaire</p>
-                        {% endif %}
+                    {% endif %}
+
+                    {% if note.commentaire is defined and note.commentaire is not null %}
+                        <p class="commentaire">{{ note.commentaire }}</p>
+                    {% else %}
+                        <p class="commentaire">Pas de commentaire</p>
+                    {% endif %}
+                    {% for critere in criteres %}
+                        <p>{{ critere.nom }}{{ critere.note }}</p>
+                    {% endfor %}
                 </div>
             {% endfor %}
-        {% else %}
+        {# {% else %}
             {% for note in notes %}
                 <div id="note_eleve">
                     <p class="nom">{{ note.etudiant.nom }}</p>
@@ -63,7 +67,7 @@
                         <p class="commentaire">Pas de commentaire</p>
                     {% endif %}
                 </div>
-            {% endfor %}
+            {% endfor %} #}
             {#{% for groupe in groupes %}
                 <p>{{ groupe.nom }} --- {{ groupe.taille }} personnes</p>
                 {% for fiche_groupe in groupe.ficheGroupes %}
@@ -73,7 +77,7 @@
                     </div>
                 {% endfor %}
             {% endfor %}#}
-        {% endif %}
+        {# {% endif %} #}
     </div>
 
 {% endblock %}

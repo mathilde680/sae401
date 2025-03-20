@@ -69,7 +69,7 @@
                 </div>
                 <div class="toutesLesRessources">
                     <!--Matiere du semestre1-->
-                    <h3>Semestre1</h3>
+                    {#<h3>Semestre1</h3>
                     {% for semestre in semestre1 %}
                         <div class="ressourcesAffichage">
                             <div>
@@ -83,10 +83,12 @@
                                 </form>
                             </div>
                         </div>
-                    {% endfor %}
+                    {% endfor %}#}
+
 
                     <!--Matiere du semestre2-->
-                    <h3>Semestre2</h3>
+                    <h3>Semestre 2</h3>
+                    {% if semestre2  %}
                     {% for semestre in semestre2 %}
                         <div class="ressourcesAffichage">
                             <div>
@@ -101,9 +103,12 @@
                             </div>
                         </div>
                     {% endfor %}
+                    {% else %}
+                        <p class="aucuneMatiere">Vous ne disposez d'aucune ressource pour ce semestre.</p>
+                    {% endif %}
 
                     <!--Matiere du semestre3-->
-                    <h3>Semestre 3</h3>
+                    {#<h3>Semestre 3</h3>
                     {% for semestre in semestre3 %}
                         <div class="ressourcesAffichage">
                             <div>
@@ -117,27 +122,32 @@
                                 </form>
                             </div>
                         </div>
-                    {% endfor %}
+                    {% endfor %}#}
 
                     <!--Matiere du semestre4-->
-                    <h3>Semestre4</h3>
-                    {% for semestre in semestre4 %}
-                        <div class="ressourcesAffichage">
-                            <div>
-                                <a href="{{ path('app_fiche_matiere', {'id': semestre.matiere.id}) }}">{{ semestre.matiere.nom }}</a>
+
+                        <h3>Semestre 4</h3>
+                    {% if semestre4  %}
+                        {% for semestre in semestre4 %}
+                            <div class="ressourcesAffichage">
+                                <div>
+                                    <a href="{{ path('app_fiche_matiere', {'id': semestre.matiere.id}) }}">{{ semestre.matiere.nom }}</a>
+                                </div>
+                                <div class="crudRessource">
+                                    <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
+                                        <button class="actionCrud">
+                                            X
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="crudRessource">
-                                <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
-                                    <button class="actionCrud">
-                                        X
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                        {% else %}
+                            <p class="aucuneMatiere">Vous ne disposez d'aucune ressource pour ce semestre.</p>
+                    {% endif %}
 
                     <!--Matiere du semestre5-->
-                    <h3>Semestre 5</h3>
+                    {#<h3>Semestre 5</h3>
                     {% for semestre in semestre5 %}
                         <div class="ressourcesAffichage">
                             <div>
@@ -151,24 +161,29 @@
                                 </form>
                             </div>
                         </div>
-                    {% endfor %}
+                    {% endfor %}#}
 
                     <!--Matiere du semestre6-->
-                    <h3>Semestre6</h3>
-                    {% for semestre in semestre6 %}
-                        <div class="ressourcesAffichage">
-                            <div>
-                                <a href="{{ path('app_fiche_matiere', {'id': semestre.matiere.id}) }}">{{ semestre.matiere.nom }}</a>
+
+                        <h3>Semestre 6</h3>
+                    {% if semestre6  %}
+                        {% for semestre in semestre6 %}
+                            <div class="ressourcesAffichage">
+                                <div>
+                                    <a href="{{ path('app_fiche_matiere', {'id': semestre.matiere.id}) }}">{{ semestre.matiere.nom }}</a>
+                                </div>
+                                <div class="crudRessource">
+                                    <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
+                                        <button class="actionCrud">
+                                            X
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="crudRessource">
-                                <form method="post" action="{{ path('app_matiere_supprime', {'id': semestre.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
-                                    <button class="actionCrud">
-                                        X
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                        {% else %}
+                            <p class="aucuneMatiere">Vous ne disposez d'aucune ressource pour ce semestre.</p>
+                    {% endif %}
                 </div>
             </div>
 

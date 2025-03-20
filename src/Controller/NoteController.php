@@ -5,7 +5,10 @@ namespace App\Controller;
 use App\Entity\Evaluation;
 use App\Entity\Note;
 use App\Form\AjoutNoteType;
+use App\Repository\CritereRepository;
 use App\Repository\EvaluationRepository;
+use App\Repository\FicheGrilleRepository;
+use App\Repository\GrilleRepository;
 use App\Repository\GroupeRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\NoteRepository;
@@ -46,9 +49,10 @@ final class NoteController extends AbstractController
 
 
     #[Route('/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
-    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository): Response
+    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository, FicheGrilleRepository $ficheGrilleRepository, CritereRepository $critereRepository): Response
     {
         $evaluation = $evaluationRepository->find($id);
+        $idEvaluation = $evaluation->getId();
 
         if (!$evaluation) {
             throw $this->createNotFoundException('Évaluation non trouvée');
@@ -57,6 +61,17 @@ final class NoteController extends AbstractController
         // Récupérer les notes associées à cette évaluation
         $notes = $evaluation->getNotes()->toArray(); // Convertir la collection en tableau
 
+        $grilleEvaluation = $ficheGrilleRepository->findBy([
+            'Evaluation'=>$idEvaluation,
+        ]);
+
+        foreach ($grilleEvaluation as $ficheGrille){
+            $idGrille = $ficheGrille->getGrille()->getId();
+        }
+        
+        $criteres = $critereRepository->findBy([
+            'Grille'=>$idGrille,
+        ]);
 
         // Trier les notes par nom en ordre alphabétique
         usort($notes, function ($a, $b) {
@@ -67,6 +82,7 @@ final class NoteController extends AbstractController
         return $this->render('note/evaluation.html.twig', [
             'evaluation' => $evaluation,
             'notes' => $notes,
+            'criteres' => $criteres,
         ]);
     }
 

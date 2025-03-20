@@ -55,14 +55,16 @@ final class GrilleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($grille);
+
             foreach ($grille->getCriteres() as $critere) {
                 $critere->setGrille($grille);
                 $entityManager->persist($critere);
             }
-            $entityManager->persist($grille);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_accueil_prof');
+            return $this->redirectToRoute('app_grille');
         }
 
         return $this->render('grille/ajout.html.twig', [
@@ -89,7 +91,7 @@ final class GrilleController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_accueil_prof');
+        return $this->redirectToRoute('app_grille');
     }
 
     //MODIFICATION d'une grille

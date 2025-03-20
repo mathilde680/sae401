@@ -52,8 +52,11 @@ try {
             const deleteUrl = `/grille/${grilleId}/supprime`;
             deleteForm.action = deleteUrl;
 
-            // Modifier du titre de la modal
-            useGrilleUtiliser.href = `/evaluation/ajout/grille/${grilleId}`;
+            if(useGrilleUtiliser){
+                // Modifier du titre de la modal
+                useGrilleUtiliser.href = `/evaluation/ajout/grille/${grilleId}`;
+            }
+
 
             // Utiliser
 
