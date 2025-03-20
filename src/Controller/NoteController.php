@@ -46,13 +46,38 @@ final class NoteController extends AbstractController
 
 
     #[Route('/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
-    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository, GroupeRepository $groupeRepository): Response
+    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository): Response
     {
         $evaluation = $evaluationRepository->find($id);
-        //$evaluationStatutGroupe = $evaluation->getEvaluationStatutGroupe();
 
-        $groupes = $groupeRepository->findGroupeByEvaluationProf($id);
+        if (!$evaluation) {
+            throw $this->createNotFoundException('Évaluation non trouvée');
+        }
 
+        // Récupérer les notes associées à cette évaluation
+        $notes = $evaluation->getNotes()->toArray(); // Convertir la collection en tableau
+
+
+        // Trier les notes par nom en ordre alphabétique
+        usort($notes, function ($a, $b) {
+            // Supposant que vous avez une méthode getEleve()->getNom() pour accéder au nom
+            return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
+        });
+
+        return $this->render('note/evaluation.html.twig', [
+            'evaluation' => $evaluation,
+            'notes' => $notes,
+        ]);
+    }
+
+    #[Route('/note/evaluer/{id}', name: 'app_note')]
+    public function modif_ajout_note(
+        int                    $id, EvaluationRepository $evaluationRepository, Request $request,
+        NoteRepository         $noteRepository,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $evaluation = $evaluationRepository->find($id);
 
         if (!$evaluation) {
             throw $this->createNotFoundException('Évaluation non trouvée');
@@ -67,37 +92,6 @@ final class NoteController extends AbstractController
             return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
         });
 
-        return $this->render('note/evaluation.html.twig', [
-            'evaluation' => $evaluation,
-            'notes' => $notes,
-            'groupes' => $groupes,
-        ]);
-    }
-
-    #[Route('/note/evaluer/{id}', name: 'app_note')]
-    public function modif_ajout_note(
-        int $id, EvaluationRepository $evaluationRepository, Request $request,
-        NoteRepository $noteRepository,
-        EntityManagerInterface $entityManager,
-        GroupeRepository $groupeRepository
-    ): Response {
-
-        $evaluation = $evaluationRepository->find($id);
-        $groupes = $groupeRepository->findGroupeByEvaluationProf($id);
-
-        if (!$evaluation) {
-            throw $this->createNotFoundException('Évaluation non trouvée');
-        }
-
-        // Récupérer les notes associées à cette évaluation
-        $notes = $evaluation->getNotes()->toArray(); // Convertir la collection en tableau
-
-        // Trier les notes par nom en ordre alphabétique
-        usort($notes, function($a, $b) {
-            // Supposant que vous avez une méthode getEleve()->getNom() pour accéder au nom
-            return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
-        });
-
         //dd($notes);
 
         $form = $this->createForm(AjoutNoteType::class, ['notes' => $notes]);
@@ -105,18 +99,11 @@ final class NoteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
-
-            if ($evaluation->getStatutGroupe() == "Groupe") {
-                $notesByGroupeId = [];
-                foreach ($formData['notes'] as $note) {
-                    $etudiant = $note->getEtudiant();
-                }
-            }else{
-                foreach ($formData['notes'] as $note) {
-                    $entityManager->persist($note);
-                }
+            foreach ($formData['notes'] as $note) {
+                $entityManager->persist($note);
             }
             $entityManager->flush();
+
             $this->addFlash('success', 'Les notes ont été enregistrées avec succès.');
 
             return $this->redirectToRoute('app_fiche_evaluation', ['id' => $evaluation->getId()]);
@@ -127,8 +114,6 @@ final class NoteController extends AbstractController
             'evaluation' => $evaluation,
             'notes' => $notes,
             'form_ajout_note' => $form,
-            'groupes' => $groupes,
         ]);
-}
-
+    }
 }

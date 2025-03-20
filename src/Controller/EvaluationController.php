@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Evaluation;
 use App\Entity\FicheGrille;
+use App\Entity\FicheGroupe;
 use App\Entity\Groupe;
 use App\Entity\Matiere;
 use App\Entity\Note;
@@ -52,7 +53,7 @@ final class EvaluationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             if ($form->get('statut_groupe')->getData() === 'Groupe') {
-                // Stocker les données dans la session
+                // Stocker les données dans la session toute l'eval
                 $session->set('evaluation_data', $form->getData());
                 return $this->redirectToRoute('app_evaluation_groupe_ajout', ['id' => $id]);
             } else {
@@ -64,10 +65,13 @@ final class EvaluationController extends AbstractController
                     $entityManager->persist($note);
                     // dd($note);
                 }
-                $session->set('evaluation_data', $form->getData());
+
                 // Envoie à la bdd
                 $entityManager->persist($evaluation);
-                //$entityManager->flush();
+                $entityManager->flush();
+
+                // Stock en session l'id de l'eval
+                $session->set('evaluation_id', $evaluation->getId());
 
                 return $this->redirectToRoute('app_evaluation_grille_ajout', ['id' => $id]);
             }
@@ -143,9 +147,15 @@ final class EvaluationController extends AbstractController
             foreach ($groupesEtudiants as $groupeKey => $etudiantsGroupe) {
                 $nbEtudiants = count($etudiantsGroupe);
 
+                if ($formationGroupe === 'Aléatoire') {
+                    shuffle($etudiantsGroupe);
+                }
+
                 // Calcul du nombre de groupes
                 $nbGroupes = intdiv($nbEtudiants, $tailleGroupe); // Division entière
                 $reste = $nbEtudiants % $tailleGroupe; // Reste des étudiants non répartis par modulo
+
+                $etudiantIndex = 0;
 
                 // Création des groupes complets
                 for ($i = 1; $i <= $nbGroupes; $i++) {
@@ -155,9 +165,20 @@ final class EvaluationController extends AbstractController
                     $groupe->setTaille($tailleGroupe);
                     $entityManager->persist($groupe);
 
-                    // Formation aléatoire
-                    if ($formationGroupe === 'Aléatoire') {
+                    // Assigner $tailleGroupe étudiants à ce groupe
+                    for ($j = 0; $j < $tailleGroupe; $j++) {
+                        if ($etudiantIndex < count($etudiantsGroupe)) {
+                            $etudiant = $etudiantsGroupe[$etudiantIndex];
+
+                            $ficheGroupe = new FicheGroupe();
+                            $ficheGroupe->setEtudiant($etudiant);
+                            $ficheGroupe->setGroupe($groupe);
+                            $entityManager->persist($ficheGroupe);
+
+                            $etudiantIndex++;
+                        }
                     }
+
                 }
 
                 // Les etudiants restant
@@ -167,6 +188,20 @@ final class EvaluationController extends AbstractController
                     $groupe->setNom("Groupe " . $typeGroupe . " " . $groupeKey . "-" . ($nbGroupes + 1));
                     $groupe->setTaille($reste);
                     $entityManager->persist($groupe);
+
+                    // Assigner les étudiants restants à ce dernier groupe
+                    for ($j = 0; $j < $reste; $j++) {
+                        if ($etudiantIndex < count($etudiantsGroupe)) {
+                            $etudiant = $etudiantsGroupe[$etudiantIndex];
+
+                            $ficheGroupe = new FicheGroupe();
+                            $ficheGroupe->setEtudiant($etudiant);
+                            $ficheGroupe->setGroupe($groupe);
+                            $entityManager->persist($ficheGroupe);
+
+                            $etudiantIndex++;
+                        }
+                    }
                 }
             }
 
@@ -198,23 +233,16 @@ final class EvaluationController extends AbstractController
         // Recupere les grilles du profs
         $grilleProf = $grilleRepository->findAllByProfesseur($profId);
 
-        // Récupérer les données d'évaluation stockées dans la session
-        $evaluationData = $session->get('evaluation_data');
+        // Recupere id de l'eval en session
+        $evaluationId = $session->get('evaluation_id');
+        if (!$evaluationId) {
+            throw $this->createNotFoundException('Aucune évaluation trouvée en session.');
+        }
 
-        // Création d'une nouvelle évaluation
-        $evaluation = new Evaluation();
-        $evaluation->setMatiere($matiere);
-        $evaluation->setProfesseur($user);
-
-        // RECUPERER LES INFOS DANS LA SESSION
-        $evaluation->setNom($evaluationData->getNom());
-        $evaluation->setDate($evaluationData->getDate());
-        $evaluation->setCoef($evaluationData->getCoef());
-        $evaluation->setStatutGroupe($evaluationData->getStatutGroupe());
-        if ($evaluationData->getStatut() !== null) {
-            $evaluation->setStatut($evaluationData->getStatut());
-        } else {
-            $evaluation->setStatut('Publiée');
+        // Recupere l'evaluation
+        $evaluation = $evaluationRepository->find($evaluationId);
+        if (!$evaluation) {
+            throw $this->createNotFoundException('Évaluation introuvable.');
         }
 
         // pour chaque étudiant on instancie une nouvelle fiche relier à l'eval et à la grille
