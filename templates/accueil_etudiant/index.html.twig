@@ -79,11 +79,12 @@
                             <h2>Mes groupes</h2>
                         </div>
                     </div>
-                    <div>
+                    <div id="div_groupe">
                         {% for evaluation in evaluations %}
-                            <div>
-                                <p>{{ evaluation.nom }}</p>
-                                <a href="{{ path('app_groupe', {'id': evaluation.id}) }}">Voir</a>
+                            <div class="div_nom_groupe">
+                                <p class="matiere_groupe">{{ evaluation.matiere.nom }}</p>
+                                <p class="matiere_evaluation">{{ evaluation.nom }}</p>
+                                <a class="matiere_voir" href="{{ path('app_groupe', {'id': evaluation.id}) }}">Voir</a>
                             </div>
                         {% endfor %}
                     </div>

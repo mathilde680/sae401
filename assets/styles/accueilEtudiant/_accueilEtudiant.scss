@@ -286,6 +286,42 @@ main {
       .groupesEtudiant {
         grid-column: 1 / 3;
         grid-row: 2 / 3;
+
+        #div_groupe{
+          padding-top: 2vh;
+          .div_nom_groupe{
+            padding-left: 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 85%;
+
+            .matiere_groupe{
+              color: $couleurTexte;
+              font-weight: 700;
+              width: 32%;
+            }
+
+            .matiere_evaluation{
+              width: 30%;
+            }
+
+            .matiere_voir{
+              background-color: $couleurBouton;
+              color: $couleurNeutre;
+              padding: 1vh;
+              border-radius: 6px;
+              width: 18%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              transition: 0.3s ease-in-out;
+              &:hover{
+                background-color: $couleurBoutonHover;
+              }
+            }
+          }
+        }
       }
 
       .progressionEtudiant{
