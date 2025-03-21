@@ -101,6 +101,12 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 2)]
     private ?string $semestre = null;
 
+    /**
+     * @var Collection<int, FicheNoteCritere>
+     */
+    #[ORM\OneToMany(targetEntity: FicheNoteCritere::class, mappedBy: 'Etudiant')]
+    private Collection $ficheNoteCriteres;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -111,6 +117,7 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
         $this->Fiche_grille = new ArrayCollection();
         $this->Fiche_groupe = new ArrayCollection();
         $this->Note = new ArrayCollection();
+        $this->ficheNoteCriteres = new ArrayCollection();
     }
 
 
@@ -401,6 +408,36 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSemestre(string $semestre): static
     {
         $this->semestre = $semestre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FicheNoteCritere>
+     */
+    public function getFicheNoteCriteres(): Collection
+    {
+        return $this->ficheNoteCriteres;
+    }
+
+    public function addFicheNoteCritere(FicheNoteCritere $ficheNoteCritere): static
+    {
+        if (!$this->ficheNoteCriteres->contains($ficheNoteCritere)) {
+            $this->ficheNoteCriteres->add($ficheNoteCritere);
+            $ficheNoteCritere->setEtudiant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFicheNoteCritere(FicheNoteCritere $ficheNoteCritere): static
+    {
+        if ($this->ficheNoteCriteres->removeElement($ficheNoteCritere)) {
+            // set the owning side to null (unless already changed)
+            if ($ficheNoteCritere->getEtudiant() === $this) {
+                $ficheNoteCritere->setEtudiant(null);
+            }
+        }
 
         return $this;
     }

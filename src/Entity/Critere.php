@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CritereRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CritereRepository::class)]
@@ -24,6 +26,17 @@ class Critere
 
    #[ORM\ManyToOne(inversedBy: 'criteres')]
     private ?Grille $Grille = null;
+
+   /**
+    * @var Collection<int, FicheNoteCritere>
+    */
+   #[ORM\OneToMany(targetEntity: FicheNoteCritere::class, mappedBy: 'Critere')]
+   private Collection $ficheNoteCriteres;
+
+   public function __construct()
+   {
+       $this->ficheNoteCriteres = new ArrayCollection();
+   }
 
     //#[ORM\ManyToOne(inversedBy: 'criteres', cascade: ["remove"])]
     //private ?Grille $Grille = null;
@@ -77,6 +90,36 @@ class Critere
     public function setGrille(?Grille $Grille): static
     {
         $this->Grille = $Grille;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FicheNoteCritere>
+     */
+    public function getFicheNoteCriteres(): Collection
+    {
+        return $this->ficheNoteCriteres;
+    }
+
+    public function addFicheNoteCritere(FicheNoteCritere $ficheNoteCritere): static
+    {
+        if (!$this->ficheNoteCriteres->contains($ficheNoteCritere)) {
+            $this->ficheNoteCriteres->add($ficheNoteCritere);
+            $ficheNoteCritere->setCritere($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFicheNoteCritere(FicheNoteCritere $ficheNoteCritere): static
+    {
+        if ($this->ficheNoteCriteres->removeElement($ficheNoteCritere)) {
+            // set the owning side to null (unless already changed)
+            if ($ficheNoteCritere->getCritere() === $this) {
+                $ficheNoteCritere->setCritere(null);
+            }
+        }
+
         return $this;
     }
 

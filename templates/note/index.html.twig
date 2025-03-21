@@ -11,22 +11,23 @@
         {{ form_start(form_ajout_note) }}
         <div>
             {% if evaluation.statutGroupe == "Individuel"%}
-                {% for note_form in form_ajout_note.notes %}
+                {% for note in notes %}
                     <div id="note_eleve">
-                        {% set note_vars = note_form.vars %}
-                        {% set note = note_vars.data %}
                         <div class="note-entry">
                             <p class="nom">{{ note.etudiant.nom }}</p>
                             <p class="prenom">{{ note.etudiant.prenom }}</p>
-                            <p class="note">{{ form_row(note_form.note) }}</p>
+                            {% for critere in criteres %}
+                                <p>{{ critere.nom }}</p>
+                                <p>{{ form_row(form_ajout_note['note_' ~ note.etudiant.id ~ '_' ~ critere.id]) }} / {{ critere.note }}</p>
+                            {% endfor %}
+                            <p class="note"></p>
                             <div class="commentaire_note">
-                            <p class="commentaire">{{ form_row(note_form.commentaire) }}</p>
+                                {# <p class="commentaire">{{ form_row(form_ajout_note.commentaire) }}</p> #}
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             {% else %}
-
                 {% for note_form in form_ajout_note.notes %}
                     <div id="note_eleve">
                         {% set note_vars = note_form.vars %}

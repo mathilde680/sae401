@@ -41,7 +41,8 @@
                         <p class="commentaire">Pas de commentaire</p>
                     {% endif %}
                     {% for critere in criteres %}
-                        <p>{{ critere.nom }}{{ critere.note }}</p>
+                        <p>{{ critere.nom }}</p>
+                        <p>{{ critere.note }}</p>
                     {% endfor %}
                 </div>
             {% endfor %}
