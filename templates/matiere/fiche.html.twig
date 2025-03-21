@@ -126,7 +126,7 @@
                         <a href="{{ path ('app_fiche_evaluation', {'id': evaluation.id}) }}" class="bouton">Evaluer</a>
                         <div>
                             <a href="{{ path ('app_evaluation_modif', {'id': evaluation.id}) }}" class="bouton">Modifier</a>
-                            <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');">
+                            <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" class="deleteButton">
                                 <button class="bouton">
                                     Supprimer
                                 </button>

@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "sass": "^1.85.0",
-        "sass-loader": "^16.0.5"
+        "sass-loader": "^16.0.5",
+        "sweetalert2": "^11.17.2"
     }
 }
