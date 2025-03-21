@@ -8,6 +8,9 @@ use App\Entity\FicheGroupe;
 use App\Entity\Groupe;
 use App\Entity\Matiere;
 use App\Entity\Note;
+use App\Event\GroupeEvent;
+use App\Event\JeuEvent;
+use App\EventListener\AjoutGroupe;
 use App\Form\AjoutEvaluationGroupeType;
 use App\Form\AjoutEvaluationType;
 use App\Form\FicheMatiereType;
@@ -23,6 +26,7 @@ use App\Repository\NoteRepository;
 use App\Repository\ProfesseurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -100,7 +104,7 @@ final class EvaluationController extends AbstractController
     }
 
     #[Route('/evaluation/ajout/groupe/{id}', name: 'app_evaluation_groupe_ajout')]
-    public function ajout_groupe_evaluation(int $id, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, SessionInterface $session, EtudiantRepository $etudiantRepository): Response
+    public function ajout_groupe_evaluation(int $id, EventDispatcherInterface $eventDispatcher, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, SessionInterface $session, EtudiantRepository $etudiantRepository): Response
     {
         $user = $this->getUser();
         $matiere = $matiereRepository->find($id);
@@ -226,7 +230,11 @@ final class EvaluationController extends AbstractController
             $entityManager->flush();
             $session->set('evaluation_id', $evaluation->getId());
 
-            return $this->redirectToRoute('app_evaluation_grille_ajout', ['id' => $id]);
+            $event = new GroupeEvent($groupe);
+            $eventDispatcher->dispatch($event, GroupeEvent::ADDED);
+
+
+            return $this->redirectToRoute('app_evaluation_grille_ajout', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('evaluation/ajoutGroupe.html.twig', [

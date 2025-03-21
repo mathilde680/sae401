@@ -86,11 +86,11 @@ input, select {
 }
 
 .btn-confirm{
-  @include bouton($couleurBackground, $couleurBouton, $couleurBouton, 8px, 0.5rem 1rem);
+  @include bouton($couleurBackground, $couleurAlerte, $couleurAlerte, 8px, 0.5rem 1rem);
 }
 
 .btn-cancel{
-  @include bouton($couleurBackground, $couleurAlerte, $couleurAlerte, 8px, 0.5rem 1rem);
+  @include bouton($couleurBackground, $couleurBouton, $couleurBouton, 8px, 0.5rem 1rem);
 }
 
 
