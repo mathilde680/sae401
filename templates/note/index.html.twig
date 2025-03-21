@@ -11,19 +11,27 @@
         {{ form_start(form_ajout_note) }}
         <div>
             {% if evaluation.statutGroupe == "Individuel"%}
-                {% for note in notes %}
+                {% for etudiantId, etudiantForm in form.notes %}
                     <div id="note_eleve">
                         <div class="note-entry">
-                            <p class="nom">{{ note.etudiant.nom }}</p>
-                            <p class="prenom">{{ note.etudiant.prenom }}</p>
-                            {% for critere in criteres %}
-                                <p>{{ critere.nom }}</p>
-                                <p>{{ form_row(form_ajout_note['note_' ~ note.etudiant.id ~ '_' ~ critere.id]) }} / {{ critere.note }}</p>
+                            <p class="nom">{{ etudiantForm.vars.data.etudiant.nom }}</p>
+                            <p class="prenom">{{ etudiantForm.vars.data.etudiant.prenom }}</p>
+
+                            {% for critereId, critereForm in etudiantForm.criteres %}
+                                <p>{{ critereForm.vars.data.critere.nom }}</p>
+                                <p>{{ form_widget(critereForm.valeur, {'attr': {'class': 'input_note'}}) }} / {{ critereForm.vars.data.critere.note }}</p>
+
+                                {# Champs cachés pour les IDs #}
+                                {{ form_widget(critereForm.critere, {'attr': {'value': critereForm.vars.data.critere.id}}) }}
                             {% endfor %}
+
                             <p class="note"></p>
                             <div class="commentaire_note">
                                 {# <p class="commentaire">{{ form_row(form_ajout_note.commentaire) }}</p> #}
                             </div>
+
+                            {# Champ caché pour l'ID de l'étudiant #}
+                            {{ form_widget(etudiantForm.etudiant, {'attr': {'value': etudiantForm.vars.data.etudiant.id}}) }}
                         </div>
                     </div>
                 {% endfor %}

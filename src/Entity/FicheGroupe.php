@@ -20,9 +20,11 @@ class FicheGroupe
 //    private ?Etudiant $Etudiant = null;
 
     #[ORM\ManyToOne(inversedBy: 'Fiche_groupe')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Groupe $Groupe = null;
 
     #[ORM\ManyToOne(inversedBy: 'Fiche_groupe')]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?Etudiant $Etudiant = null;
 
     public function getId(): ?int

@@ -15,6 +15,7 @@ use App\Form\GrilleType;
 use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\FicheGrilleRepository;
+use App\Repository\FicheGroupeRepository;
 use App\Repository\GrilleRepository;
 use App\Repository\GroupeRepository;
 use App\Repository\MatiereRepository;
@@ -220,8 +221,10 @@ final class EvaluationController extends AbstractController
                 }
             }
 
+
             $entityManager->persist($evaluation);
             $entityManager->flush();
+            $session->set('evaluation_id', $evaluation->getId());
 
             return $this->redirectToRoute('app_evaluation_grille_ajout', ['id' => $id]);
         }
@@ -233,7 +236,7 @@ final class EvaluationController extends AbstractController
     }
 
     #[Route('/evaluation/ajout/grille/{id}', name: 'app_evaluation_grille_ajout')]
-    public function ajout_grille_evaluation(int $id, Request $request, GrilleRepository $grilleRepository, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, EtudiantRepository $etudiantRepository, EvaluationRepository $evaluationRepository, ProfesseurRepository $professeurRepository,  SessionInterface $session): Response
+    public function ajout_grille_evaluation(int $id, Request $request, GrilleRepository $grilleRepository, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, EtudiantRepository $etudiantRepository, EvaluationRepository $evaluationRepository, ProfesseurRepository $professeurRepository, SessionInterface $session): Response
     {
         // Recupere id prof
         $user = $this->getUser();
@@ -264,7 +267,7 @@ final class EvaluationController extends AbstractController
         $ficheGrille = new FicheGrille();
 
         $form = $this->createForm(GrilleType::class, $ficheGrille, [
-            'grilles' =>$grilleProf,
+            'grilles' => $grilleProf,
         ]);
         $form->handleRequest($request);
 
@@ -300,47 +303,56 @@ final class EvaluationController extends AbstractController
 
     //pour supprimer une évaluation
     #[Route('/evaluation/{id}/supprime', name: 'app_evaluation_supprime', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function supprime_evaluation(int $id, FicheGrilleRepository $ficheGrilleRepository, EntityManagerInterface $entityManager, NoteRepository $noteRepository, GroupeRepository $groupeRepository): Response
+    public function supprime_evaluation(
+        int                    $id,
+        FicheGrilleRepository  $ficheGrilleRepository,
+        EntityManagerInterface $entityManager,
+        NoteRepository         $noteRepository,
+        GroupeRepository       $groupeRepository,
+        FicheGroupeRepository  $ficheGroupeRepository
+    ): Response
     {
         // Récupérer l'entité Evaluation existante
         $evaluation = $entityManager->getRepository(Evaluation::class)->find($id);
+
+        if (!$evaluation) {
+            throw $this->createNotFoundException('Évaluation non trouvée');
+        }
+
         $matiere = $evaluation->getMatiere();
         $matiereId = $matiere->getId();
 
-        // Supprimer l'évaluation de la base de données
-        if ($evaluation) {
-            // Supprimer les fiches grille associées à l'évaluation
-            $fichesGrille = $ficheGrilleRepository->findBy(['Evaluation' => $evaluation]);
-            foreach ($fichesGrille as $ficheGrille) {
-                $entityManager->remove($ficheGrille);
+        // 1. D'abord, supprimer toutes les fiches_groupe liées aux groupes de cette évaluation
+        $groupes = $groupeRepository->findBy(['evaluation' => $evaluation]);
+        foreach ($groupes as $groupe) {
+            $fichesGroupe = $ficheGroupeRepository->findBy(['Groupe' => $groupe]);
+            foreach ($fichesGroupe as $ficheGroupe) {
+                $entityManager->remove($ficheGroupe);
             }
-
-            // Supprimer les notes associées à l'évaluation
-            $notes = $noteRepository->findBy(['Evaluation' => $evaluation]);
-            foreach ($notes as $note) {
-                $entityManager->remove($note);
-            }
-
-            // Supprimer les groupes associés à l'évaluation
-            $groupes = $groupeRepository->findBy(['evaluation' => $evaluation]);
-            foreach ($groupes as $groupe) {
-                $entityManager->remove($groupe);
-            }
-
-            // Supprimer fiche Grille associés à l'évaluation
-//            $groupes = $groupeRepository->findBy(['evaluation' => $evaluation]);
-//            foreach ($groupes as $groupe) {
-//                // Vérifier et supprimer les fiches associées au groupe dans `fiche_groupe`
-//                foreach ($groupe->getFicheGroupes() as $ficheGroupe) {
-//                    $entityManager->remove($ficheGroupe);
-//                }
-//                $entityManager->remove($groupe);
-//            }
-
-            // Supprimer l'évaluation
-            $entityManager->remove($evaluation);
-            $entityManager->flush();
         }
+
+        // 2. Ensuite, supprimer les notes associées à l'évaluation
+        $notes = $noteRepository->findBy(['Evaluation' => $evaluation]);
+        foreach ($notes as $note) {
+            $entityManager->remove($note);
+        }
+
+        // 3. Supprimer les fiches grille associées à l'évaluation
+        $fichesGrille = $ficheGrilleRepository->findBy(['Evaluation' => $evaluation]);
+        foreach ($fichesGrille as $ficheGrille) {
+            $entityManager->remove($ficheGrille);
+        }
+
+        // 4. Maintenant supprimer les groupes associés à l'évaluation
+        foreach ($groupes as $groupe) {
+            $entityManager->remove($groupe);
+        }
+
+        // 5. Finalement supprimer l'évaluation
+        $entityManager->remove($evaluation);
+
+        // Exécuter toutes les suppressions
+        $entityManager->flush();
 
         // Rediriger vers la liste des évaluations après la suppression
         return $this->redirectToRoute('app_fiche_matiere', ['id' => $matiereId]);
