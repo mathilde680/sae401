@@ -52,7 +52,7 @@ final class NoteController extends AbstractController
 
 
     #[Route('/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
-    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository, FicheGrilleRepository $ficheGrilleRepository, CritereRepository $critereRepository): Response
+    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository, FicheGrilleRepository $ficheGrilleRepository, CritereRepository $critereRepository, FicheNoteCritereRepository $ficheNoteCritereRepository): Response
     {
         $evaluation = $evaluationRepository->find($id);
         $idEvaluation = $evaluation->getId();
@@ -91,12 +91,12 @@ final class NoteController extends AbstractController
 
     #[Route('/note/evaluer/{id}', name: 'app_note')]
     public function modif_ajout_note(
-        int                    $id, EvaluationRepository $evaluationRepository, Request $request,
-        NoteRepository         $noteRepository,
-        EntityManagerInterface $entityManager,
-        FicheGrilleRepository  $ficheGrilleRepository,
-        CritereRepository      $critereRepository,
-        EtudiantRepository     $etudiantRepository,
+        int                        $id, EvaluationRepository $evaluationRepository, Request $request,
+        NoteRepository             $noteRepository,
+        EntityManagerInterface     $entityManager,
+        FicheGrilleRepository      $ficheGrilleRepository,
+        CritereRepository          $critereRepository,
+        EtudiantRepository         $etudiantRepository,
         FicheNoteCritereRepository $ficheNoteCritereRepository
     ): Response
     {
@@ -150,7 +150,7 @@ final class NoteController extends AbstractController
                 $noteCritere->setEtudiant($etudiant);
                 $noteCritere->setCritere($critere);
 
-               // $formData['note'][$etudiant->getId()][$critere->getId()] = $noteCritere;
+                // $formData['note'][$etudiant->getId()][$critere->getId()] = $noteCritere;
             }
         }
 
@@ -176,17 +176,21 @@ final class NoteController extends AbstractController
 
             foreach ($etudiants as $etudiant) {
                 foreach ($criteres as $critere) {
-                    if ($request->request->has('etu_'.$etudiant->getId().'_'.$critere->getId())) {}
-                    {
+                    if ($request->request->has('etu_' . $etudiant->getId() . '_' . $critere->getId())) {
                         $noteCritere = new FicheNoteCritere();
                         $noteCritere->setEtudiant($etudiant);
                         $noteCritere->setCritere($critere);
 
                         // Récupération de la note associée dans le formulaire
-                       // if (isset($formData['note'][$etudiant->getId()][$critere->getId()])) {
-                            $noteValue = $request->request->get('etu_'.$etudiant->getId().'_'.$critere->getId());
-                            $noteCritere->setNote($noteValue);
-                       // }
+                        // if (isset($formData['note'][$etudiant->getId()][$critere->getId()])) {
+                        $noteValue = $request->request->get('etu_' . $etudiant->getId() . '_' . $critere->getId());
+                        if ($noteValue === '') {
+                            $noteValue = null;
+                        } else {
+                            $noteValue = floatval($noteValue);
+                        }
+                        $noteCritere->setNote($noteValue);
+                        // }
 
                         // Persiste l'entité pour l'ajouter en base
                         $entityManager->persist($noteCritere);

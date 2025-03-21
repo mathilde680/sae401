@@ -8,11 +8,12 @@
         <h2>{{ evaluation.nom }}</h2>
 
 
-        {{ form_start(form_ajout_note) }}
-        <div>
+        {# form_start(form_ajout_note) #}
+        <form method="POST" action="{{ path('app_note', {'id': evaluation.id}) }}">
+
             {% if evaluation.statutGroupe == "Individuel"%}
                 {# Récupérez la collection de notes du formulaire #}
-                {% set note_collection = form_ajout_note.note %}
+                {# set note_collection = form_ajout_note.note #}
 
                 {% for i, etudiant in etudiants %}
                     <div id="note_eleve">
@@ -23,7 +24,8 @@
                                 {# if form_ajout_note.note is defined #}
                                     {% for critere in criteres %}
                                         <p class="note">
-                                            <input type="text" name="etu_{{ etudiant.id }}_{{ critere.id  }}" value="{{ notes[etudiant.id][critre.id] }}">
+                                            <input type="text" name="etu_{{ etudiant.id }}_{{ critere.id  }}">
+                                            {# <input type="text" name="etu_{{ etudiant.id }}_{{ critere.id  }}" value="{{ notes[etudiant.id][critre.id] }}"> #}
                                         </p>
                                     {% endfor %}
                                 {# endif #}
@@ -65,9 +67,11 @@
                     </div>
                 {% endfor %}#}
             {% endif %}
-        </div>
+            <button type="submit" class="btn btn-primary bouton bouton_note">Enregistrer</button>
+        </form>
 
-        <button type="submit" class="btn btn-primary bouton bouton_note">Enregistrer</button>
-        {{ form_end(form_ajout_note) }}
+
+
+        {# form_end(form_ajout_note) #}
     </div>
 {% endblock %}
