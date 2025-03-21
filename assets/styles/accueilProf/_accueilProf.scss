@@ -11,7 +11,7 @@ section#dashboardProf {
       background-color: #ffffff;
       box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
       border-radius: 15px;
-      padding: 15px;
+      padding: 15px 0 15px 15px;
       overflow-y: hidden;
 
       .headerSectionDash{
@@ -19,6 +19,7 @@ section#dashboardProf {
         justify-content: space-between;
         color: $couleurBouton;
         background-color: #ffffff;
+        padding-right: 15px;
 
         .nomSection{
           display: flex;
@@ -106,9 +107,20 @@ section#dashboardProf {
           color: $couleurTexte;
           margin-bottom: 1rem;
 
-          a{
-            color: $couleurTexte;
+          div{
+            display: flex;
+            align-items: center;
+            svg{
+              width: 22px;
+              margin-right: 5%;
+            }
+            a{
+              color: $couleurTexte;
+              width: 300px;
+            }
           }
+
+
 
           .crudRessource{
             display: flex;
@@ -127,13 +139,22 @@ section#dashboardProf {
             form{
               button{
                 background-color: transparent;
+                border: none;
+                width: 5%;
+                svg{
+                  width: 20px;
+                }
+                &:hover{
+                  cursor: pointer;
+                  color: $couleurBouton;
+                }
               }
             }
           }
         }
         .aucuneMatiere{
           font-size: 11pt;
-          color: #5F5D5D;
+          color: #626262;
         }
       }
 
@@ -177,8 +198,29 @@ section#dashboardProf {
           .crudGrille{
             display: flex;
             align-items: center;
-            .icons{
-              width: 15%;
+            a{
+              width: 50px;
+              color: $couleurTexte;
+              .icons{
+                width: 22px;
+              }
+              &:hover{
+                color: $couleurBouton;
+              }
+            }
+
+            form{
+              button{
+                background-color: transparent;
+                border: none;
+                svg{
+                  width: 22px;
+                }
+                &:hover{
+                  cursor:pointer;
+                  color: $couleurBouton;
+                }
+              }
             }
           }
         }

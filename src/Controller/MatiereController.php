@@ -8,6 +8,7 @@ use App\Entity\Matiere;
 use App\Form\AjoutEvaluationType;
 use App\Form\FicheMatiereType;
 use App\Repository\EvaluationRepository;
+use App\Repository\FicheMatiereRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,6 +44,24 @@ final class MatiereController extends AbstractController
             'evaluations' => $evaluations,
             'notesStats' => $notesStats,
         ]);
+    }
+
+
+    #[Route('/fiche/{id}/suppression', name: 'app_fiche_suppression', requirements: ['id'=>'\d+'])]
+    public function supprimerFiche(int $id, FicheMatiereRepository $ficheMatiereRepository, EntityManagerInterface $entityManager): Response
+    {
+        // Récupérer la fiche matière
+        $ficheMatiere = $ficheMatiereRepository->find($id);
+        $query = $entityManager->createQuery('SELECT f FROM App\Entity\FicheMatiere f WHERE f.id = :id')
+            ->setParameter('id', $id);
+        $result = $query->getResult();
+        dd($result);
+        // Supprimer la fiche matière
+        $entityManager->remove($ficheMatiere);
+        $entityManager->flush();
+
+        // Rediriger vers la liste des fiches après la suppression
+        return $this->redirectToRoute('app_accueil_prof');
     }
 
     #[Route('/matiere/ajout', name: 'app_matiere_ajout')]
