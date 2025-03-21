@@ -5,13 +5,24 @@
   width: 100%;
   padding: 2rem 0;
 
+  /*#form_ajout_grille{
+    background-color: #93c5fd;
+
+    #grille_grille{
+      background-color: #8c8c8c;
+    }
+
+  }*/
+
   .boxGrille {
     display: flex;
+    //visibility: hidden;
     flex-wrap: wrap;
     justify-content: space-evenly;
     width: 95%;
     gap: 5%;
     margin-bottom: 2rem;
+
 
     p, a {
       background-color: $couleurNeutre;

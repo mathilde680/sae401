@@ -4,139 +4,141 @@
 
 {% block main %}
     <div class="div_blanche">
-    <a class="boutonRetour" href="{{ path ('app_accueil_prof') }}">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
-        </svg>
-        Retour
-    </a>
+            <a class="boutonRetour" href="{{ path ('app_accueil_prof') }}">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+                </svg>
+                Retour
+            </a>
 
-    <h1>{{ fiches.nom }}</h1>
+            <h1>{{ fiches.nom }}</h1>
 
-    <div class="ficheMatiere">
-        <div class="box1">
-            <!---<div class="choixGroupe">
-                <div class="promotion">
-                    <label for="promotion">Promotion</label>
-                    <select name="promotion" id="promotion" class="promotion">
-                        <option class="td" value="BUT1">BUT1</option>
-                        <option class="td" value="BUT2">BUT2</option>
-                        <option class="td" value="BUT3">BUT3</option>
-                        <option class="td" value="BUT4">BUT4</option>
-                        <option class="td" value="BUT5">BUT5</option>
-                        <option class="td" value="BUT6">BUT6</option>
-                    </select>
-                </div>
-                <div class="td">
-                    <label for="td">TD</label>
-                    <select name="td" id="td" class="td">
-                        <option class="td" value="TDAB">TD AB</option>
-                        <option class="td" value="TDCD">TD CD</option>
-                        <option class="td" value="TDEF">TD EF</option>
-                        <option class="td" value="TDGH">TD GH</option>
-                        <option class="td" value="TDIJ">TD IJ</option>
-                    </select>
-                </div>
-                <div class="tp">
-                    <label for="tp">TP</label>
-                    <select name="tp" id="tp" class="tp">
-                        <option class="td" value="TPA">TP A</option>
-                        <option class="td" value="TDB">TD B</option>
-                        <option class="td" value="TDC">TD C</option>
-                        <option class="td" value="TDD">TD D</option>
-                        <option class="td" value="TDE">TD E</option>
-                        <option class="td" value="TDF">TD F</option>
-                        <option class="td" value="TDG">TD G</option>
-                        <option class="td" value="TDH">TD H</option>
-                        <option class="td" value="TDI">TD I</option>
-                        <option class="td" value="TDJ">TD J</option>
-                    </select>
-                </div>
-            </div>-->
-            <div id="bouton_fiche_flex">
-                <div class="actions">
-                    <a class="boutonSecondaire bouton_fiche" href="{{ path('app_evaluation_ajout', {'id': fiches.id}) }}">Ajouter une évaluation</a>
-                    <a class="boutonSecondaire bouton_fiche" href="{{ path ('app_grille') }}">Ajouter une grille d'évaluation</a>
-                    <!--<a class="boutonSecondaire" href="">Supprimer une note</a>-->
+            <div class="ficheMatiere">
+                <div class="box1">
+                    <!---<div class="choixGroupe">
+                        <div class="promotion">
+                            <label for="promotion">Promotion</label>
+                            <select name="promotion" id="promotion" class="promotion">
+                                <option class="td" value="BUT1">BUT1</option>
+                                <option class="td" value="BUT2">BUT2</option>
+                                <option class="td" value="BUT3">BUT3</option>
+                                <option class="td" value="BUT4">BUT4</option>
+                                <option class="td" value="BUT5">BUT5</option>
+                                <option class="td" value="BUT6">BUT6</option>
+                            </select>
+                        </div>
+                        <div class="td">
+                            <label for="td">TD</label>
+                            <select name="td" id="td" class="td">
+                                <option class="td" value="TDAB">TD AB</option>
+                                <option class="td" value="TDCD">TD CD</option>
+                                <option class="td" value="TDEF">TD EF</option>
+                                <option class="td" value="TDGH">TD GH</option>
+                                <option class="td" value="TDIJ">TD IJ</option>
+                            </select>
+                        </div>
+                        <div class="tp">
+                            <label for="tp">TP</label>
+                            <select name="tp" id="tp" class="tp">
+                                <option class="td" value="TPA">TP A</option>
+                                <option class="td" value="TDB">TD B</option>
+                                <option class="td" value="TDC">TD C</option>
+                                <option class="td" value="TDD">TD D</option>
+                                <option class="td" value="TDE">TD E</option>
+                                <option class="td" value="TDF">TD F</option>
+                                <option class="td" value="TDG">TD G</option>
+                                <option class="td" value="TDH">TD H</option>
+                                <option class="td" value="TDI">TD I</option>
+                                <option class="td" value="TDJ">TD J</option>
+                            </select>
+                        </div>
+                    </div>-->
+                    <div id="bouton_fiche_flex">
+                        <div class="actions">
+                            <a class="boutonSecondaire bouton_fiche" href="{{ path('app_evaluation_ajout', {'id': fiches.id}) }}">Ajouter une évaluation</a>
+                            <a class="boutonSecondaire bouton_fiche" href="{{ path ('app_grille') }}">Ajouter une grille d'évaluation</a>
+                            <!--<a class="boutonSecondaire" href="">Supprimer une note</a>-->
+                        </div>
+                    </div>
+
+                <div class="box2">
+                    {% for evaluation in evaluations %}
+                        <div class="boxEvaluation">
+                            <h2>{{ evaluation.nom }}</h2>
+                            <div class="infoEvaluation">
+                                <div class="caracteristiqueEvaluation">
+                                    <p>{{ evaluation.statut }} le {{ evaluation.date|date('d/m/Y') }}</p>
+                                    <p>Statut : {{ evaluation.statutGroupe }}</p>
+                                    {% if evaluation.getStatutGroupe() == 'Groupe' %}
+                                        <p>Composition des groupes : {{ evaluation.tailleMaxGroupe }}</p>
+                                    {% endif %}
+                                    <p>Coefficient : {{ evaluation.coef }}</p>
+                                </div>
+                                <div class="notesEvaluation">
+                                    {% set stat = notesStats[evaluation.id] ?? null %}
+                                    <div class="note">
+                                        <p>Moyenne</p>
+                                        {% if stat.notesMoy is not null %}
+                                            {% if stat.notesMoy < 8 %}
+                                                <p class="rouge">{{ stat.notesMoy }}</p>
+                                            {% elseif stat.notesMoy > 8 and stat.notesMoy < 10 %}
+                                                <p class="orange">{{ stat.notesMoy }}</p>
+                                            {% else %}
+                                                <p class="vert">{{ stat.notesMoy }}</p>
+                                            {% endif %}
+                                        {% else %}
+                                            <p>Pas de notation</p>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="note">
+                                        <p>Note mini</p>
+                                        {% if stat.notesMin is not null and stat.notesMin.note is not null %}
+                                            {% if stat.notesMin.note < 8 %}
+                                                <p class="rouge">{{ stat.notesMin.note }}</p>
+                                            {% elseif stat.notesMin.note > 8 and stat.notesMin.note < 10 %}
+                                                <p class="orange">{{ stat.notesMin.note }}</p>
+                                            {% else %}
+                                                <p class="vert">{{ stat.notesMin.note }}</p>
+                                            {% endif %}
+                                        {% else %}
+                                            <p>Pas de notation</p>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="note">
+                                        <p>Note maxi</p>
+                                        {% if stat.notesMax is not null and stat.notesMax.note is not null %}
+                                            {% if stat.notesMax.note < 8 %}
+                                                <p class="rouge">{{ stat.notesMax.note }}</p>
+                                            {% elseif stat.notesMax.note > 8 and stat.notesMax.note < 10 %}
+                                                <p class="orange">{{ stat.notesMax.note }}</p>
+                                            {% else %}
+                                                <p class="vert">{{ stat.notesMax.note }}</p>
+                                            {% endif %}
+                                        {% else %}
+                                            <p>Pas de notation</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="actionEvaluation">
+                                <a href="{{ path ('app_fiche_evaluation', {'id': evaluation.id}) }}" class="bouton">Evaluer</a>
+                                <div>
+                                    <a href="{{ path ('app_evaluation_modif', {'id': evaluation.id}) }}" class="bouton">Modifier</a>
+                                    <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" class="deleteButton">
+                                        <button class="bouton">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
 
-        <div class="box2">
-            {% for evaluation in evaluations %}
-                <div class="boxEvaluation">
-                    <h2>{{ evaluation.nom }}</h2>
-                    <div class="infoEvaluation">
-                        <div class="caracteristiqueEvaluation">
-                            <p>{{ evaluation.statut }} le {{ evaluation.date|date('d/m/Y') }}</p>
-                            <p>Statut : {{ evaluation.statutGroupe }}</p>
-                            {% if evaluation.getStatutGroupe() == 'Groupe' %}
-                                <p>Composition des groupes : {{ evaluation.tailleMaxGroupe }}</p>
-                            {% endif %}
-                            <p>Coefficient : {{ evaluation.coef }}</p>
-                        </div>
-                        <div class="notesEvaluation">
-                            {% set stat = notesStats[evaluation.id] ?? null %}
-                            <div class="note">
-                                <p>Moyenne</p>
-                                {% if stat.notesMoy is not null %}
-                                    {% if stat.notesMoy < 8 %}
-                                        <p class="rouge">{{ stat.notesMoy }}</p>
-                                    {% elseif stat.notesMoy > 8 and stat.notesMoy < 10 %}
-                                        <p class="orange">{{ stat.notesMoy }}</p>
-                                    {% else %}
-                                        <p class="vert">{{ stat.notesMoy }}</p>
-                                    {% endif %}
-                                {% else %}
-                                    <p>Pas de notation</p>
-                                {% endif %}
-                            </div>
-
-                            <div class="note">
-                                <p>Note mini</p>
-                                {% if stat.notesMin is not null and stat.notesMin.note is not null %}
-                                    {% if stat.notesMin.note < 8 %}
-                                        <p class="rouge">{{ stat.notesMin.note }}</p>
-                                    {% elseif stat.notesMin.note > 8 and stat.notesMin.note < 10 %}
-                                        <p class="orange">{{ stat.notesMin.note }}</p>
-                                    {% else %}
-                                        <p class="vert">{{ stat.notesMin.note }}</p>
-                                    {% endif %}
-                                {% else %}
-                                    <p>Pas de notation</p>
-                                {% endif %}
-                            </div>
-
-                            <div class="note">
-                                <p>Note maxi</p>
-                                {% if stat.notesMax is not null and stat.notesMax.note is not null %}
-                                    {% if stat.notesMax.note < 8 %}
-                                        <p class="rouge">{{ stat.notesMax.note }}</p>
-                                    {% elseif stat.notesMax.note > 8 and stat.notesMax.note < 10 %}
-                                        <p class="orange">{{ stat.notesMax.note }}</p>
-                                    {% else %}
-                                        <p class="vert">{{ stat.notesMax.note }}</p>
-                                    {% endif %}
-                                {% else %}
-                                    <p>Pas de notation</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="actionEvaluation">
-                        <a href="{{ path ('app_fiche_evaluation', {'id': evaluation.id}) }}" class="bouton">Evaluer</a>
-                        <div>
-                            <a href="{{ path ('app_evaluation_modif', {'id': evaluation.id}) }}" class="bouton">Modifier</a>
-                            <form method="post" action="{{ path ('app_evaluation_supprime', {'id': evaluation.id}) }}" class="deleteButton">
-                                <button class="bouton">
-                                    Supprimer
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+            </div>
     </div>
 
-    </div>
 {% endblock %}

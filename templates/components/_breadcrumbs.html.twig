@@ -1,0 +1,16 @@
+<div aria-label="breadcrumb">
+    <div class="breadcrumb">
+        {% for breadcrumb in breadcrumbs() %}
+            {% if not loop.last %}
+                <div class="breadcrumb-item">
+                    <a href="{{ breadcrumb.path }}">{{ breadcrumb.title }}</a>
+                </div>
+            {% else %}
+                <div class="breadcrumb-item active" aria-current="page">
+                    {{ breadcrumb.title }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
