@@ -19,7 +19,7 @@ class NoteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('critere', HiddenType::class)
+
             ->add('note', NumberType::class, [
                 'required' => false,
                 'attr' => ['class' => 'input_note'],
@@ -31,26 +31,13 @@ class NoteType extends AbstractType
                     ]),
                 ]
             ]);
-//            ->add('commentaire', TextareaType::class, [
-//                'required' => false,
-//                'attr' => ['class' => 'input_commentaire'],
-//                'row_attr' => ['class' => 'commentaire-wrapper'],
-//                'constraints' => [
-//                    new Length([
-//                        'min' => 2,
-//                        'minMessage' => 'Veuillez saisir au minimum {{ limit }} caractères',
-//                        'max' => 600,
-//                        'maxMessage' => 'Veuillez saisir au maximum {{ limit }} caractères',
-//                    ]),
-//                ]
-//            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => null,
-            //'data_class' => FicheNoteCritere::class,
+            //'data_class' => null,
+            'data_class' => FicheNoteCritere::class,
         ]);
     }
 }

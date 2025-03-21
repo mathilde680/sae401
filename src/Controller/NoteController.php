@@ -10,19 +10,16 @@ use App\Repository\CritereRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\FicheGrilleRepository;
+use App\Repository\FicheNoteCritereRepository;
 use App\Repository\GrilleRepository;
 use App\Repository\GroupeRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Constraints\Range;
 
 final class NoteController extends AbstractController
 {
@@ -100,21 +97,24 @@ final class NoteController extends AbstractController
         FicheGrilleRepository  $ficheGrilleRepository,
         CritereRepository      $critereRepository,
         EtudiantRepository     $etudiantRepository,
+        FicheNoteCritereRepository $ficheNoteCritereRepository
     ): Response
     {
         // Je recupere l'id de l'eval
         $evaluation = $evaluationRepository->find($id);
         $idEvaluation = $evaluation->getId();
 
+        $idMatiere = $evaluation->getMatiere()->getId();
         if (!$evaluation) {
             throw $this->createNotFoundException('Évaluation non trouvée');
         }
 
         // je recupere tout les etudiants liée à la matiere et donc à l'eval
-        $etudiants = $etudiantRepository->findEtudiantsByMatiereId($id);
+        $etudiants = $etudiantRepository->findEtudiantsByMatiereId($idMatiere);
+
 
         // Récupérer les notes associées à cette évaluation
-        $notes = $evaluation->getNotes()->toArray(); // Convertir la collection en tableau
+        //$notes = $evaluation->getNotes()->toArray(); // Convertir la collection en tableau
 
         // je recupere la fiche grille associer à l'eval
         $grilleEvaluation = $ficheGrilleRepository->findBy([
@@ -132,83 +132,69 @@ final class NoteController extends AbstractController
         ]);
 
         // j'instancie FicheNoteCritere (la table qui stock les note par critere des etudiants)
-        $noteCritere = new FicheNoteCritere();
+        //$noteCritere = new FicheNoteCritere();
 
         // Trier les notes par nom en ordre alphabétique
-        usort($notes, function ($a, $b) {
-            // Supposant que vous avez une méthode getEleve()->getNom() pour accéder au nom
-            return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
-        });
-        $notesData = [];
+//        usort($noteCritere, function ($a, $b) {
+//            // Supposant que vous avez une méthode getEleve()->getNom() pour accéder au nom
+//            return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
+//        });
 
-        foreach ($notes as $note) {
-            $etudiantId = $note->getEtudiant()->getId();
-            $notesData[$etudiantId] = [
-                'etudiant' => $note->getEtudiant(),
-                'criteres' => []
-            ];
+        // Préparez les données pour le formulaire
+        // Partie modifiée de votre contrôleur
+        $formData = ['note' => []];
 
+        foreach ($etudiants as $etudiant) {
             foreach ($criteres as $critere) {
-                $critereId = $critere->getId();
-                // Rechercher si une note existe déjà pour cet étudiant et ce critère
-                $existingNote = $entityManager->getRepository(FicheNoteCritere::class)->findOneBy([
-                    'Etudiant' => $etudiantId,
-                    'Critere' => $critereId
-                ]);
+                $noteCritere = new FicheNoteCritere();
+                $noteCritere->setEtudiant($etudiant);
+                $noteCritere->setCritere($critere);
 
-                $notesData[$etudiantId]['criteres'][$critereId] = [
-                    'critere' => $critere,
-                    'valeur' => $existingNote ? $existingNote->getNote() : null
-                ];
+               // $formData['note'][$etudiant->getId()][$critere->getId()] = $noteCritere;
             }
         }
 
-        $form = $this->createFormBuilder(['notes' => $notesData])
-            ->add('notes', CollectionType::class, [
-                'entry_type' => AjoutNoteType::class,
-                'entry_options' => [
-                    'criteres' => $criteres
-                ],
-                'allow_add' => false,
-                'allow_delete' => false,
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Enregistrer les notes',
-                'attr' => ['class' => 'btn btn-primary']
-            ])
-            ->getForm();
+        //$form = $this->createForm(AjoutNoteType::class, $formData);
 
-        $form->handleRequest($request);
+        // Si vous avez déjà des notes, utilisez-les
+//        if (!empty($noteCritere)) {
+//            $formData['note'] = $noteCritere;
+//        } else {
+//            // Sinon, créez de nouvelles notes pour chaque étudiant
+//            $noteCollection = [];
+//            foreach ($etudiants as $etudiant) {
+//                $ficheNote = new FicheNoteCritere();
+//                $ficheNote->setEtudiant($etudiant);
+//                $noteCollection[] = $ficheNote;
+//            }
+//            $formData['note'] = $noteCollection;
+//        }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData();
+        //$form->handleRequest($request);
 
-            foreach ($formData['notes'] as $etudiantId => $etudiantData) {
-                $etudiant = $etudiantRepository->find($etudiantId);
+        if ($request->isMethod('POST')) {
 
-                foreach ($etudiantData['criteres'] as $critereId => $critereData) {
-                    $critere = $critereRepository->find($critereId);
-                    $valeur = $critereData['valeur'];
+            foreach ($etudiants as $etudiant) {
+                foreach ($criteres as $critere) {
+                    if ($request->request->has('etu_'.$etudiant->getId().'_'.$critere->getId())) {}
+                    {
+                        $noteCritere = new FicheNoteCritere();
+                        $noteCritere->setEtudiant($etudiant);
+                        $noteCritere->setCritere($critere);
 
-                    if ($valeur !== null) {
-                        // Vérifier si une note existe déjà
-                        $noteCritere = $entityManager->getRepository(FicheNoteCritere::class)->findOneBy([
-                            'etudiant' => $etudiantId,
-                            'critere' => $critereId
-                        ]);
+                        // Récupération de la note associée dans le formulaire
+                       // if (isset($formData['note'][$etudiant->getId()][$critere->getId()])) {
+                            $noteValue = $request->request->get('etu_'.$etudiant->getId().'_'.$critere->getId());
+                            $noteCritere->setNote($noteValue);
+                       // }
 
-                        if (!$noteCritere) {
-                            $noteCritere = new FicheNoteCritere();
-                            $noteCritere->setEtudiant($etudiant);
-                            $noteCritere->setCritere($critere);
-                        }
-
-                        $noteCritere->setNote($valeur);
+                        // Persiste l'entité pour l'ajouter en base
                         $entityManager->persist($noteCritere);
                     }
                 }
             }
 
+            // Sauvegarde en base
             $entityManager->flush();
             $this->addFlash('success', 'Les notes ont été enregistrées avec succès.');
 
@@ -218,10 +204,9 @@ final class NoteController extends AbstractController
 
         return $this->render('note/index.html.twig', [
             'evaluation' => $evaluation,
-            'notes' => $notes,
-            'form_ajout_note' => $form,
+            //'form_ajout_note' => $form->createView(),
             'etudiants' => $etudiants,
-            'criteres'=>$criteres
+            'criteres' => $criteres,
         ]);
     }
 }

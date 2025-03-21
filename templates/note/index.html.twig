@@ -11,30 +11,31 @@
         {{ form_start(form_ajout_note) }}
         <div>
             {% if evaluation.statutGroupe == "Individuel"%}
-                {% for etudiantId, etudiantForm in form.notes %}
+                {# Récupérez la collection de notes du formulaire #}
+                {% set note_collection = form_ajout_note.note %}
+
+                {% for i, etudiant in etudiants %}
                     <div id="note_eleve">
                         <div class="note-entry">
-                            <p class="nom">{{ etudiantForm.vars.data.etudiant.nom }}</p>
-                            <p class="prenom">{{ etudiantForm.vars.data.etudiant.prenom }}</p>
-
-                            {% for critereId, critereForm in etudiantForm.criteres %}
-                                <p>{{ critereForm.vars.data.critere.nom }}</p>
-                                <p>{{ form_widget(critereForm.valeur, {'attr': {'class': 'input_note'}}) }} / {{ critereForm.vars.data.critere.note }}</p>
-
-                                {# Champs cachés pour les IDs #}
-                                {{ form_widget(critereForm.critere, {'attr': {'value': critereForm.vars.data.critere.id}}) }}
-                            {% endfor %}
-
-                            <p class="note"></p>
-                            <div class="commentaire_note">
-                                {# <p class="commentaire">{{ form_row(form_ajout_note.commentaire) }}</p> #}
+                            <p class="nom">{{ etudiant.nom }}</p>
+                            <p class="prenom">{{ etudiant.prenom }}</p>
+                            <div class="notes-container">
+                                {# if form_ajout_note.note is defined #}
+                                    {% for critere in criteres %}
+                                        <p class="note">
+                                            <input type="text" name="etu_{{ etudiant.id }}_{{ critere.id  }}" value="{{ notes[etudiant.id][critre.id] }}">
+                                        </p>
+                                    {% endfor %}
+                                {# endif #}
                             </div>
 
-                            {# Champ caché pour l'ID de l'étudiant #}
-                            {{ form_widget(etudiantForm.etudiant, {'attr': {'value': etudiantForm.vars.data.etudiant.id}}) }}
+                            <div class="commentaire_note">
+                                {# <p class="commentaire">{{ form_row(note_collection[i].commentaire) }}</p> #}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
+
             {% else %}
                 {% for note_form in form_ajout_note.notes %}
                     <div id="note_eleve">

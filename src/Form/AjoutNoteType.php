@@ -18,13 +18,14 @@ class AjoutNoteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $criteres = $options['criteres'];
+        //$criteres = $options['criteres'];
         $builder
-            ->add('etudiant', HiddenType::class)
-            ->add('criteres', CollectionType::class, [
+            //->add('etudiant', HiddenType::class)
+            ->add('note', CollectionType::class, [
                 'entry_type' => NoteType::class,
                 'allow_add' => false,
                 'allow_delete' => false,
+                'by_reference' => false,
             ]);
     }
 
@@ -32,7 +33,6 @@ class AjoutNoteType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'criteres' => [],
         ]);
     }
 }
