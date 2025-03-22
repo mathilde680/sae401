@@ -39,7 +39,7 @@
     <div class="infoPerso">
         <p>Bienvenue, {{ app.user.prenom }} {{ app.user.nom }}</p>
         <a href="{{ path('app_profil') }}" title="Avatar du profil">
-            <img src="/img/defaultAvatar.png" alt="Avatar du profil">
+            <img src="{{ asset('img/avatar/') }}{{ app.user.photo }}" alt="Avatar du profil">
         </a>
     </div>
 </div>
