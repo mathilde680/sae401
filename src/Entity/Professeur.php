@@ -75,6 +75,9 @@ class Professeur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Evaluation::class, mappedBy: 'professeur')]
     private Collection $Evaluation;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photo = null;
+
     public function __construct()
     {
         $this->grilles = new ArrayCollection();
@@ -296,5 +299,17 @@ class Professeur implements UserInterface, PasswordAuthenticatedUserInterface
     public function getEvaluation(): Collection
     {
         return $this->Evaluation;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
+
+        return $this;
     }
 }

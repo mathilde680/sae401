@@ -4,11 +4,65 @@
 
 {% block main %}
 <h1>Vos informations personnelles </h1>
-<div class="infosProfil">
+<div class="profil">
+        <div class="photo">
+                {% if utilisateur.photo is not null %}
+                        <img src="{{ asset('img/avatar/') }}{{ utilisateur.photo }}" alt="avatar de l'utilisateur">
+                {% else %}
+                        <img src="{{ asset('img/defaultAvatar.png') }}" alt="avatar par défaut">
+                {% endif %}
+        </div>
+        <div class="infosProfil">
+                <h2>{{ utilisateur.prenom }} {{ utilisateur.nom }}</h2>
+                {% if is_granted('ROLE_ETUDIANT') %}
+                    <h2><span>Informations sur la scolarité</span></h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Promotion</th>
+                                <th>TD</th>
+                                <th>TP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ utilisateur.promotion }}</td>
+                                <td>{{ utilisateur.td }}</td>
+                                <td>{{ utilisateur.tp }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h2><span>Informations personnelles</span></h2>
+                    <div>
+                        <p><strong>Addresse mail</strong></p>
+                        <p>{{ utilisateur.email }}</p>
+                    </div>
 
-        <p>{{ utilisateur.prenom }} {{ utilisateur.nom }}</p>
 
-        <a href="{{ path ('app_logout') }}">Déconnexion</a>
+                    <div class="actionProfil">
+                        <a class="bouton" href="{{ path ('app_logout') }}">
+                            Déconnexion
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                            </svg>
+                        </a>
+                    </div>
+                {% else %}
+                    <h2><span>Informations personnelles</span></h2>
+                    <div>
+                        <p><strong>Addresse mail</strong></p>
+                        <p>{{ utilisateur.email }}</p>
+                    </div>
+                    <div class="actionProfil">
+                        <a class="bouton" href="{{ path ('app_logout') }}">
+                            Déconnexion
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                            </svg>
+                        </a>
+                    </div>
+                {% endif %}
+        </div>
 </div>
 
 

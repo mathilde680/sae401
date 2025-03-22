@@ -107,6 +107,9 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: FicheNoteCritere::class, mappedBy: 'Etudiant')]
     private Collection $ficheNoteCriteres;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photo = null;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -438,6 +441,18 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
                 $ficheNoteCritere->setEtudiant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
 
         return $this;
     }

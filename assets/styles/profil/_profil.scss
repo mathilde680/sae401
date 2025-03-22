@@ -1,0 +1,40 @@
+.profil{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  padding: 3% 5%;
+
+  h2{
+    margin-bottom: 0;
+    span{
+      color: $couleurTexte;
+    }
+  }
+  .photo{
+    display: grid;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    img{
+      width: 350px;
+      height: auto;
+    }
+  }
+  .infosProfil{
+    display: grid;
+    grid-column: 2/3;
+
+    table{
+      text-align: left;
+      margin: 1rem 0;
+    }
+    .actionProfil{
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1rem;
+      max-height: 50px;
+      svg{
+        width: 25px;
+      }
+    }
+  }
+}
