@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Alerte;
 use App\Entity\Evaluation;
 use App\Entity\FicheGrille;
 use App\Entity\FicheGroupe;
@@ -15,6 +16,7 @@ use App\Form\AjoutEvaluationGroupeType;
 use App\Form\AjoutEvaluationType;
 use App\Form\FicheMatiereType;
 use App\Form\GrilleType;
+use App\Repository\AlerteRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\FicheGrilleRepository;
@@ -104,7 +106,7 @@ final class EvaluationController extends AbstractController
     }
 
     #[Route('/evaluation/ajout/groupe/{id}', name: 'app_evaluation_groupe_ajout')]
-    public function ajout_groupe_evaluation(int $id, EventDispatcherInterface $eventDispatcher, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, SessionInterface $session, EtudiantRepository $etudiantRepository): Response
+    public function ajout_groupe_evaluation(int $id, EventDispatcherInterface $eventDispatcher, Request $request, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, SessionInterface $session, EtudiantRepository $etudiantRepository, GroupeRepository $groupeRepository, FicheGroupeRepository $ficheGroupeRepository): Response
     {
         $user = $this->getUser();
         $matiere = $matiereRepository->find($id);
@@ -225,6 +227,12 @@ final class EvaluationController extends AbstractController
                 }
             }
 
+            $alerte = new Alerte();
+            $alerte->setEvaluation($evaluation);
+            $alerte->setFicheGroupe($ficheGroupe);
+            $alerte->setMessage("a créé un nouveau groupe en ");
+            $entityManager->persist($alerte);
+
 
             $entityManager->persist($evaluation);
             $entityManager->flush();
@@ -297,6 +305,7 @@ final class EvaluationController extends AbstractController
                 $entityManager->persist($ficheEtudiant);
             }
 
+
             $entityManager->flush();
             // Vide la session
             $session->remove('evaluation_data');
@@ -317,7 +326,8 @@ final class EvaluationController extends AbstractController
         EntityManagerInterface $entityManager,
         NoteRepository         $noteRepository,
         GroupeRepository       $groupeRepository,
-        FicheGroupeRepository  $ficheGroupeRepository
+        FicheGroupeRepository  $ficheGroupeRepository,
+        AlerteRepository $alertesRepository,
     ): Response
     {
         // Récupérer l'entité Evaluation existante
@@ -354,6 +364,12 @@ final class EvaluationController extends AbstractController
         // 4. Maintenant supprimer les groupes associés à l'évaluation
         foreach ($groupes as $groupe) {
             $entityManager->remove($groupe);
+        }
+
+        // 3. Supprimer les fiches grille associées à l'évaluation
+        $alertes = $alertesRepository->findBy(['Evaluation' => $evaluation]);
+        foreach ($alertes as $alerte) {
+            $entityManager->remove($alerte);
         }
 
         // 5. Finalement supprimer l'évaluation

@@ -11,15 +11,16 @@
         <div class="groupe_grid">
             <!---Titre-->
             {% if groupe.taille >= 2 %}
-                <h3>{{ groupe.nom }} / {{ groupe.taille }} personnes</h3>
+                <h3>{{ groupe.nom }} : {{ groupe.taille }} personnes maximum</h3>
             {% else %}
-                <h3>{{ groupe.nom }} / {{ groupe.taille }} personne</h3>
+                <h3>{{ groupe.nom }} : {{ groupe.taille }} personne maximum</h3>
             {% endif %}
 
             <!---Personne du groupe-->
             <div class="eleve_grid">
                 {% for fiche_groupe in groupe.ficheGroupes %}
                     <div class="élève_groupe">
+                        <img src="{{ asset('img/avatar/') }}{{ fiche_groupe.etudiant.photo }}" alt="Avatar du profil">
                         <p>{{ fiche_groupe.etudiant.prenom }}</p>
                         <p>{{ fiche_groupe.etudiant.nom }}</p>
                     </div>

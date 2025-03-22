@@ -10,6 +10,7 @@
   form{
     display: flex;
     flex-direction: column;
+    width: 50%;
     div{
       width: 100%;
       margin-top: 0.3rem;
@@ -20,6 +21,18 @@
       gap: 30px;
       .coef{
         width: 35%;
+      }
+      span{
+        display: flex;
+        align-items: center;
+        font-style: italic;
+        color: #5F5D5D;
+        font-size: 12px;
+
+        svg{
+          width: 18px;
+          margin-right: 0.3rem;
+        }
       }
     }
     .duo_bouton{
