@@ -43,10 +43,16 @@ final class NoteController extends AbstractController
 
         $details = $noteRepository->findAllDetails($evaluation, $user);
 
+        $moyenne = $noteRepository->findNoteByMoyenne($evaluation);
+        $noteMin = $noteRepository->findNoteByMin($evaluation);
+        $noteMax = $noteRepository->findNoteByMax($evaluation);
 
         return $this->render('note/noteDetailEtudiant.html.twig', [
             'details' => $details,
             'evaluation' => $evaluation,
+            'moyenne' => $moyenne,
+            'noteMin' => $noteMin ? $noteMin->getNote() : 'N/A',
+            'noteMax' => $noteMax ? $noteMax->getNote() : 'N/A',
         ]);
     }
 

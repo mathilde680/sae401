@@ -48,16 +48,40 @@
 
         <div class="statsNoteDetails">
             <div class="row">
-                <p>Moyenne</p>
-                <p>...</p>
+                {% if moyenne < 8 %}
+                    <p>Moyenne</p>
+                    <p class="note rouge">{{ moyenne }}</p>
+                {% elseif moyenne > 10 %}
+                    <p>Moyenne</p>
+                    <p class="note vert">{{ moyenne }}</p>
+                {% else %}
+                    <p>Moyenne</p>
+                    <p class="note orange">{{ moyenne }}</p>
+                {% endif %}
             </div>
             <div class="row">
-                <p>Minimum</p>
-                <p>...</p>
+                {% if noteMin < 8 %}
+                    <p>Minimum</p>
+                    <p class="note rouge">{{ noteMin }}</p>
+                {% elseif noteMin > 10 %}
+                    <p>Minimum</p>
+                    <p class="note vert">{{ noteMin }}</p>
+                {% else %}
+                    <p>Minimum</p>
+                    <p class="note orange">{{ noteMin }}</p>
+                {% endif %}
             </div>
             <div class="row">
-                <p>Maximum</p>
-                <p>...</p>
+                {% if noteMax < 8 %}
+                    <p>Maximum</p>
+                    <p class="note rouge">{{ noteMax }}</p>
+                {% elseif noteMax > 10 %}
+                    <p>Maximum</p>
+                    <p class="note vert">{{ noteMax }}</p>
+                {% else %}
+                    <p>Maximum</p>
+                    <p class="note orange">{{ noteMax }}</p>
+                {% endif %}
             </div>
         </div>
 
