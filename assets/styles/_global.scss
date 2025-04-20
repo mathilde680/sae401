@@ -100,7 +100,7 @@ input, select {
 }
 
 
-//couleurs notes
+// couleurs notes
 .vert, .orange, .rouge, .gris{
   padding: 0.3rem 1rem;
   color: $couleurTexte;
@@ -132,5 +132,189 @@ input, select {
   display: none;
 }
 
+
+// LIENS VISITES --------------------------------------------------------------------------
+
+.boutonRetour{
+  margin-bottom: 5px;
+  color: $couleurTexte;
+  &:visited{
+    color: $couleurTexte;
+  }
+}
+
+
+
+// DARK MODE ------------------------------------------------------------------------------ //
+
+.dark {
+  background-color: $couleurTexte;
+  color: $couleurBackground;
+}
+
+//------------------------pour la barre de recherche ----------------------------- //
+
+.dark .header {
+  .partSearch .search-bar input {
+    background-color: $couleurTexte;
+  }
+  .infoPerso p{
+    color: white;
+}
+
+
+
+  //------------------------pour la nav ----------------------------- //
+
+  .dark nav {
+    background-color: #1c1c1c;
+    a {
+      background-color: $couleurTexte;
+      &:visited{
+        color: white;
+      }
+    }
+  }
+
+  //------------------------pour la box "alertes" du dashboard et la div blanche --------------------- //
+
+  .dark main section#dashboardProf .gridProf .alertesEtudiant, .dark main section#dashboardProf .gridProf .alertesProf, .dark .div_blanche{
+    color: $couleurBackground;
+    background-color: #1c1c1c;
+  }
+
+  .dark main section#dashboardProf .gridProf .ressourcesProf, .dark main section#dashboardProf .gridProf .grillesProf, .dark .div_blanche{
+    color: $couleurBackground;
+    background-color: #1c1c1c;
+    .toutesLesGrilles .grillesAffichage {
+      a{
+        color: $couleurBackground;
+      }
+      .crudGrille form button{
+        color: $couleurBackground;
+      }
+    }
+  }
+
+  .dark main section#dashboardProf .gridProf .alertesProf .headerSectionDash .nomSection {
+    color: $couleurBackground;
+    background-color: #1c1c1c;
+  }
+
+  .dark section#dashboardProf .gridProf .ressourcesProf .toutesLesRessources .ressourcesAffichage {
+    color: $couleurBackground;
+    a{
+      color: $couleurBackground;
+    }
+    .crudRessource .actionCrud{
+      color: $couleurBackground;
+    }
+  }
+
+  //------------------------pour la box "demandes" du dashboard --------------------- //
+
+  .dark main section#dashboardProf .gridProf .demandesEtudiant{
+    color: $couleurBackground;
+    background-color: #1c1c1c;
+  }
+
+  //------------------------pour la box "groupes" du dashboard --------------------- //
+
+  .dark main section#dashboardProf .gridProf .groupesEtudiant{
+    color: $couleurBackground;
+    background-color: #1c1c1c;
+
+    //pour la box groupe du dashboard ----------------------
+    #div_groupe .div_nom_groupe p {
+      color: $couleurBackground;
+    }
+  }
+
+  //------------------------pour la page de visualisation des groupes : /groupe/{id}--------------------- //
+
+  .dark #groupes_grid .groupe_grid {
+    background-color: #292929;
+    border: #1b1b1b;
+
+    .eleve_grid .élève_groupe {
+      background-color: #1c1c1c;
+      border: none;
+    }
+  }
+
+  //------------------------pour la box "progression" du dashboard --------------------- //
+
+  .dark main section#dashboardProf .gridProf .progressionEtudiant{
+    color: $couleurBackground;
+    background-color: #1c1c1c;
+  }
+
+  //------------------------pour le bouton retour ------------------------------------ //
+  .dark .boutonRetour{
+    color: $couleurBackground;
+  }
+
+  //-----------------------pour la page de note : /note ------------------------------ //
+
+  .dark main .div_blanche .noteBox{
+    .moyenne_eleve{
+      color: $couleurBackground;
+      background-color: $couleurTexte;
+    }
+
+    h3{
+      color: $couleurBackground;
+    }
+
+    .notes_matiere .note_evaluation a{
+      color: $couleurBackground;
+    }
+  }
+
+
+  .dark main .ajoutEvaluation{
+    background-color: #1c1c1c;
+  }
+
+  .dark .ficheMatiere{
+    .box1 #bouton_fiche_flex .actions .bouton_fiche{
+      background-color: $couleurTexte;
+      color: $couleurBackground;
+      border: #1c1c1c;
+    }
+    .box2 .boxEvaluation{
+      background-color: $couleurTexte;
+    }
+  }
+
+  .dark #notes_evaluation #note_eleve {
+    background-color: $couleurTexte;
+  }
+
+  .dark .ajoutGrille{
+    background-color: #1c1c1c;
+  }
+
+  .dark .overlay .modal{
+    background-color: $couleurTexte;
+    color: $couleurBackground;
+    .modal-header h2, .modal-header button{
+      color: $couleurBackground;
+    }
+  }
+
+
+  .dark #ressources {
+    h3{
+      color: $couleurBackground;
+    }
+    .ressource_prof_grid .ressources_carte{
+      background-color: $couleurTexte;
+      .evaluation_box_nom .eval_nom {
+        color: $couleurBackground;
+      }
+    }
+  }
+}
 
 
