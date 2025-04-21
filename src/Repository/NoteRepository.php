@@ -85,6 +85,19 @@ class NoteRepository extends ServiceEntityRepository
 
         return round($result, 2);
     }
+    public function findNoteByEtudiantAndEvaluation($etudiant, $evaluation)
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.Etudiant', 'et')
+            ->join('f.Evaluation', 'ev')
+            ->where('f.etudiant = :etudiantId')
+            ->andWhere('f.evaluation = :evaluationId')
+            ->setParameter('etudiantId', $etudiant)
+            ->setParameter('evaluationId', $evaluation)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //    /**
     //     * @return Note[] Returns an array of Note objects

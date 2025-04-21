@@ -19,31 +19,54 @@
             <p>Commentaire</p>
         </div>
         {#{% if evaluation.statutGroupe == "Individuel"  %}#}
-            {% for note in notes %}
-                <div id="note_eleve">
-                    <p class="nom">{{ note.etudiant.nom }}</p>
-                    <p class="prenom">{{ note.etudiant.prenom }}</p>
-                    {% if note.note is defined and note.note is not null %}
-                        {% if note.note < 8 %}
-                            <p class="note rouge">{{ note.note }}</p>
-                        {% elseif note.note > 10 %}
-                            <p class="note vert">{{ note.note }}</p>
-                        {% else %}
-                            <p class="note orange">{{ note.note }}</p>
-                        {% endif %}
-                    {% else %}
-                        <p class="note non_note">Pas de note</p>
-                    {% endif %}
+            {% for etudiant in etudiants %}
+                {% set note = notesParEtudiant[etudiant.id] ?? null %}
+                <div class="note-wrapper">
+                    <div class="note_eleve">
+                        <div class="down">
+                            <img src="/img/chevron-down-svgrepo-com.svg" alt="toggle">
+                        </div>
+                        <p class="nom">{{ etudiant.nom }}</p>
+                        <p class="prenom">{{ etudiant.prenom }}</p>
 
-                    {% if note.commentaire is defined and note.commentaire is not null %}
-                        <p class="commentaire">{{ note.commentaire }}</p>
-                    {% else %}
-                        <p class="commentaire">Pas de commentaire</p>
-                    {% endif %}
-                    {% for critere in criteres %}
-                        <p>{{ critere.nom }}</p>
-                        <p>{{ critere.note }}</p>
-                    {% endfor %}
+                        {% if note and note.note is not null %}
+                            {% if note.note < 8 %}
+                                <p class="note rouge">{{ note.note }}</p>
+                            {% elseif note.note > 10 %}
+                                <p class="note vert">{{ note.note }}</p>
+                            {% else %}
+                                <p class="note orange">{{ note.note }}</p>
+                            {% endif %}
+                        {% else %}
+                            <p class="note non_note">Pas de note</p>
+                        {% endif %}
+
+                        {% if note and note.commentaire is not null %}
+                            <p class="commentaire">{{ note.commentaire }}</p>
+                        {% else %}
+                            <p class="commentaire">Pas de commentaire</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="criteres_eleve">
+                            {% for critere in criteres %}
+                                {% set noteCritere = notesParEtudiantEtCritere[etudiant.id][critere.id] ?? null %}
+                                <div class="critere_eleve">
+                                    <p>{{ critere.nom }}</p>
+                                    <p>
+                                        {% set valeur = noteCritere.note ?? null %}
+                                        {% if valeur is not null %}
+                                            {{ valeur }} / {{ critere.note }}
+                                        {% else %}
+                                            Non noté / {{ critere.note }}
+                                        {% endif %}
+                                    </p>
+                                    <p>
+                                        {{ critere.commentaire }}
+                                    </p>
+                                </div>
+                            {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
         {# {% else %}

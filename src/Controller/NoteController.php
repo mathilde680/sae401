@@ -66,7 +66,7 @@ final class NoteController extends AbstractController
 
 
     #[Route('/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
-    public function evaluation_fiche(int $id, EvaluationRepository $evaluationRepository, FicheGrilleRepository $ficheGrilleRepository, CritereRepository $critereRepository, FicheNoteCritereRepository $ficheNoteCritereRepository): Response
+    public function evaluation_fiche(int $id, EtudiantRepository $etudiantRepository, NoteRepository $noteRepository, EvaluationRepository $evaluationRepository, FicheGrilleRepository $ficheGrilleRepository, CritereRepository $critereRepository, FicheNoteCritereRepository $ficheNoteCritereRepository): Response
     {
         $evaluation = $evaluationRepository->find($id);
         $idEvaluation = $evaluation->getId();
@@ -74,6 +74,14 @@ final class NoteController extends AbstractController
         if (!$evaluation) {
             throw $this->createNotFoundException('Évaluation non trouvée');
         }
+        $matiere  = $evaluation->getMatiere();
+        $idMatiere = $matiere->getId();
+
+        // je recupere tout les etudiants liée à la matiere et donc à l'eval
+        $etudiants = $etudiantRepository->findEtudiantsByMatiereId($idMatiere);
+        usort($etudiants, function ($a, $b) {
+            return strcmp($a->getNom(), $b->getNom());
+        });
 
         // Récupérer les notes associées à cette évaluation
         $notes = $evaluation->getNotes()->toArray(); // Convertir la collection en tableau
@@ -90,16 +98,36 @@ final class NoteController extends AbstractController
             'Grille' => $idGrille,
         ]);
 
-        // Trier les notes par nom en ordre alphabétique
-        usort($notes, function ($a, $b) {
-            // Supposant que vous avez une méthode getEleve()->getNom() pour accéder au nom
-            return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
-        });
+        $notesParEtudiantEtCritere = [];
+        $notesParEtudiant = [];
+
+        foreach ($etudiants as $etudiant) {
+            // Stocke les notes critère
+            foreach ($criteres as $critere) {
+                $notesCritere = $ficheNoteCritereRepository->findBy([
+                    'Critere' => $critere,
+                    'Etudiant' => $etudiant,
+                ]);
+
+                foreach ($notesCritere as $noteCritere) {
+                    $notesParEtudiantEtCritere[$etudiant->getId()][$noteCritere->getCritere()->getId()] = $noteCritere;
+                }
+            }
+            $note = $noteRepository->findOneBy([
+                'Etudiant' => $etudiant,
+                'Evaluation' => $evaluation,
+            ]);
+            $notesParEtudiant[$etudiant->getId()] = $note;
+        }
+
 
         return $this->render('note/evaluation.html.twig', [
             'evaluation' => $evaluation,
             'notes' => $notes,
             'criteres' => $criteres,
+            'etudiants'=> $etudiants,
+            'notesParEtudiantEtCritere' => $notesParEtudiantEtCritere,
+            'notesParEtudiant' => $notesParEtudiant,
         ]);
     }
 
@@ -125,10 +153,9 @@ final class NoteController extends AbstractController
 
         // je recupere tout les etudiants liée à la matiere et donc à l'eval
         $etudiants = $etudiantRepository->findEtudiantsByMatiereId($idMatiere);
-
-
-        // Récupérer les notes associées à cette évaluation
-        //$notes = $evaluation->getNotes()->toArray(); // Convertir la collection en tableau
+        usort($etudiants, function ($a, $b) {
+            return strcmp($a->getNom(), $b->getNom());
+        });
 
         // je recupere la fiche grille associer à l'eval
         $grilleEvaluation = $ficheGrilleRepository->findBy([
@@ -145,55 +172,39 @@ final class NoteController extends AbstractController
             'Grille' => $idGrille,
         ]);
 
-        // j'instancie FicheNoteCritere (la table qui stock les note par critere des etudiants)
-        //$noteCritere = new FicheNoteCritere();
-
-        // Trier les notes par nom en ordre alphabétique
-//        usort($noteCritere, function ($a, $b) {
-//            // Supposant que vous avez une méthode getEleve()->getNom() pour accéder au nom
-//            return strcmp($a->getEtudiant()->getNom(), $b->getEtudiant()->getNom());
-//        });
-
-        // Préparez les données pour le formulaire
-        // Partie modifiée de votre contrôleur
-        $formData = ['note' => []];
+        // récupere les notes qui seraient déja entrée
+        $notesExistantes = [];
 
         foreach ($etudiants as $etudiant) {
             foreach ($criteres as $critere) {
-                $noteCritere = new FicheNoteCritere();
-                $noteCritere->setEtudiant($etudiant);
-                $noteCritere->setCritere($critere);
+                $noteCritere = $ficheNoteCritereRepository->findOneBy([
+                    'Etudiant' => $etudiant,
+                    'Critere' => $critere
+                ]);
 
-                // $formData['note'][$etudiant->getId()][$critere->getId()] = $noteCritere;
+                if ($noteCritere) {
+                    $notesExistantes[$etudiant->getId()][$critere->getId()] = $noteCritere->getNote();
+                }
             }
         }
-
-        //$form = $this->createForm(AjoutNoteType::class, $formData);
-
-        // Si vous avez déjà des notes, utilisez-les
-//        if (!empty($noteCritere)) {
-//            $formData['note'] = $noteCritere;
-//        } else {
-//            // Sinon, créez de nouvelles notes pour chaque étudiant
-//            $noteCollection = [];
-//            foreach ($etudiants as $etudiant) {
-//                $ficheNote = new FicheNoteCritere();
-//                $ficheNote->setEtudiant($etudiant);
-//                $noteCollection[] = $ficheNote;
-//            }
-//            $formData['note'] = $noteCollection;
-//        }
-
-        //$form->handleRequest($request);
 
         if ($request->isMethod('POST')) {
 
             foreach ($etudiants as $etudiant) {
                 foreach ($criteres as $critere) {
                     if ($request->request->has('etu_' . $etudiant->getId() . '_' . $critere->getId())) {
-                        $noteCritere = new FicheNoteCritere();
-                        $noteCritere->setEtudiant($etudiant);
-                        $noteCritere->setCritere($critere);
+                        $noteCritere = $ficheNoteCritereRepository->findOneBy([
+                            'Etudiant' => $etudiant,
+                            'Critere' => $critere
+                        ]);
+
+                        // Si elle n'existe pas
+                        if (!$noteCritere) {
+                            $noteCritere = new FicheNoteCritere();
+                            $noteCritere->setEtudiant($etudiant);
+                            $noteCritere->setCritere($critere);
+                            $entityManager->persist($noteCritere);
+                        }
 
                         // Récupération de la note associée dans le formulaire
                         // if (isset($formData['note'][$etudiant->getId()][$critere->getId()])) {
@@ -204,10 +215,6 @@ final class NoteController extends AbstractController
                             $noteValue = floatval($noteValue);
                         }
                         $noteCritere->setNote($noteValue);
-                        // }
-
-                        // Persiste l'entité pour l'ajouter en base
-                        $entityManager->persist($noteCritere);
                     }
                 }
             }
@@ -225,6 +232,7 @@ final class NoteController extends AbstractController
             //'form_ajout_note' => $form->createView(),
             'etudiants' => $etudiants,
             'criteres' => $criteres,
+            'notesExistantes' => $notesExistantes,
         ]);
     }
 }

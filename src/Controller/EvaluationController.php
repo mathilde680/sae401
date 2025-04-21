@@ -6,6 +6,7 @@ use App\Entity\Alerte;
 use App\Entity\Evaluation;
 use App\Entity\FicheGrille;
 use App\Entity\FicheGroupe;
+use App\Entity\FicheNoteCritere;
 use App\Entity\Groupe;
 use App\Entity\Matiere;
 use App\Entity\Note;
@@ -17,6 +18,7 @@ use App\Form\AjoutEvaluationType;
 use App\Form\FicheMatiereType;
 use App\Form\GrilleType;
 use App\Repository\AlerteRepository;
+use App\Repository\CritereRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\FicheGrilleRepository;
@@ -252,7 +254,7 @@ final class EvaluationController extends AbstractController
     }
 
     #[Route('/evaluation/ajout/grille/{id}', name: 'app_evaluation_grille_ajout')]
-    public function ajout_grille_evaluation(int $id, Request $request, GrilleRepository $grilleRepository, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, EtudiantRepository $etudiantRepository, EvaluationRepository $evaluationRepository, ProfesseurRepository $professeurRepository, SessionInterface $session): Response
+    public function ajout_grille_evaluation(int $id, Request $request, CritereRepository $critereRepository, GrilleRepository $grilleRepository, EntityManagerInterface $entityManager, MatiereRepository $matiereRepository, EtudiantRepository $etudiantRepository, EvaluationRepository $evaluationRepository, ProfesseurRepository $professeurRepository, SessionInterface $session): Response
     {
         // Recupere id prof
         $user = $this->getUser();
@@ -291,7 +293,10 @@ final class EvaluationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupérer la grille sélectionnée dans le formulaire
             $grille = $form->get('grille')->getData();
-
+            $idGrille = $grille->getId();
+            $criteres = $critereRepository->findBy([
+                'Grille' => $idGrille,
+            ]);
             // pour chaque étudiant on instancie une nouvelle fiche relier à l'eval et à la grille
             foreach ($etudiants as $etudiant) {
                 $ficheEtudiant = new FicheGrille();
@@ -301,7 +306,12 @@ final class EvaluationController extends AbstractController
                 if ($grille) {
                     $ficheEtudiant->setGrille($grille);
                 }
-
+                foreach ($criteres as $critere) {
+                    $noteCritere = new FicheNoteCritere();
+                    $noteCritere->setEtudiant($etudiant);
+                    $noteCritere->setCritere($critere);
+                    $entityManager->persist($noteCritere);
+                }
                 $entityManager->persist($ficheEtudiant);
             }
 

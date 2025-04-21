@@ -180,7 +180,24 @@ try{
 }catch (error){
     console.error('Erreur détectée :', error);
 }
+// TOGGLE NOTE---------------------------------------------------------------
+try{
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggles = document.querySelectorAll(".note-wrapper .down");
 
+        toggles.forEach(toggle => {
+            toggle.addEventListener("click", () => {
+                const wrapper = toggle.closest(".note-wrapper");
+                const criteres = wrapper.querySelector(".criteres_eleve");
+
+                toggle.classList.toggle("rotated");
+                criteres.classList.toggle("open");
+            });
+        });
+    });
+}catch(error){
+    console.error('Erreur détectée :', error);
+}
 // DARKMODE -----------------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', function () {

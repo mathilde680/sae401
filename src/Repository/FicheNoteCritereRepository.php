@@ -16,6 +16,21 @@ class FicheNoteCritereRepository extends ServiceEntityRepository
         parent::__construct($registry, FicheNoteCritere::class);
     }
 
+    public function findNoteByEtudiantAndCritere(int $etudiantId, int $critereId): ?Note
+    {
+        return $this->createQueryBuilder('n')
+            ->join('n.etudiant', 'e')
+            ->join('n.critere', 'c')
+            ->where('e.id = :etudiantId')
+            ->andWhere('c.id = :critereId')
+            ->setParameters([
+                'etudiantId' => $etudiantId,
+                'critereId' => $critereId
+            ])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return FicheNoteCritere[] Returns an array of FicheNoteCritere objects
     //     */

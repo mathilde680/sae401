@@ -3,7 +3,7 @@
 {% block title %}Évaluation module{% endblock %}
 
 {% block main %}
-    <div class="div_blanche">
+    <div id="notes_evaluation" class="div_blanche">
         <h1>{{ evaluation.matiere.nom }}</h1>
         <h2>{{ evaluation.nom }}</h2>
 
@@ -11,30 +11,36 @@
         {# form_start(form_ajout_note) #}
         <form method="POST" action="{{ path('app_note', {'id': evaluation.id}) }}">
 
-            {% if evaluation.statutGroupe == "Individuel"%}
+            {% if evaluation.statutGroupe == "Individuel" %}
                 {# Récupérez la collection de notes du formulaire #}
                 {# set note_collection = form_ajout_note.note #}
 
                 {% for i, etudiant in etudiants %}
-                    <div id="note_eleve">
-                        <div class="note-entry">
+                    <div class="note-wrapper">
+                        <div class="note_eleve">
+                            <div class="down">
+                                <img src="/img/chevron-down-svgrepo-com.svg" alt="toggle">
+                            </div>
                             <p class="nom">{{ etudiant.nom }}</p>
                             <p class="prenom">{{ etudiant.prenom }}</p>
-                            <div class="notes-container">
-                                {# if form_ajout_note.note is defined #}
-                                    {% for critere in criteres %}
-                                        <p class="note">
-                                            <input type="text" name="etu_{{ etudiant.id }}_{{ critere.id  }}">
-                                            {# <input type="text" name="etu_{{ etudiant.id }}_{{ critere.id  }}" value="{{ notes[etudiant.id][critre.id] }}"> #}
-                                        </p>
-                                    {% endfor %}
-                                {# endif #}
-                            </div>
-
-                            <div class="commentaire_note">
-                                {# <p class="commentaire">{{ form_row(note_collection[i].commentaire) }}</p> #}
-                            </div>
                         </div>
+
+                        <div class="criteres_eleve">
+                            {# if form_ajout_note.note is defined #}
+                            {% for critere in criteres %}
+                                <div class="critere_eleve">
+                                    <label>{{ critere.nom }}</label>
+                                    <div class="input_critere_eleve"><input type="number" name="etu_{{ etudiant.id }}_{{ critere.id }}" min="0" max="{{ critere.note }}"  value="{{ notesExistantes[etudiant.id][critere.id] is defined ? notesExistantes[etudiant.id][critere.id] : '' }}"><p>/{{ critere.note }}</p></div>
+                                    <p>{{ critere.commentaire }}</p>
+                                    {# <input type="text" name="etu_{{ etudiant.id }}_{{ critere.id  }}" value="{{ notes[etudiant.id][critre.id] }}"> #}
+                                </div>
+                            {% endfor %}
+                            {# endif #}
+                        </div>
+                        {#<div class="commentaire_note">
+                             <p class="commentaire">{{ form_row(note_collection[i].commentaire) }}</p>
+                        </div>#}
+
                     </div>
                 {% endfor %}
 
@@ -53,7 +59,7 @@
                         </div>
                     </div>
                 {% endfor %}
-                {#{% for groupe in groupes %}
+                {# {% for groupe in groupes %}
                     <div class="groupe-container">
                         <h3>{{ groupe.nom }} ({{ groupe.taille }} personne{{ groupe.taille > 1 ? 's' : '' }})</h3>
 
@@ -65,11 +71,10 @@
                         </div>
 
                     </div>
-                {% endfor %}#}
+                {% endfor %} #}
             {% endif %}
             <button type="submit" class="btn btn-primary bouton bouton_note">Enregistrer</button>
         </form>
-
 
 
         {# form_end(form_ajout_note) #}
