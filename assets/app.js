@@ -115,64 +115,68 @@ try {
 
 
 //----------------GESTION CRITERES ------------------------
-document
-    .querySelectorAll('.add_item_link')
-    .forEach(btn => {
-        btn.addEventListener("click", addFormToCollection)
-    });
-
-document
-    .querySelectorAll('.criteres')
-    .forEach(collection => {
-        collection.addEventListener("click", function (e) {
-            if (e.target.classList.contains("remove-item")) {
-                e.target.closest('.critere-item').remove();
-            }
+try{
+    document
+        .querySelectorAll('.add_item_link')
+        .forEach(btn => {
+            btn.addEventListener("click", addFormToCollection)
         });
-    });
 
-function addFormToCollection(e) {
-    const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
-    const item = document.createElement('div');
+    document
+        .querySelectorAll('.criteres')
+        .forEach(collection => {
+            collection.addEventListener("click", function (e) {
+                if (e.target.classList.contains("remove-item")) {
+                    e.target.closest('.critere-item').remove();
+                }
+            });
+        });
 
-    item.classList.add("critere-item");
+    function addFormToCollection(e) {
+        const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+        const item = document.createElement('div');
 
-    item.innerHTML = collectionHolder
-            .dataset
-            .prototype
-            .replace(/__name__/g, collectionHolder.dataset.index) +
-        '<button type="button" class="remove-item">X</button>';
+        item.classList.add("critere-item");
 
-    collectionHolder.appendChild(item);
-    collectionHolder.dataset.index++;
-}
+        item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(/__name__/g, collectionHolder.dataset.index) +
+            '<button type="button" class="remove-item">X</button>';
+
+        collectionHolder.appendChild(item);
+        collectionHolder.dataset.index++;
+    }
 
 // Affichage des notes
 
-document.addEventListener('DOMContentLoaded', function () {
-    const titresNotes = document.querySelectorAll('.titre_note');
+    document.addEventListener('DOMContentLoaded', function () {
+        const titresNotes = document.querySelectorAll('.titre_note');
 
-    titresNotes.forEach(titre => {
-        const notesMatiereDiv = titre.nextElementSibling;
+        titresNotes.forEach(titre => {
+            const notesMatiereDiv = titre.nextElementSibling;
 
 
-        notesMatiereDiv.style.height = '0';
-        notesMatiereDiv.style.overflow = 'hidden';
+            notesMatiereDiv.style.height = '0';
+            notesMatiereDiv.style.overflow = 'hidden';
 
-        titre.addEventListener('click', function () {
-            const notesMatiereDiv = this.nextElementSibling;
+            titre.addEventListener('click', function () {
+                const notesMatiereDiv = this.nextElementSibling;
 
-            if (notesMatiereDiv.style.height === '0px') {
-                // Obtenir la hauteur réelle du contenu
-                const height = notesMatiereDiv.scrollHeight + 'px';
-                notesMatiereDiv.style.height = height;
-                this.querySelector('svg').style.transform = 'rotate(90deg)';
-            } else {
-                notesMatiereDiv.style.height = '0';
-                this.querySelector('svg').style.transform = 'rotate(0deg)';
-            }
+                if (notesMatiereDiv.style.height === '0px') {
+                    // Obtenir la hauteur réelle du contenu
+                    const height = notesMatiereDiv.scrollHeight + 'px';
+                    notesMatiereDiv.style.height = height;
+                    this.querySelector('svg').style.transform = 'rotate(90deg)';
+                } else {
+                    notesMatiereDiv.style.height = '0';
+                    this.querySelector('svg').style.transform = 'rotate(0deg)';
+                }
+            });
+
+            titre.style.cursor = 'pointer';
         });
-
-        titre.style.cursor = 'pointer';
     });
-});
+}catch (error){
+    console.error('Erreur détectée :', error);
+}

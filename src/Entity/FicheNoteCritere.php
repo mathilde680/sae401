@@ -20,6 +20,7 @@ class FicheNoteCritere
     private ?Etudiant $Etudiant = null;
 
     #[ORM\ManyToOne(inversedBy: 'ficheNoteCriteres')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Critere $Critere = null;
 
     public function getId(): ?int
