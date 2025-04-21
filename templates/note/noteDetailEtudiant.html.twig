@@ -1,15 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Notes Détail{% endblock %}
+{% block title %}Visualisation des notes des élèves{% endblock %}
 
 {% block main %}
     <h1>Détails de la note</h1>
+    <a class="boutonRetour" href="{{ path ('app_note_etudiant') }}">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+        </svg>
+        Retour
+    </a>
     <div class="boxNoteDetails">
         <div class="infosGeneraleNoteDetails">
             <div class="infosGenerales">
-                <h2>{{ evaluation.matiere.nom }}</h2>
-                <h2>{{ evaluation.nom }}</h2>
-                <h3>Evaluation saisie par : {{ evaluation.professeur.prenom }} {{ evaluation.professeur.nom }}</h3>
+                <h2>{{ evaluation.matiere.nom }} - {{ evaluation.nom }}</h2>
+                <h3>Evaluation du {{ evaluation.date|date('d/m/Y') }} saisie par {{ evaluation.professeur.prenom }} {{ evaluation.professeur.nom }}</h3>
             </div>
         {% if details is not empty %}
         {% for detail in details %}
@@ -95,7 +100,6 @@
                 </div>
 
             </div>
-
         {% endif %}
     </div>
 

@@ -53,7 +53,7 @@ try {
             const deleteUrl = `/grille/${grilleId}/supprime`;
             deleteForm.action = deleteUrl;
 
-            if(useGrilleUtiliser){
+            if (useGrilleUtiliser) {
                 // Modifier du titre de la modal
                 useGrilleUtiliser.href = `/evaluation/ajout/grille/${grilleId}`;
             }
@@ -180,3 +180,52 @@ try{
 }catch (error){
     console.error('Erreur détectée :', error);
 }
+
+// DARKMODE -----------------------------------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', function () {
+    const darkModeToggle = document.getElementById('darkmode');
+    const html = document.documentElement;
+    const header = document.querySelector('header');
+    const headerLinks = document.querySelectorAll('header a');
+    const footer = document.querySelector('footer');
+    const otherElements = document.querySelectorAll('.dark-mode-specific');
+
+    function isDarkModeEnabled() {
+        return localStorage.getItem('darkModeEnabled') === 'true';
+    }
+
+    function enableDarkMode() {
+        html.classList.add('dark');
+        header?.classList.add('dark');
+        footer?.classList.add('dark');
+        headerLinks.forEach(link => link.classList.add('dark'));
+        otherElements.forEach(element => element.classList.add('dark'));
+        localStorage.setItem('darkModeEnabled', 'true');
+    }
+
+    function disableDarkMode() {
+        html.classList.remove('dark');
+        header?.classList.remove('dark');
+        footer?.classList.remove('dark');
+        headerLinks.forEach(link => link.classList.remove('dark'));
+        otherElements.forEach(element => element.classList.remove('dark'));
+        localStorage.setItem('darkModeEnabled', 'false');
+    }
+
+    // Appliquer au chargement
+    if (isDarkModeEnabled()) {
+        enableDarkMode();
+    }
+
+    // Attacher l'event uniquement si le bouton est présent
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', function () {
+            if (isDarkModeEnabled()) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        });
+    }
+});
