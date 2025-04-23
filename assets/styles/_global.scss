@@ -150,31 +150,145 @@ input, select {
 .dark {
   background-color: $couleurTexte;
   color: $couleurBackground;
-}
 
-//------------------------pour la barre de recherche ----------------------------- //
-
-.dark .header {
-  .partSearch .search-bar input {
-    background-color: $couleurTexte;
+  .header {                                                  //---Bonjour, ...
+    .infoPerso p {
+      color: $couleurBackground;
+    }
   }
-  .infoPerso p{
-    color: white;
-}
 
-
-
-  //------------------------pour la nav ----------------------------- //
-
-  .dark nav {
+  .blockPrincipal nav{                                        //---nav
     background-color: #1c1c1c;
-    a {
+    a{
+      color: $couleurBackground;
+    }
+  }
+
+  .div_blanche, .ajoutMatiere, .ajoutGrille{                 //---div de fond
+    background-color: #1c1c1c;
+
+    .noteBox{
+      .moyenne_eleve{
+        color: $couleurBackground;
+        background-color: $couleurTexte;
+      }
+
+      h3{
+        color: $couleurBackground;
+      }
+
+      .notes_matiere .note_evaluation a{
+        color: $couleurBackground;
+      }
+    }
+
+    .boxNoteDetails .infosGeneraleNoteDetails .infosGenerales h3{
+      color: $couleurBackground;
+    }
+  }
+
+  .box .boxGrille a{
+    background-color: $couleurTexte;
+    color: $couleurBackground;
+    &:hover{
+      background-color: #202020;
+      border-bottom: 1px solid $couleurBackground;
+    }
+  }
+
+  #groupes_grid .groupe_grid {                            //---pour la page de visualisation des groupes : /groupe/{id}
+    background-color: #292929;
+    border: #1b1b1b;
+
+    .eleve_grid .élève_groupe {
+      background-color: #1c1c1c;
+      border: none;
+    }
+  }
+
+  .overlay .modal{                                        //---pour les modales
+    background-color: $couleurTexte;
+    color: $couleurBackground;
+    .modal-header h2, .modal-header button{
+      color: $couleurBackground;
+    }
+  }
+
+  #ressources {                                            //---pour les ressources
+    h3{
+      color: $couleurBackground;
+    }
+    .ressource_prof_grid .ressources_carte{
       background-color: $couleurTexte;
-      &:visited{
-        color: white;
+
+      .evaluation_box_nom .eval_nom {
+        color: $couleurBackground;
       }
     }
   }
+
+  #notes_evaluation .note-wrapper {
+    .note_eleve {
+      background-color: $couleurTexte;
+      border: 1px solid #383838;
+
+      p {
+        color: $couleurBackground;
+      }
+    }
+
+    .criteres_eleve .critere_eleve{
+      border-left: 0.1rem solid #333333;
+      border-right: 0.1rem solid #333333;
+      border-bottom: 0.1rem solid #333333;
+    }
+  }
+
+  .boutonRetour{                                           //---pour le bouton retour
+    color: $couleurBackground;
+  }
+
+
+}
+
+.dark main section#dashboardProf .gridProf{             //---blocs du tableau de bord
+  .alertesEtudiant, .demandesEtudiant, .groupesEtudiant, .progressionEtudiant, .alertesProf, .ressourcesProf, .grillesProf{
+    background-color: #1c1c1c;
+    color: $couleurBackground;
+  }
+
+  .groupesEtudiant{                                     //---pour la box groupe du dashboard
+    #div_groupe .div_nom_groupe p {
+      color: $couleurBackground;
+    }
+  }
+
+  .ressourcesProf .toutesLesRessources .ressourcesAffichage {    //---pour la box ressources du dashboard
+    color: $couleurBackground;
+    a, .crudRessource .actionCrud{
+      color: $couleurBackground;
+    }
+  }
+
+  .toutesLesGrilles .grillesAffichage {                       //---pour la box grilles du dashboard
+    a.grille-link{
+      color: $couleurBackground;
+    }
+    .crudGrille {
+      a, form button{
+        color: $couleurBackground;
+      }
+    }
+  }
+
+
+}
+
+
+
+/*
+  //------------------------pour la nav ----------------------------- //
+
 
   //------------------------pour la box "alertes" du dashboard et la div blanche --------------------- //
 
@@ -317,4 +431,4 @@ input, select {
   }
 }
 
-
+*/

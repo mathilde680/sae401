@@ -1,107 +1,110 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Visualisation des notes des élèves{% endblock %}
+{% block title %}Visualisation du détail d'une note{% endblock %}
 
 {% block main %}
-    <h1>Détails de la note</h1>
-    <a class="boutonRetour" href="{{ path ('app_note_etudiant') }}">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
-        </svg>
-        Retour
-    </a>
-    <div class="boxNoteDetails">
-        <div class="infosGeneraleNoteDetails">
-            <div class="infosGenerales">
-                <h2>{{ evaluation.matiere.nom }} - {{ evaluation.nom }}</h2>
-                <h3>Evaluation du {{ evaluation.date|date('d/m/Y') }} saisie par {{ evaluation.professeur.prenom }} {{ evaluation.professeur.nom }}</h3>
+    <div class="div_blanche">
+        <h1>Détails de la note</h1>
+        <a class="boutonRetour" href="{{ path ('app_note_etudiant') }}">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+            </svg>
+            Retour
+        </a>
+        <div class="boxNoteDetails">
+            <div class="infosGeneraleNoteDetails">
+                <div class="infosGenerales">
+                    <h2>{{ evaluation.matiere.nom }} - {{ evaluation.nom }}</h2>
+                    <h3>Evaluation du {{ evaluation.date|date('d/m/Y') }} saisie par {{ evaluation.professeur.prenom }} {{ evaluation.professeur.nom }}</h3>
+                </div>
+                {% if details is not empty %}
+                {% for detail in details %}
+                    <div class="commentaireNoteDetails">
+                        <p>Commentaire : <span>{{ detail.commentaire }}</span> </p>
+                    </div>
+                {% endfor %}
             </div>
-        {% if details is not empty %}
-        {% for detail in details %}
-            <div class="commentaireNoteDetails">
-                <p>Commentaire : <span>{{ detail.commentaire }}</span> </p>
-            </div>
-        {% endfor %}
-        </div>
-        <div class="noteEleve">
-            {% for detail in details %}
-                {% if detail.note < 8 %}
-                    <div class="row">
-                        <p>Note de l'élève </p>
-                        <p class="note rouge">{{ detail.note }}</p>
-                    </div>
-                {% elseif detail.note > 10 %}
-                    <div class="row">
-                        <p>Note de l'élève</p>
-                        <p class="note vert">{{ detail.note }}</p>
-                    </div>
-                {% else %}
-                    <div class="row">
-                        <p>Note de l'élève</p>
-                        <p class="note orange">{{ detail.note }}</p>
-                    </div>
+            <div class="noteEleve">
+                {% for detail in details %}
+                    {% if detail.note < 8 %}
+                        <div class="row">
+                            <p>Note de l'élève </p>
+                            <p class="note rouge">{{ detail.note }}</p>
+                        </div>
+                    {% elseif detail.note > 10 %}
+                        <div class="row">
+                            <p>Note de l'élève</p>
+                            <p class="note vert">{{ detail.note }}</p>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <p>Note de l'élève</p>
+                            <p class="note orange">{{ detail.note }}</p>
+                        </div>
 
-                {% endif %}
-            {% endfor %}
-            <div class="criteresNoteDetails">
+                    {% endif %}
+                {% endfor %}
+                <div class="criteresNoteDetails">
+                    <div class="row">
+                        <p>Critère blabla</p>
+                        <p>note</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statsNoteDetails">
                 <div class="row">
-                    <p>Critère blabla</p>
-                    <p>note</p>
+                    {% if moyenne < 8 %}
+                        <p>Moyenne</p>
+                        <p class="note rouge">{{ moyenne }}</p>
+                    {% elseif moyenne > 10 %}
+                        <p>Moyenne</p>
+                        <p class="note vert">{{ moyenne }}</p>
+                    {% else %}
+                        <p>Moyenne</p>
+                        <p class="note orange">{{ moyenne }}</p>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    {% if noteMin < 8 %}
+                        <p>Minimum</p>
+                        <p class="note rouge">{{ noteMin }}</p>
+                    {% elseif noteMin > 10 %}
+                        <p>Minimum</p>
+                        <p class="note vert">{{ noteMin }}</p>
+                    {% else %}
+                        <p>Minimum</p>
+                        <p class="note orange">{{ noteMin }}</p>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    {% if noteMax < 8 %}
+                        <p>Maximum</p>
+                        <p class="note rouge">{{ noteMax }}</p>
+                    {% elseif noteMax > 10 %}
+                        <p>Maximum</p>
+                        <p class="note vert">{{ noteMax }}</p>
+                    {% else %}
+                        <p>Maximum</p>
+                        <p class="note orange">{{ noteMax }}</p>
+                    {% endif %}
                 </div>
             </div>
-        </div>
 
-        <div class="statsNoteDetails">
-            <div class="row">
-                {% if moyenne < 8 %}
-                    <p>Moyenne</p>
-                    <p class="note rouge">{{ moyenne }}</p>
-                {% elseif moyenne > 10 %}
-                    <p>Moyenne</p>
-                    <p class="note vert">{{ moyenne }}</p>
-                {% else %}
-                    <p>Moyenne</p>
-                    <p class="note orange">{{ moyenne }}</p>
-                {% endif %}
-            </div>
-            <div class="row">
-                {% if noteMin < 8 %}
-                    <p>Minimum</p>
-                    <p class="note rouge">{{ noteMin }}</p>
-                {% elseif noteMin > 10 %}
-                    <p>Minimum</p>
-                    <p class="note vert">{{ noteMin }}</p>
-                {% else %}
-                    <p>Minimum</p>
-                    <p class="note orange">{{ noteMin }}</p>
-                {% endif %}
-            </div>
-            <div class="row">
-                {% if noteMax < 8 %}
-                    <p>Maximum</p>
-                    <p class="note rouge">{{ noteMax }}</p>
-                {% elseif noteMax > 10 %}
-                    <p>Maximum</p>
-                    <p class="note vert">{{ noteMax }}</p>
-                {% else %}
-                    <p>Maximum</p>
-                    <p class="note orange">{{ noteMax }}</p>
-                {% endif %}
-            </div>
-        </div>
+            <a href="{{ path ('app_reclamation_etudiant') }}" class="bouton">Faire une réclamation</a>
 
-        <a href="{{ path ('app_reclamation_etudiant') }}" class="bouton">Faire une réclamation</a>
+            {% else %}
+                <div class="statutnoteDetails">
+                    <p>Statut de l'évaluation</p>
+                    <div>
+                        <p class="gris">{{ evaluation.statut }}</p>
+                    </div>
 
-        {% else %}
-            <div class="statutnoteDetails">
-                <p>Statut de l'évaluation</p>
-                <div>
-                    <p class="gris">{{ evaluation.statut }}</p>
                 </div>
-
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
     </div>
+
 
 
 {% endblock %}

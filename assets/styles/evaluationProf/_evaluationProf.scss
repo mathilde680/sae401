@@ -46,20 +46,15 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: transform 0.3s ease-in-out;
 
         &:hover {
-          background-color: $couleurBackground;
-          border-radius: 0.3rem;
           cursor: pointer;
         }
 
-        img {
-          width: 2rem;
-          transition: transform 0.3s ease;
-        }
-
-        &.rotated img {
+        &.rotated svg {
           transform: rotate(180deg);
+          transition: transform 0.3s ease-in-out;
         }
       }
 
