@@ -16,7 +16,20 @@ class FicheGrilleRepository extends ServiceEntityRepository
         parent::__construct($registry, FicheGrille::class);
     }
 
-
+    public function findCriteresByEtudiantAndEvaluation($userId, $evaluationId)
+    {
+        return $this->createQueryBuilder('fg')
+            ->select('c', 'fnc')
+            ->join('App\Entity\Critere', 'c', 'WITH', 'c.Grille = fg.Grille')
+            ->join('App\Entity\FicheNoteCritere', 'fnc', 'WITH', 'fnc.Critere = c.id')
+            ->where('fg.Etudiant = :user')
+            ->andWhere('fg.Evaluation = :evaluation')
+            ->andWhere('fnc.Etudiant = :user')
+            ->setParameter('user', $userId)
+            ->setParameter('evaluation', $evaluationId)
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return FicheGrille[] Returns an array of FicheGrille objects
     //     */

@@ -45,10 +45,13 @@
                     {% endif %}
                 {% endfor %}
                 <div class="criteresNoteDetails">
-                    <div class="row">
-                        <p>Critère blabla</p>
-                        <p>note</p>
-                    </div>
+                    {% for critere in criteres %}
+                        <div class="row">
+                            <p>{{ critere.critere.nom }}</p>
+                            <p>{{ critere.critere.commentaire }}</p>
+                            <p>{{ critere.note }} / {{ critere.critere.note }}</p>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
 
