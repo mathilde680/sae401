@@ -31,6 +31,21 @@ class FicheNoteCritereRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    // Dans FicheNoteCritereRepository
+    public function findNoteCriteresByEtudiantAndEvaluation($userId, $evaluationId)
+    {
+        return $this->createQueryBuilder('fnc')
+            ->join('fnc.Critere', 'c')
+            ->join('c.Grille', 'g')
+            ->join('App\Entity\FicheGrille', 'fg', 'WITH', 'fg.Grille = g AND fg.Etudiant = fnc.Etudiant')
+            ->where('fnc.Etudiant = :user')
+            ->andWhere('fg.Evaluation = :evaluation')
+            ->setParameter('user', $userId)
+            ->setParameter('evaluation', $evaluationId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return FicheNoteCritere[] Returns an array of FicheNoteCritere objects
     //     */
