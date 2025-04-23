@@ -164,7 +164,7 @@ input, select {
     }
   }
 
-  .div_blanche, .ajoutMatiere, .ajoutGrille{                 //---div de fond
+  .div_blanche, .ajoutMatiere, .ajoutGrille, .ajoutEvaluation{          //---div de fond
     background-color: #1c1c1c;
 
     .noteBox{
@@ -227,7 +227,7 @@ input, select {
     }
   }
 
-  #notes_evaluation .note-wrapper {
+  #notes_evaluation .note-wrapper {                     //---quand un prof note les élèves : /note/{id}
     .note_eleve {
       background-color: $couleurTexte;
       border: 1px solid #383838;
@@ -241,6 +241,17 @@ input, select {
       border-left: 0.1rem solid #333333;
       border-right: 0.1rem solid #333333;
       border-bottom: 0.1rem solid #333333;
+    }
+  }
+
+  .ficheMatiere{                                          //---affichage d'une matière : /fiche/{id}
+    .box1 #bouton_fiche_flex .actions .bouton_fiche{
+      background-color: $couleurTexte;
+      color: $couleurBackground;
+      border: #1c1c1c;
+    }
+    .box2 .boxEvaluation{
+      background-color: $couleurTexte;
     }
   }
 
@@ -265,6 +276,9 @@ input, select {
 
   .ressourcesProf .toutesLesRessources .ressourcesAffichage {    //---pour la box ressources du dashboard
     color: $couleurBackground;
+    &:hover{
+      background-color: transparent;
+    }
     a, .crudRessource .actionCrud{
       color: $couleurBackground;
     }
