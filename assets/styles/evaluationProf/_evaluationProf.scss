@@ -61,6 +61,7 @@
         }
       }
 
+
       p {
         margin: 1% 2%;
         white-space: nowrap;
@@ -107,6 +108,20 @@
           justify-content: center;
           input{
             max-width: 3rem;
+          }
+        }
+        .membre{
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          border: 0.1rem solid  $couleurBackground;
+          border-radius: 0.5rem;
+          padding: 0.3rem 0.3rem;
+          max-width: 200px;
+          margin: 0 0.5rem;
+          p{
+            margin: 0;
+            padding-left: 1rem;
           }
         }
       }

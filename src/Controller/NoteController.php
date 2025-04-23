@@ -10,6 +10,7 @@ use App\Repository\CritereRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\FicheGrilleRepository;
+use App\Repository\FicheGroupeRepository;
 use App\Repository\FicheNoteCritereRepository;
 use App\Repository\GrilleRepository;
 use App\Repository\GroupeRepository;
@@ -66,7 +67,17 @@ final class NoteController extends AbstractController
 
 
     #[Route('/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
-    public function evaluation_fiche(int $id, EtudiantRepository $etudiantRepository, NoteRepository $noteRepository, EvaluationRepository $evaluationRepository, FicheGrilleRepository $ficheGrilleRepository, CritereRepository $critereRepository, FicheNoteCritereRepository $ficheNoteCritereRepository): Response
+    public function evaluation_fiche(
+        int $id,
+        EtudiantRepository $etudiantRepository,
+        NoteRepository $noteRepository,
+        EvaluationRepository $evaluationRepository,
+        FicheGrilleRepository $ficheGrilleRepository,
+        CritereRepository $critereRepository,
+        FicheNoteCritereRepository $ficheNoteCritereRepository,
+        GroupeRepository $groupeRepository,
+        FicheGroupeRepository $ficheGroupeRepository
+    ): Response
     {
         $evaluation = $evaluationRepository->find($id);
         $idEvaluation = $evaluation->getId();
@@ -120,6 +131,64 @@ final class NoteController extends AbstractController
             $notesParEtudiant[$etudiant->getId()] = $note;
         }
 
+        //GROUPE
+        $evalStatutGroupe = $evaluation->getStatutGroupe();
+        $membresGroupe = [];
+        $allGroupesEval = [];
+        $noteParGroupe=[];
+        $notesParGroupeEtCritere = [];
+        $commentairesExistants = [];
+
+        if($evalStatutGroupe === "Groupe"){
+            $allGroupesEval = $groupeRepository->findBy([
+                'evaluation' => $idEvaluation,
+            ]);
+            foreach ($allGroupesEval as $groupe) {
+                $ficheGroupe = $ficheGroupeRepository->findBy([
+                    'Groupe' => $groupe,
+                ]);
+                $premierEtudiant = null;
+                foreach ($ficheGroupe as $fiche) {
+                    $etudiant = $fiche->getEtudiant();
+                    $membresGroupe[$groupe->getId()][] = $etudiant;
+                    if ($premierEtudiant === null) {
+                        $premierEtudiant = $etudiant;
+                    }
+                }
+                // Si un étudiant trouvé, on prend sa note ( psk valable pour tout le groupe)
+                if ($premierEtudiant !== null) {
+                    $note = $noteRepository->findOneBy([
+                        'Etudiant' => $premierEtudiant,
+                        'Evaluation' => $idEvaluation,
+                    ]);
+                    $noteParGroupe[$groupe->getId()] = $note;
+                    foreach ($criteres as $critere) {
+                        $noteCritere = $ficheNoteCritereRepository->findOneBy([
+                            'Etudiant' => $premierEtudiant,
+                            'Critere' => $critere,
+                        ]);
+
+                        if ($noteCritere) {
+                            // CECI EST LA CLÉ : stockez les notes de critères pour le groupe
+                            $notesParEtudiantEtCritere[$groupe->getId()][$critere->getId()] = $noteCritere;
+                        }
+                    }
+                } else {
+                    $noteParGroupe[$groupe->getId()] = null;
+                }
+                if (!empty($membresGroupe[$groupe->getId()])) {
+                    $etudiantRef = $membresGroupe[$groupe->getId()][0];
+                    $noteEvaluation = $noteRepository->findOneBy([
+                        'Evaluation' => $evaluation,
+                        'Etudiant' => $etudiantRef,
+                    ]);
+
+                    if ($noteEvaluation && $noteEvaluation->getCommentaire()) {
+                        $commentairesExistants[$groupe->getId()] = $noteEvaluation->getCommentaire();
+                    }
+                }
+            }
+        }
 
         return $this->render('note/evaluation.html.twig', [
             'evaluation' => $evaluation,
@@ -128,6 +197,10 @@ final class NoteController extends AbstractController
             'etudiants'=> $etudiants,
             'notesParEtudiantEtCritere' => $notesParEtudiantEtCritere,
             'notesParEtudiant' => $notesParEtudiant,
+            'allGroupe'=> $allGroupesEval,
+            'membresGroupe' => $membresGroupe,
+            'noteParGroupe' => $noteParGroupe,
+            'commentairesExistants' => $commentairesExistants,
         ]);
     }
 
@@ -139,7 +212,9 @@ final class NoteController extends AbstractController
         FicheGrilleRepository      $ficheGrilleRepository,
         CritereRepository          $critereRepository,
         EtudiantRepository         $etudiantRepository,
-        FicheNoteCritereRepository $ficheNoteCritereRepository
+        FicheNoteCritereRepository $ficheNoteCritereRepository,
+        GroupeRepository            $groupeRepository,
+        FicheGroupeRepository     $ficheGroupeRepository,
     ): Response
     {
         // Je recupere l'id de l'eval
@@ -172,7 +247,7 @@ final class NoteController extends AbstractController
             'Grille' => $idGrille,
         ]);
 
-        // récupere les notes qui seraient déja entrée
+        // je récupere les notes qui seraient déja entrée
         $notesExistantes = [];
         $notesEvaluationsExistantes = [];
 
@@ -197,75 +272,163 @@ final class NoteController extends AbstractController
             }
         }
 
-        if ($request->isMethod('POST')) {
+        //GROUPE
+        $evalStatutGroupe = $evaluation->getStatutGroupe();
+        $membresGroupe = [];
+        $allGroupesEval = [];
 
-            foreach ($etudiants as $etudiant) {
-                $noteGlobal = 0;
-
-                foreach ($criteres as $critere) {
-                    if ($request->request->has('etu_' . $etudiant->getId() . '_' . $critere->getId())) {
-                        $noteCritere = $ficheNoteCritereRepository->findOneBy([
-                            'Etudiant' => $etudiant,
-                            'Critere' => $critere
-                        ]);
-
-                        // Si elle n'existe pas
-                        if (!$noteCritere) {
-                            $noteCritere = new FicheNoteCritere();
-                            $noteCritere->setEtudiant($etudiant);
-                            $noteCritere->setCritere($critere);
-                            $entityManager->persist($noteCritere);
-                        }
-
-                        // Récupération de la note associée dans le formulaire
-                        $noteValue = $request->request->get('etu_' . $etudiant->getId() . '_' . $critere->getId());
-                        if ($noteValue === '') {
-                            $noteValue = null;
-                        } else {
-                            $noteValue = floatval($noteValue);
-                            $noteGlobal += $noteValue;
-                        }
-                        $noteCritere->setNote($noteValue);
-
-                    }
-                }
-                $noteEvaluation = $noteRepository->findOneBy([
-                    'Evaluation' => $evaluation,
-                    'Etudiant' => $etudiant,
+        if($evalStatutGroupe === "Groupe"){
+            $allGroupesEval = $groupeRepository->findBy([
+                'evaluation' => $idEvaluation,
+            ]);
+            foreach ($allGroupesEval as $groupe) {
+                $ficheGroupe = $ficheGroupeRepository->findBy([
+                    'Groupe' => $groupe,
                 ]);
-                if (!$noteEvaluation) {
-                    $noteEvaluation = new Note();
-                    $noteEvaluation->setEtudiant($etudiant);
-                    $noteEvaluation->setEvaluation($evaluation);
-                    $entityManager->persist($noteEvaluation);
-                }
-                $noteEvaluation->setNote($noteGlobal);
-
-                if($request->request->has('etu_' . $etudiant->getId() . '_' . $evaluation->getId())){
-                    $commentaireEvalValue = $request->request->get('etu_' . $etudiant->getId() . '_' . $evaluation->getId());
-                    if ($commentaireEvalValue === null || $commentaireEvalValue === '') {
-                        $commentaireEvalValue = '';
-                    }
-                    $noteEvaluation->setCommentaire($commentaireEvalValue);
+                foreach ($ficheGroupe as $fiche) {
+                    $etudiant = $fiche->getEtudiant();
+                    $membresGroupe[$groupe->getId()][] = $etudiant;
                 }
             }
+        }
 
-            // Sauvegarde en base
+        if ($request->isMethod('POST')) {
+            if($evalStatutGroupe === "Individuel") {
+                foreach ($etudiants as $etudiant) {
+                    $noteGlobal = 0;
+
+                    foreach ($criteres as $critere) {
+                        if ($request->request->has('etu_' . $etudiant->getId() . '_' . $critere->getId())) {
+                            $noteCritere = $ficheNoteCritereRepository->findOneBy([
+                                'Etudiant' => $etudiant,
+                                'Critere' => $critere
+                            ]);
+
+                            // Si elle n'existe pas
+                            if (!$noteCritere) {
+                                $noteCritere = new FicheNoteCritere();
+                                $noteCritere->setEtudiant($etudiant);
+                                $noteCritere->setCritere($critere);
+                                $entityManager->persist($noteCritere);
+                            }
+
+                            // Récupération de la note associée dans le formulaire
+                            $noteValue = $request->request->get('etu_' . $etudiant->getId() . '_' . $critere->getId());
+                            if ($noteValue === '') {
+                                $noteValue = null;
+                            } else {
+                                $noteValue = floatval($noteValue);
+                                $noteGlobal += $noteValue;
+                            }
+                            $noteCritere->setNote($noteValue);
+
+                        }
+                    }
+                    $noteEvaluation = $noteRepository->findOneBy([
+                        'Evaluation' => $evaluation,
+                        'Etudiant' => $etudiant,
+                    ]);
+                    if (!$noteEvaluation) {
+                        $noteEvaluation = new Note();
+                        $noteEvaluation->setEtudiant($etudiant);
+                        $noteEvaluation->setEvaluation($evaluation);
+                        $entityManager->persist($noteEvaluation);
+                    }
+                    $noteEvaluation->setNote($noteGlobal);
+
+                    if($request->request->has('etu_' . $etudiant->getId() . '_' . $evaluation->getId())){
+                        $commentaireEvalValue = $request->request->get('etu_' . $etudiant->getId() . '_' . $evaluation->getId());
+                        if ($commentaireEvalValue === null || $commentaireEvalValue === '') {
+                            $commentaireEvalValue = '';
+                        }
+                        $noteEvaluation->setCommentaire($commentaireEvalValue);
+                    }
+                }
+            }
+            else{
+                foreach ($allGroupesEval as $groupe) {
+                    $noteGlobaleGroupe = 0;
+                    $etudiantsGroupe = $membresGroupe[$groupe->getId()] ?? [];
+
+                    if (empty($etudiantsGroupe)) {
+                        continue;
+                    }
+
+                    // Utiliser le premier étudiant comme référence pour les notes du groupe
+                    $etudiantRef = $etudiantsGroupe[0];
+
+                    // Calcul de la note globale basée sur notes critères
+                    foreach ($criteres as $critere) {
+                        $noteValue = null;
+
+                        if ($request->request->has('etu_' . $etudiantRef->getId() . '_' . $critere->getId())) {
+                            $noteValue = $request->request->get('etu_' . $etudiantRef->getId() . '_' . $critere->getId());
+
+                            if ($noteValue === '') {
+                                $noteValue = null;
+                            } else {
+                                $noteValue = floatval($noteValue);
+                                $noteGlobaleGroupe += $noteValue;
+                            }
+                        }
+
+                        // Applique note à tous les membres du groupe
+                        foreach ($etudiantsGroupe as $etudiant) {
+                            $noteCritere = $ficheNoteCritereRepository->findOneBy([
+                                'Etudiant' => $etudiant,
+                                'Critere' => $critere
+                            ]);
+
+                            if (!$noteCritere) {
+                                $noteCritere = new FicheNoteCritere();
+                                $noteCritere->setEtudiant($etudiant);
+                                $noteCritere->setCritere($critere);
+                                $entityManager->persist($noteCritere);
+                            }
+
+                            $noteCritere->setNote($noteValue);
+                        }
+                    }
+
+                    // Récupérer le commentaire du groupe
+                    $commentaireGroupe = '';
+                    if ($request->request->has('commentaire_groupe_' . $groupe->getId())) {
+                        $commentaireGroupe = $request->request->get('commentaire_groupe_' . $groupe->getId());
+                    }
+
+                    // Appliquer la note et le commentaire à tous les membres du groupe
+                    foreach ($etudiantsGroupe as $etudiant) {
+                        $noteEvaluation = $noteRepository->findOneBy([
+                            'Evaluation' => $evaluation,
+                            'Etudiant' => $etudiant,
+                        ]);
+
+                        if (!$noteEvaluation) {
+                            $noteEvaluation = new Note();
+                            $noteEvaluation->setEtudiant($etudiant);
+                            $noteEvaluation->setEvaluation($evaluation);
+                            $entityManager->persist($noteEvaluation);
+                        }
+
+                        $noteEvaluation->setNote($noteGlobaleGroupe);
+                        $noteEvaluation->setCommentaire($commentaireGroupe);
+                    }
+                }
+            }
             $entityManager->flush();
             $this->addFlash('success', 'Les notes ont été enregistrées avec succès.');
 
             return $this->redirectToRoute('app_fiche_evaluation', ['id' => $evaluation->getId()]);
         }
-
-
         return $this->render('note/index.html.twig', [
             'evaluation' => $evaluation,
             'notesEvaluationsExistantes' => $notesEvaluationsExistantes,
-            //'form_ajout_note' => $form->createView(),
             'etudiants' => $etudiants,
             'criteres' => $criteres,
             'notesParEtudiant' => $notesParEtudiant,
             'notesExistantes' => $notesExistantes,
+            'allGroupe'=> $allGroupesEval,
+            'membresGroupe' => $membresGroupe,
         ]);
     }
 }

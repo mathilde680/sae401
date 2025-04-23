@@ -12,15 +12,15 @@
             </div>
             <a class="bouton" href="{{ path('app_note', {'id': evaluation.id}) }}">Évaluer</a>
         </div>
-        <button id="toggle-all">Tout déplier</button>
+        <button id="toggle-all" class="bouton">Tout déplier</button>
 
-        <div class="header_notes">
-            <p>Nom</p>
-            <p>Prénom</p>
-            <p>Note</p>
-            <p>Commentaire</p>
-        </div>
-        {#{% if evaluation.statutGroupe == "Individuel"  %}#}
+        {% if evaluation.statutGroupe == "Individuel"  %}
+            <div class="header_notes">
+                <p>Nom</p>
+                <p>Prénom</p>
+                <p>Note</p>
+                <p>Commentaire</p>
+            </div>
             {% for etudiant in etudiants %}
                 {% set note = notesParEtudiant[etudiant.id] ?? null %}
                 <div class="note-wrapper">
@@ -73,8 +73,72 @@
                     </div>
                 </div>
             {% endfor %}
-        {# {% else %}
-            {% for note in notes %}
+        {% else %}
+            <div class="header_notes">
+                <p>Groupe</p>
+                <p>Note</p>
+                <p>Commentaire</p>
+            </div>
+            {% for i, groupe in allGroupe %}
+                <div class="note-wrapper">
+                    <div class="note_eleve">
+                        <div class="down">
+                            <svg alt="toggle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </div>
+                        <p class="nom">{{ groupe.nom }}</p>
+
+                        {% set note = noteParGroupe[groupe.id] ?? null %}
+                        {% if note and note.note is not null %}
+                            {% if note.note < 8 %}
+                                <p class="note rouge">{{ note.note }}</p>
+                            {% elseif note.note > 10 %}
+                                <p class="note vert">{{ note.note }}</p>
+                            {% else %}
+                                <p class="note orange">{{ note.note }}</p>
+                            {% endif %}
+                        {% else %}
+                            <p class="note non_note">Pas de note</p>
+                        {% endif %}
+
+                        {% if note and note.commentaire is not null %}
+                            <p class="commentaire">{{ note.commentaire }}</p>
+                        {% else %}
+                            <p class="commentaire">Pas de commentaire</p>
+                        {% endif %}
+
+                    </div>
+                    <div class="criteres_eleve">
+                        <div class="critere_eleve">
+                            {% for membre in membresGroupe[groupe.id] %}
+                                <div class="membre">
+                                    <img width="30px" src="{{ asset('img/avatar/') }}{{ membre.photo }}" alt="Avatar du profil">
+                                    <p>{{ membre.nom }} {{ membre.prenom }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% for critere in criteres %}
+                            {% set noteCritere = notesParEtudiantEtCritere[groupe.id][critere.id] ?? null %}
+                            <div class="critere_eleve">
+                                <p>{{ critere.nom }}</p>
+                                <p>
+                                    {% set valeur = noteCritere.note ?? null %}
+                                    {% if valeur is not null %}
+                                        {{ valeur }} / {{ critere.note }}
+                                    {% else %}
+                                        Non noté / {{ critere.note }}
+                                    {% endif %}
+                                </p>
+                                <p>
+                                    {{ critere.commentaire }}
+                                </p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            {#{% for note in notes %}
                 <div id="note_eleve">
                     <p class="nom">{{ note.etudiant.nom }}</p>
                     <p class="prenom">{{ note.etudiant.prenom }}</p>
@@ -95,8 +159,8 @@
                         <p class="commentaire">Pas de commentaire</p>
                     {% endif %}
                 </div>
-            {% endfor %} #}
-            {#{% for groupe in groupes %}
+            {% endfor %} }
+            {% for groupe in groupes %}
                 <p>{{ groupe.nom }} --- {{ groupe.taille }} personnes</p>
                 {% for fiche_groupe in groupe.ficheGroupes %}
                     <div class="élève_groupe">
@@ -105,7 +169,7 @@
                     </div>
                 {% endfor %}
             {% endfor %}#}
-        {# {% endif %} #}
+        {% endif %}
     </div>
 
 {% endblock %}
