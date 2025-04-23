@@ -174,6 +174,7 @@ final class NoteController extends AbstractController
 
         // récupere les notes qui seraient déja entrée
         $notesExistantes = [];
+        $notesEvaluationsExistantes = [];
 
         foreach ($etudiants as $etudiant) {
             foreach ($criteres as $critere) {
@@ -186,11 +187,21 @@ final class NoteController extends AbstractController
                     $notesExistantes[$etudiant->getId()][$critere->getId()] = $noteCritere->getNote();
                 }
             }
+            $noteEvaluation = $noteRepository->findOneBy([
+                'Evaluation' => $evaluation,
+                'Etudiant' => $etudiant,
+            ]);
+            if ($noteEvaluation) {
+                $notesParEtudiant[$etudiant->getId()] = $noteEvaluation;
+                $notesEvaluationsExistantes[$etudiant->getId()][$evaluation->getId()] = $noteEvaluation->getCommentaire();
+            }
         }
 
         if ($request->isMethod('POST')) {
 
             foreach ($etudiants as $etudiant) {
+                $noteGlobal = 0;
+
                 foreach ($criteres as $critere) {
                     if ($request->request->has('etu_' . $etudiant->getId() . '_' . $critere->getId())) {
                         $noteCritere = $ficheNoteCritereRepository->findOneBy([
@@ -207,15 +218,35 @@ final class NoteController extends AbstractController
                         }
 
                         // Récupération de la note associée dans le formulaire
-                        // if (isset($formData['note'][$etudiant->getId()][$critere->getId()])) {
                         $noteValue = $request->request->get('etu_' . $etudiant->getId() . '_' . $critere->getId());
                         if ($noteValue === '') {
                             $noteValue = null;
                         } else {
                             $noteValue = floatval($noteValue);
+                            $noteGlobal += $noteValue;
                         }
                         $noteCritere->setNote($noteValue);
+
                     }
+                }
+                $noteEvaluation = $noteRepository->findOneBy([
+                    'Evaluation' => $evaluation,
+                    'Etudiant' => $etudiant,
+                ]);
+                if (!$noteEvaluation) {
+                    $noteEvaluation = new Note();
+                    $noteEvaluation->setEtudiant($etudiant);
+                    $noteEvaluation->setEvaluation($evaluation);
+                    $entityManager->persist($noteEvaluation);
+                }
+                $noteEvaluation->setNote($noteGlobal);
+
+                if($request->request->has('etu_' . $etudiant->getId() . '_' . $evaluation->getId())){
+                    $commentaireEvalValue = $request->request->get('etu_' . $etudiant->getId() . '_' . $evaluation->getId());
+                    if ($commentaireEvalValue === null || $commentaireEvalValue === '') {
+                        $commentaireEvalValue = '';
+                    }
+                    $noteEvaluation->setCommentaire($commentaireEvalValue);
                 }
             }
 
@@ -229,9 +260,11 @@ final class NoteController extends AbstractController
 
         return $this->render('note/index.html.twig', [
             'evaluation' => $evaluation,
+            'notesEvaluationsExistantes' => $notesEvaluationsExistantes,
             //'form_ajout_note' => $form->createView(),
             'etudiants' => $etudiants,
             'criteres' => $criteres,
+            'notesParEtudiant' => $notesParEtudiant,
             'notesExistantes' => $notesExistantes,
         ]);
     }

@@ -44,10 +44,13 @@
 
       .down {
         display: flex;
+        width: 2rem;
         justify-content: center;
         align-items: center;
         transition: transform 0.3s ease-in-out;
-
+        img{
+          width: 2rem;
+        }
         &:hover {
           cursor: pointer;
         }

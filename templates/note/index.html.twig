@@ -6,7 +6,13 @@
     <div id="notes_evaluation" class="div_blanche">
         <h1>{{ evaluation.matiere.nom }}</h1>
         <h2>{{ evaluation.nom }}</h2>
-
+        <button id="toggle-all">Tout déplier</button>
+        <div class="header_notes">
+            <p>Nom</p>
+            <p>Prénom</p>
+            <p>Note</p>
+            <p>Commentaire</p>
+        </div>
 
         {# form_start(form_ajout_note) #}
         <form method="POST" action="{{ path('app_note', {'id': evaluation.id}) }}">
@@ -23,6 +29,21 @@
                             </div>
                             <p class="nom">{{ etudiant.nom }}</p>
                             <p class="prenom">{{ etudiant.prenom }}</p>
+                            {% set note = notesParEtudiant[etudiant.id] ?? null %}
+                            {% if note and note.note is not null %}
+                                {% if note.note < 8 %}
+                                    <p class="note rouge">{{ note.note }}</p>
+                                {% elseif note.note > 10 %}
+                                    <p class="note vert">{{ note.note }}</p>
+                                {% else %}
+                                    <p class="note orange">{{ note.note }}</p>
+                                {% endif %}
+                            {% else %}
+                                <p class="note non_note">Pas de note</p>
+                            {% endif %}
+
+                            <textarea name="etu_{{ etudiant.id }}_{{ evaluation.id }}">{{ notesEvaluationsExistantes[etudiant.id][evaluation.id] ?? '' }}</textarea>
+
                         </div>
 
                         <div class="criteres_eleve">

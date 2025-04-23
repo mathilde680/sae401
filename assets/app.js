@@ -182,8 +182,9 @@ try{
 }
 // TOGGLE NOTE---------------------------------------------------------------
 try{
-    document.addEventListener("DOMContentLoaded", () => {
         const toggles = document.querySelectorAll(".note-wrapper .down");
+        const toggleAllBtn = document.getElementById("toggle-all");
+        let allOpen = false;
 
         toggles.forEach(toggle => {
             toggle.addEventListener("click", () => {
@@ -194,7 +195,18 @@ try{
                 criteres.classList.toggle("open");
             });
         });
-    });
+        toggleAllBtn.addEventListener("click", () => {
+            toggles.forEach(toggle => {
+                const wrapper = toggle.closest(".note-wrapper");
+                const criteres = wrapper.querySelector(".criteres_eleve");
+
+                criteres.classList.toggle("open", !allOpen);
+                toggle.classList.toggle("rotated", !allOpen);
+            });
+
+            allOpen = !allOpen;
+            toggleAllBtn.textContent = allOpen ? "Tout replier" : "Tout déplier";
+        });
 }catch(error){
     console.error('Erreur détectée :', error);
 }
