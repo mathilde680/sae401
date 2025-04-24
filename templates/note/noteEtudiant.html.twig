@@ -25,24 +25,29 @@
             <div class="notes_matiere">
 
             {% for evaluation in matiere.Evaluation %} <!-- pour chacune des matiere, si il ya une eval j'affiche : -->
-                <div class="note_evaluation">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
-                    </svg>
-                    <a href="{{ path ('app_note_detail', {'id': evaluation.id}) }}" title="Voir le détail de ma note">{{ evaluation.nom }}</a>
+                <a href="{{ path ('app_note_detail', {'id': evaluation.id}) }}" title="Voir le détail de ma note" class="note_evaluation">
+                    <div class="svg">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+                        </svg>
+                    </div>
 
-                    {% for note in evaluation.notes %}
-                        {% if note.note == null %}
-                            <p class="gris">{{ evaluation.statut }}</p>
-                        {% elseif note.note < 8 %}
-                            <p class="note rouge">{{ note.note }}</p>
-                        {% elseif note.note > 10 %}
-                            <p class="note vert">{{ note.note }}</p>
-                        {% else %}
-                            <p class="note orange">{{ note.note }}</p>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                    <p class="p">{{ evaluation.nom }}</p>
+                    <div class="notes">
+                        {% for note in evaluation.notes %}
+                            {% if note.note == null %}
+                                <p class="gris">{{ evaluation.statut }}</p>
+                            {% elseif note.note < 8 %}
+                                <p class="note rouge">{{ note.note }}</p>
+                            {% elseif note.note > 10 %}
+                                <p class="note vert">{{ note.note }}</p>
+                            {% else %}
+                                <p class="note orange">{{ note.note }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                </a>
             {% endfor %}
             </div>
         </div>

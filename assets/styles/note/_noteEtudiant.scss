@@ -31,22 +31,38 @@
     transition: height 0.3s ease-in-out;
 
     .note_evaluation{
-
-      display: flex;
-      align-items: center;
-      gap: 2%;
-
-
-      .note{
-        width: fit-content;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+      width: 40%;
+      padding: 0.5rem 1rem;
+      border-radius: 0.3rem;
+      &:hover{
+        background-color: $couleurBackground;
       }
-      a{
+      .notes{
+        display: flex;
+        justify-content: flex-end;
+        .note{
+          width: fit-content;
+        }
+      }
+
+
+      .p{
         color: $couleurTexte;
-        width: 15%;
+        display: flex;
+        align-items: center;
+        margin: 0;
       }
 
-      svg{
-        height: 3vh;
+      .svg{
+        display: flex;
+        align-items: center;
+        svg{
+          height: 3vh;
+          stroke: black;
+        }
       }
     }
   }
