@@ -142,7 +142,6 @@ final class NoteController extends AbstractController
         $allGroupesEval = [];
         $noteParGroupe=[];
         $notesParGroupeEtCritere = [];
-        $commentairesExistants = [];
 
         if($evalStatutGroupe === "Groupe"){
             $allGroupesEval = $groupeRepository->findBy([
@@ -181,17 +180,6 @@ final class NoteController extends AbstractController
                 } else {
                     $noteParGroupe[$groupe->getId()] = null;
                 }
-                if (!empty($membresGroupe[$groupe->getId()])) {
-                    $etudiantRef = $membresGroupe[$groupe->getId()][0];
-                    $noteEvaluation = $noteRepository->findOneBy([
-                        'Evaluation' => $evaluation,
-                        'Etudiant' => $etudiantRef,
-                    ]);
-
-                    if ($noteEvaluation && $noteEvaluation->getCommentaire()) {
-                        $commentairesExistants[$groupe->getId()] = $noteEvaluation->getCommentaire();
-                    }
-                }
             }
         }
 
@@ -205,7 +193,6 @@ final class NoteController extends AbstractController
             'allGroupe'=> $allGroupesEval,
             'membresGroupe' => $membresGroupe,
             'noteParGroupe' => $noteParGroupe,
-            'commentairesExistants' => $commentairesExistants,
         ]);
     }
 
@@ -277,7 +264,7 @@ final class NoteController extends AbstractController
             }
         }
 
-        //GROUPE
+        //GROUPE------------------------------------
         $evalStatutGroupe = $evaluation->getStatutGroupe();
         $membresGroupe = [];
         $allGroupesEval = [];
@@ -293,6 +280,41 @@ final class NoteController extends AbstractController
                 foreach ($ficheGroupe as $fiche) {
                     $etudiant = $fiche->getEtudiant();
                     $membresGroupe[$groupe->getId()][] = $etudiant;
+                }
+            }
+        }
+        $commentairesExistants = [];
+        $notesParEtudiantEtCritere = [];
+        $notesGlobalesGroupe = [];
+
+        // Parcourir les grp
+        foreach ($allGroupesEval as $groupe) {
+            $groupeId = $groupe->getId();
+
+            if (!empty($membresGroupe[$groupeId])) {
+                // premier étudiant = référent
+                $etudiantRef = $membresGroupe[$groupeId][0];
+
+                $noteEvaluation = $noteRepository->findOneBy([
+                    'Evaluation' => $evaluation,
+                    'Etudiant' => $etudiantRef,
+                ]);
+
+                if ($noteEvaluation) {
+                    $commentairesExistants[$groupeId] = $noteEvaluation->getCommentaire();
+                    $notesGlobalesGroupe[$groupeId] = $noteEvaluation->getNote();
+                }
+
+                $notesParEtudiantEtCritereGroupe[$groupeId] = [];
+                foreach ($criteres as $critere) {
+                    $noteCritere = $ficheNoteCritereRepository->findOneBy([
+                        'Etudiant' => $etudiantRef,
+                        'Critere' => $critere
+                    ]);
+
+                    if ($noteCritere) {
+                        $notesParEtudiantEtCritereGroupe[$groupeId][$critere->getId()] = $noteCritere;
+                    }
                 }
             }
         }
@@ -324,6 +346,7 @@ final class NoteController extends AbstractController
                             } else {
                                 $noteValue = floatval($noteValue);
                                 $noteGlobal += $noteValue;
+                                $noteGlobal = round($noteGlobal, 2);
                             }
                             $noteCritere->setNote($noteValue);
 
@@ -361,19 +384,30 @@ final class NoteController extends AbstractController
 
                     // Utiliser le premier étudiant comme référence pour les notes du groupe
                     $etudiantRef = $etudiantsGroupe[0];
+                    $noteGlobaleGroupe = null;
+                    $notesValides = false;
 
-                    // Calcul de la note globale basée sur notes critères
+                    // Calcul de la note globale basée sur notes de chaque critère (somme)
                     foreach ($criteres as $critere) {
                         $noteValue = null;
 
                         if ($request->request->has('etu_' . $etudiantRef->getId() . '_' . $critere->getId())) {
                             $noteValue = $request->request->get('etu_' . $etudiantRef->getId() . '_' . $critere->getId());
 
-                            if ($noteValue === '') {
-                                $noteValue = null;
-                            } else {
+                            if ($noteValue !== '') { // Si la valeur n'est pas vide
                                 $noteValue = floatval($noteValue);
+
+
+                                // Initialiser noteGlobaleGroupe à 0 la première fois qu'on trouve une note valide
+                                if ($noteGlobaleGroupe === null) {
+                                    $noteGlobaleGroupe = 0;
+                                }
+
                                 $noteGlobaleGroupe += $noteValue;
+                                $noteGlobaleGroupe = round($noteGlobaleGroupe, 2);
+                                $notesValides = true;
+                            } else {
+                                $noteValue = null;
                             }
                         }
 
@@ -397,9 +431,6 @@ final class NoteController extends AbstractController
 
                     // Récupérer le commentaire du groupe
                     $commentaireGroupe = '';
-                    if ($request->request->has('commentaire_groupe_' . $groupe->getId())) {
-                        $commentaireGroupe = $request->request->get('commentaire_groupe_' . $groupe->getId());
-                    }
 
                     // Appliquer la note et le commentaire à tous les membres du groupe
                     foreach ($etudiantsGroupe as $etudiant) {
@@ -413,6 +444,15 @@ final class NoteController extends AbstractController
                             $noteEvaluation->setEtudiant($etudiant);
                             $noteEvaluation->setEvaluation($evaluation);
                             $entityManager->persist($noteEvaluation);
+                        }
+                        if ($notesValides) {
+                            $noteEvaluation->setNote($noteGlobaleGroupe);
+                        } else {
+                            $noteEvaluation->setNote(null);
+                        }
+
+                        if ($request->request->has('commentaire_groupe_' . $groupe->getId())) {
+                            $commentaireGroupe = $request->request->get('commentaire_groupe_' . $groupe->getId());
                         }
 
                         $noteEvaluation->setNote($noteGlobaleGroupe);
@@ -434,6 +474,10 @@ final class NoteController extends AbstractController
             'notesExistantes' => $notesExistantes,
             'allGroupe'=> $allGroupesEval,
             'membresGroupe' => $membresGroupe,
+            'commentairesExistants' => $commentairesExistants,
+            'notesParEtudiantEtCritere' => $notesParEtudiantEtCritere,
+            'notesParEtudiantEtCritereGroupe'=> $notesParEtudiantEtCritereGroupe,
+            'notesGlobalesGroupe'=>$notesGlobalesGroupe
         ]);
     }
 }

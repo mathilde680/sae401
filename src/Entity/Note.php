@@ -41,7 +41,7 @@ class Note
         return $this->note;
     }
 
-    public function setNote(int $note): static
+    public function setNote(?int $note): static
     {
         $this->note = $note;
 

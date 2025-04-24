@@ -54,7 +54,7 @@
                             {% for critere in criteres %}
                                 <div class="critere_eleve">
                                     <label>{{ critere.nom }}</label>
-                                    <div class="input_critere_eleve"><input type="number" name="etu_{{ etudiant.id }}_{{ critere.id }}" min="0" max="{{ critere.note }}"  placeholder="Note / {{ critere.note }}"  value="{{ notesExistantes[etudiant.id][critere.id] is defined ? notesExistantes[etudiant.id][critere.id] : '' }}"><p>/{{ critere.note }}</p></div>
+                                    <div class="input_critere_eleve"><input type="number" name="etu_{{ etudiant.id }}_{{ critere.id }}" min="0" max="{{ critere.note }}"  placeholder="Note / {{ critere.note }}"  value="{{ notesExistantes[etudiant.id][critere.id] ?? null }}"><p>/{{ critere.note }}</p></div>
                                     <p>{{ critere.commentaire }}</p>
                                     {# <input type="text" name="etu_{{ etudiant.id }}_{{ critere.id  }}" value="{{ notes[etudiant.id][critre.id] }}"> #}
                                 </div>
@@ -83,8 +83,20 @@
                                 </svg>
                             </div>
                             <p class="nom">{{ groupe.nom }}</p>
+                            {% set noteGlobale = notesGlobalesGroupe[groupe.id] ?? null %}
+                            {% if noteGlobale is not null %}
+                                {% if noteGlobale < 8 %}
+                                    <p class="note rouge">{{ noteGlobale }}</p>
+                                {% elseif noteGlobale > 10 %}
+                                    <p class="note vert">{{ noteGlobale }}</p>
+                                {% else %}
+                                    <p class="note orange">{{ noteGlobale }}</p>
+                                {% endif %}
+                            {% else %}
+                                <p class="note non_note">Pas de note</p>
+                            {% endif %}
 
-                            <textarea name="commentaire_groupe_{{ groupe.id }}" id="commentaire_groupe_{{ groupe.id }}">{{ commentairesExistants[groupe.id] ?? '' }}</textarea>
+                            <textarea name="commentaire_groupe_{{ groupe.id }}" id="commentaire_groupe_{{ groupe.id }}">{{ commentairesExistants[groupe.id] ?? null }}</textarea>
                         </div>
 
                         <div class="criteres_eleve">
@@ -98,16 +110,16 @@
                             </div>
 
                             {% for critere in criteres %}
-                                {% set noteExistante = notesParEtudiantEtCritere[groupe.id][critere.id] ?? null %}
+                                {% set noteExistante = notesParEtudiantEtCritereGroupe[groupe.id][critere.id] ?? null %}
                                 {% set etudiantRef = membresGroupe[groupe.id][0] %}
                                 <div class="critere_eleve">
                                     <p>{{ critere.nom }}</p>
                                     <div class="input_critere_eleve">
-                                    <input type="number"
-                                           name="etu_{{ etudiantRef.id }}_{{ critere.id }}"
-                                           min="0" max="{{ critere.note }}" step="0.1"
-                                           value="{{ noteExistante.note ?? '' }}"
-                                           placeholder="Note / {{ critere.note }}">
+                                        <input type="number"
+                                               name="etu_{{ etudiantRef.id }}_{{ critere.id }}"
+                                               min="0" max="{{ critere.note }}" step="0.1"
+                                               value="{{ noteExistante.note ?? '' }}"
+                                               placeholder="Note / {{ critere.note }}">
                                         <p>/{{ critere.note }}</p>
                                     </div>
 

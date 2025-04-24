@@ -102,7 +102,7 @@
                             <p class="note non_note">Pas de note</p>
                         {% endif %}
 
-                        {% if note and note.commentaire is not null %}
+                        {% if note and note.commentaire is not null and note.commentaire != "" %}
                             <p class="commentaire">{{ note.commentaire }}</p>
                         {% else %}
                             <p class="commentaire">Pas de commentaire</p>
