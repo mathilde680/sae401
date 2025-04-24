@@ -87,7 +87,7 @@ final class NoteController extends AbstractController
         $evaluation = $evaluationRepository->find($id);
         $idEvaluation = $evaluation->getId();
 
-        if (!$evaluation) {
+        if (!$evaluation ) {
             throw $this->createNotFoundException('Évaluation non trouvée');
         }
         $matiere  = $evaluation->getMatiere();
