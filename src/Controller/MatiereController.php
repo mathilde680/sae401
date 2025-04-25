@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class MatiereController extends AbstractController
 {
 
-    #[Route('/fiche/{id}', name: 'app_fiche_matiere', requirements: ['id'=>'\d+'])]
+    #[Route('/professeur/fiche/{id}', name: 'app_fiche_matiere', requirements: ['id'=>'\d+'])]
     public function matiere_fiche(int $id, MatiereRepository $matiereRepository, EvaluationRepository $evaluationRepository, NoteRepository $noteRepository): Response
     {
         $fiches = $matiereRepository->find($id);
@@ -47,7 +47,7 @@ final class MatiereController extends AbstractController
     }
 
 
-    #[Route('/fiche/{id}/suppression', name: 'app_fiche_suppression', requirements: ['id'=>'\d+'])]
+    #[Route('/professeur/fiche/{id}/suppression', name: 'app_fiche_suppression', requirements: ['id'=>'\d+'])]
     public function supprimerFiche(int $id, FicheMatiereRepository $ficheMatiereRepository, EntityManagerInterface $entityManager): Response
     {
         // Récupérer la fiche matière
@@ -64,7 +64,7 @@ final class MatiereController extends AbstractController
         return $this->redirectToRoute('app_accueil_prof');
     }
 
-    #[Route('/matiere/ajout', name: 'app_matiere_ajout')]
+    #[Route('/professeur/matiere/ajout', name: 'app_matiere_ajout')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -96,7 +96,7 @@ final class MatiereController extends AbstractController
         ]);
     }
 
-    #[Route('/matiere/{id}/supprime', name: 'app_matiere_supprime', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route('/professeur/matiere/{id}/supprime', name: 'app_matiere_supprime', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function supprime(int $id, EntityManagerInterface $entityManager): Response
     {
         // Récupérer l'entité Jeu existante
@@ -111,7 +111,7 @@ final class MatiereController extends AbstractController
         return $this->redirectToRoute('app_accueil_prof');
     }
 
-    #[Route('/matiere/{id}/modif', name: 'app_matiere_modif', requirements: ['id' => '\d+'])]
+    #[Route('/professeur/matiere/{id}/modif', name: 'app_matiere_modif', requirements: ['id' => '\d+'])]
     public function modif(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $matiere = $entityManager->getRepository(Matiere::class)->find($id);
@@ -138,8 +138,4 @@ final class MatiereController extends AbstractController
             'matiere' => $form->getData(),
         ]);
     }
-
-
-
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 use App\Entity\FicheGrille;
@@ -20,6 +19,9 @@ class GrilleType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'choices' => $options['grilles'],
+                'mapped' => true, // Assurez-vous que c'est mappé
+                'required' => true,
+                'label' => 'Sélectionnez une grille',
             ])
         ;
     }

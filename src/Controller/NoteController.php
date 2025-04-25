@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class NoteController extends AbstractController
 {
-    #[Route('/note', name: 'app_note_etudiant')]
+    #[Route('/etudiant/note', name: 'app_note_etudiant')]
     public function notes(NoteRepository $noteRepository, MatiereRepository $matiereRepository): Response
     {
         $user = $this->getUser();
@@ -44,7 +44,7 @@ final class NoteController extends AbstractController
     }
 
 
-    #[Route('/note/detail/{id}', name: 'app_note_detail', requirements: ['id' => '\d+'])]
+    #[Route('/etudiant/note/detail/{id}', name: 'app_note_detail', requirements: ['id' => '\d+'])]
     public function notes_detail(int $id, NoteRepository $noteRepository, EvaluationRepository $evaluationRepository, FicheNoteCritereRepository $ficheNoteCritereRepository): Response
     {
         $user = $this->getUser();
@@ -71,7 +71,7 @@ final class NoteController extends AbstractController
     }
 
 
-    #[Route('/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
+    #[Route('/professeur/note/{id}', name: 'app_fiche_evaluation', requirements: ['id' => '\d+'])]
     public function evaluation_fiche(
         int $id,
         EtudiantRepository $etudiantRepository,
@@ -108,8 +108,8 @@ final class NoteController extends AbstractController
 
         foreach ($grilleEvaluation as $ficheGrille) {
             $idGrille = $ficheGrille->getGrille()->getId();
-        }
-
+       }
+//        dd($idEvaluation);
         $criteres = $critereRepository->findBy([
             'Grille' => $idGrille,
         ]);
@@ -123,10 +123,11 @@ final class NoteController extends AbstractController
                 $notesCritere = $ficheNoteCritereRepository->findBy([
                     'Critere' => $critere,
                     'Etudiant' => $etudiant,
+                    'Evaluation' => $idEvaluation,
                 ]);
 
                 foreach ($notesCritere as $noteCritere) {
-                    $notesParEtudiantEtCritere[$etudiant->getId()][$noteCritere->getCritere()->getId()] = $noteCritere;
+                    $notesParEtudiantEtCritere[$etudiant->getId()][$noteCritere->getCritere()->getId()][$idEvaluation] = $noteCritere;
                 }
             }
             $note = $noteRepository->findOneBy([
@@ -170,11 +171,12 @@ final class NoteController extends AbstractController
                         $noteCritere = $ficheNoteCritereRepository->findOneBy([
                             'Etudiant' => $premierEtudiant,
                             'Critere' => $critere,
+                            'Evaluation' => $idEvaluation,
                         ]);
 
                         if ($noteCritere) {
                             // CECI EST LA CLÉ : stockez les notes de critères pour le groupe
-                            $notesParEtudiantEtCritere[$groupe->getId()][$critere->getId()] = $noteCritere;
+                            $notesParEtudiantEtCritere[$groupe->getId()][$critere->getId()][$idEvaluation] = $noteCritere;
                         }
                     }
                 } else {
@@ -196,7 +198,7 @@ final class NoteController extends AbstractController
         ]);
     }
 
-    #[Route('/note/evaluer/{id}', name: 'app_note')]
+    #[Route('/professeur/note/evaluer/{id}', name: 'app_note')]
     public function modif_ajout_note(
         int                        $id, EvaluationRepository $evaluationRepository, Request $request,
         NoteRepository             $noteRepository,

@@ -46,10 +46,11 @@ security:
                 enable_csrf: true
             logout:
                 path: app_logout
+            access_denied_handler: App\Security\AccessDeniedHandler
 
     access_control:
-    # - { path: ^/admin, roles: ROLE_ADMIN }
-    # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/etudiant, roles: ROLE_ETUDIANT }
+        - { path: ^/professeur, roles: ROLE_PROFESSEUR }
 
 when@test:
     security:

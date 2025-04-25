@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AccueilEtudiantController extends AbstractController
 {
-    #[Route('/accueil/etudiant', name: 'app_accueil_etudiant')]
+    #[Route('/etudiant', name: 'app_accueil_etudiant')]
     public function index(EvaluationRepository $evaluationRepository, AlerteRepository $alerteRepository): Response
     {
         $etudiant = $this->getUser();

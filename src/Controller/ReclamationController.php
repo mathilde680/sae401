@@ -20,7 +20,7 @@ final class ReclamationController extends AbstractController
         ]);
     }
 
-    #[Route('/prof/reclamation', name: 'app_reclamation_prof')]
+    #[Route('/professeur/reclamation', name: 'app_reclamation_prof')]
     #[IsGranted('ROLE_PROFESSEUR')]
     public function profView(): Response
     {

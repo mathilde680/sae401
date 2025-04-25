@@ -73,7 +73,21 @@ input, select {
   }
 }
 
-
+//page access_denied
+.access_denied{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .button{
+    background-color: $couleurBouton;
+    padding: 2rem 0.5rem;
+    color: white;
+    &:hover{
+      background-color: $couleurBoutonHover;
+    }
+  }
+}
 //alertes messages d'erreurs
 .alert{
   display: flex;

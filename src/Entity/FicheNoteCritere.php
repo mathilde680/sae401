@@ -23,6 +23,9 @@ class FicheNoteCritere
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Critere $Critere = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ficheNoteCriteres')]
+    private ?Evaluation $Evaluation = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class FicheNoteCritere
     public function setCritere(?Critere $Critere): static
     {
         $this->Critere = $Critere;
+
+        return $this;
+    }
+
+    public function getEvaluation(): ?Evaluation
+    {
+        return $this->Evaluation;
+    }
+
+    public function setEvaluation(?Evaluation $Evaluation): static
+    {
+        $this->Evaluation = $Evaluation;
 
         return $this;
     }

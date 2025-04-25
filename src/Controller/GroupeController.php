@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class GroupeController extends AbstractController
 {
-    #[Route('/groupe/{id}', name: 'app_groupe')]
+    #[Route('/etudiant/groupe/{id}', name: 'app_groupe')]
     public function index(int $id,GroupeRepository $groupeRepository, EvaluationRepository $evaluationRepository, FicheGroupeRepository $ficheGroupeRepository): Response
     {
         $user = $this->getUser();
@@ -41,7 +41,7 @@ final class GroupeController extends AbstractController
             'groupeActuel' => $groupeActuel
         ]);
     }
-    #[Route('/groupe/{id}/ajout', name: 'app_groupe_ajout', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route('/etudiant/groupe/{id}/ajout', name: 'app_groupe_ajout', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function ajoutEtudiantGroupe(int $id, EntityManagerInterface $entityManager, GroupeRepository $groupeRepository, FicheGroupeRepository $ficheGroupeRepository): Response
     {
         $user = $this->getUser();
@@ -79,7 +79,7 @@ final class GroupeController extends AbstractController
         return $this->redirectToRoute('app_groupe', ['id' => $groupe->getEvaluation()->getId()]);
     }
 
-    #[Route('/groupe/{id}/quitter', name: 'app_groupe_quitter', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route('/etudiant/groupe/{id}/quitter', name: 'app_groupe_quitter', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function quitterGroupe(int $id, EntityManagerInterface $entityManager, GroupeRepository $groupeRepository, FicheGroupeRepository $ficheGroupeRepository): Response
     {
         $user = $this->getUser();

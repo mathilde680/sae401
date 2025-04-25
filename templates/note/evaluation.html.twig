@@ -54,7 +54,7 @@
 
                     <div class="criteres_eleve">
                             {% for critere in criteres %}
-                                {% set noteCritere = notesParEtudiantEtCritere[etudiant.id][critere.id] ?? null %}
+                                {% set noteCritere = notesParEtudiantEtCritere[etudiant.id][critere.id][evaluation.id] ?? null %}
                                 <div class="critere_eleve">
                                     <p>{{ critere.nom }}</p>
                                     <p>
@@ -119,7 +119,7 @@
                             {% endfor %}
                         </div>
                         {% for critere in criteres %}
-                            {% set noteCritere = notesParEtudiantEtCritere[groupe.id][critere.id] ?? null %}
+                            {% set noteCritere = notesParEtudiantEtCritere[groupe.id][critere.id][evaluation.id] ?? null %}
                             <div class="critere_eleve">
                                 <p>{{ critere.nom }}</p>
                                 <p>

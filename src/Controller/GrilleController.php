@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class GrilleController extends AbstractController
 {
-    #[Route('/grille', name: 'app_grille')]
+    #[Route('/professeur/grille', name: 'app_grille')]
     public function index(Security $security, GrilleRepository $grilleRepository): Response
     {
         $user = $security->getUser();
@@ -30,7 +30,7 @@ final class GrilleController extends AbstractController
         ]);
     }
 
-    #[Route('/grille/{id}', name: 'app_fiche_grille', requirements: ['id'=>'\d+'])]
+    #[Route('/professeur/grille/{id}', name: 'app_fiche_grille', requirements: ['id'=>'\d+'])]
     public function grille_fiche(int $id, GrilleRepository $grilleRepository, CritereRepository $critereRepository): Response
     {
         $grille = $grilleRepository->find($id);
@@ -42,7 +42,7 @@ final class GrilleController extends AbstractController
         ]);
     }
 
-    #[Route('/grille/ajout', name: 'app_grille_ajout')]
+    #[Route('/professeur/grille/ajout', name: 'app_grille_ajout')]
     public function ajout_grille(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -95,7 +95,7 @@ final class GrilleController extends AbstractController
     }
 
     //MODIFICATION d'une grille
-    #[Route('/grille/{id}/modif', name: 'app_grille_modif', requirements: ['id' => '\d+'])]
+    #[Route('/professeur/grille/{id}/modif', name: 'app_grille_modif', requirements: ['id' => '\d+'])]
     public function modif(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $grille = $entityManager->getRepository(Grille::class)->find($id);

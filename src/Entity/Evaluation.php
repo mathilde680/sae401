@@ -94,6 +94,12 @@ class Evaluation
     #[ORM\OneToMany(targetEntity: Alerte::class, mappedBy: 'Evaluation', cascade: ['remove'])]
     private Collection $alertes;
 
+    /**
+     * @var Collection<int, FicheNoteCritere>
+     */
+    #[ORM\OneToMany(targetEntity: FicheNoteCritere::class, mappedBy: 'Evaluation')]
+    private Collection $ficheNoteCriteres;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -103,6 +109,7 @@ class Evaluation
         $this->Note = new ArrayCollection();
         $this->Groupe = new ArrayCollection();
         $this->alertes = new ArrayCollection();
+        $this->ficheNoteCriteres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -367,6 +374,36 @@ class Evaluation
             // set the owning side to null (unless already changed)
             if ($alerte->getEvaluation() === $this) {
                 $alerte->setEvaluation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FicheNoteCritere>
+     */
+    public function getFicheNoteCriteres(): Collection
+    {
+        return $this->ficheNoteCriteres;
+    }
+
+    public function addFicheNoteCritere(FicheNoteCritere $ficheNoteCritere): static
+    {
+        if (!$this->ficheNoteCriteres->contains($ficheNoteCritere)) {
+            $this->ficheNoteCriteres->add($ficheNoteCritere);
+            $ficheNoteCritere->setEvaluation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFicheNoteCritere(FicheNoteCritere $ficheNoteCritere): static
+    {
+        if ($this->ficheNoteCriteres->removeElement($ficheNoteCritere)) {
+            // set the owning side to null (unless already changed)
+            if ($ficheNoteCritere->getEvaluation() === $this) {
+                $ficheNoteCritere->setEvaluation(null);
             }
         }
 

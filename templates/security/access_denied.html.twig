@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accès refusé{% endblock %}
+
+{% block main %}
+    <div class="div_blanche access_denied">
+        <h1>Accès refusé</h1>
+        <p>Désolé, vous n’avez pas les permissions nécessaires pour accéder à cette page.</p>
+        {% if is_granted('ROLE_PROFESSEUR') %}
+            <a href="{{ path('app_accueil_prof') }}" class="bouton">Retour à l'accueil</a>
+        {% elseif is_granted('ROLE_PROFESSEUR') %}
+            <a href="{{ path('app_accueil_etudiant') }}" class="bouton">Retour à l'accueil</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="bouton">Retour à l'accueil</a>
+        {% endif %}
+    </div>
+{% endblock %}

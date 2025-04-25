@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AccueilProfController extends AbstractController
 {
-    #[Route('/accueil/prof', name: 'app_accueil_prof')]
+    #[Route('/professeur', name: 'app_accueil_prof')]
     public function index(Security $security, FicheMatiereRepository $ficheMatiereRepository, GrilleRepository $grilleRepository, CritereRepository $critereRepository, NoteRepository $noteRepository) : response
     {
         $user = $security->getUser();

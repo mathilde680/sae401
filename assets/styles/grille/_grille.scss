@@ -65,14 +65,10 @@
 // form style
 #form_div{
   width: 140vh;
-  form{
-    //background-color: pink !important;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap:5%;
 
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap:5%;
-    //height: fit-content;
-    margin-bottom: 5vh;
 
     .radio-group{
       display: flex;
@@ -89,7 +85,6 @@
         width: 50%;
       }
     }
-}
 }
 
 // Modal styles

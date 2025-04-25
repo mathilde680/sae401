@@ -53,9 +53,11 @@ class GroupeRepository extends ServiceEntityRepository
         } elseif ($typeGroupe === 'TP') {
             $qb->andWhere('g.nom LIKE :groupeTP')
                 ->setParameter('groupeTP', 'Groupe TP ' . $etudiant->getTP() . '%');
-        } else { // promo
+        } elseif ($typeGroupe === 'Promotion') {
             $qb->andWhere('g.nom LIKE :groupePromo')
-                ->setParameter('groupePromo', 'Groupe promo ' . $etudiant->getPromotion() . '%');
+                ->setParameter('groupePromo', 'Groupe Promotion ' . $etudiant->getPromotion() . '%');
+        } else {
+            error_log("Type de groupe non reconnu: " . $typeGroupe);
         }
 
         return $qb->getQuery()->getResult();

@@ -17,6 +17,11 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SecurityController extends AbstractController
 {
+    #[Route('/access-denied', name: 'access_denied')]
+    public function accessDenied(): Response
+    {
+        return $this->render('security/access_denied.html.twig');
+    }
     #[Route(path: '/', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, Security $security): Response
     {
