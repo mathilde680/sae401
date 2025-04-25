@@ -2,14 +2,24 @@
   //background-color: pink;
   display: flex;
   flex-direction: row;
-  font-size: 12pt;
+  font-size: 10pt;
   color: $couleurBouton;
   font-weight: 600;
-  padding: 2vh 0;
-
+  height: auto;
 
   .breadcrumb-item{
     padding: 0 2vh;
+    display: flex;
+    align-items: center;
+    height: auto;
+    a{
+      color: $couleurBouton;
+      padding: 0.3rem 0.5rem;
+      &:hover{
+        background-color: $couleurNeutre;
+        border-radius: 0.5rem;
+      }
+    }
   }
 
 }

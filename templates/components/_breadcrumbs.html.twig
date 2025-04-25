@@ -1,16 +1,21 @@
 <div aria-label="breadcrumb">
     <div class="breadcrumb">
         {% for breadcrumb in breadcrumbs() %}
-            {% if not loop.last %}
-                <div class="breadcrumb-item">
-                    <a href="{{ breadcrumb.path }}">{{ breadcrumb.title }}</a>
-                </div>
-            {% else %}
-                <div class="breadcrumb-item active" aria-current="page">
-                    {{ breadcrumb.title }}
-                </div>
+            {% set skip = (breadcrumb.title == 'Professeur' and is_granted('ROLE_PROFESSEUR')) or
+                (breadcrumb.title == 'Étudiant' and is_granted('ROLE_ETUDIANT')) %}
+
+            {% if not skip %}
+                {% if not loop.last %}
+                    <div class="breadcrumb-item">
+                        <a href="{{ breadcrumb.path }}">{{ breadcrumb.title }}</a>
+                    </div>
+                    <p> / </p>
+                {% else %}
+                    <div class="breadcrumb-item active" aria-current="page">
+                        {{ breadcrumb.title }}
+                    </div>
+                {% endif %}
             {% endif %}
         {% endfor %}
     </div>
 </div>
-

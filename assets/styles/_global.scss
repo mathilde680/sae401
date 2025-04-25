@@ -296,7 +296,7 @@ input, select {
   .ressourcesProf .toutesLesRessources .ressourcesAffichage {    //---pour la box ressources du dashboard
     color: $couleurBackground;
     &:hover{
-      background-color: transparent;
+      background-color: $couleurTexte;
     }
     a, .crudRessource .actionCrud{
       color: $couleurBackground;
@@ -306,6 +306,9 @@ input, select {
   .toutesLesGrilles .grillesAffichage {                       //---pour la box grilles du dashboard
     a.grille-link{
       color: $couleurBackground;
+    }
+    &:hover{
+      background-color: $couleurTexte;
     }
     .crudGrille {
       a, form button{

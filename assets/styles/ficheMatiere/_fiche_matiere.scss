@@ -114,13 +114,13 @@
 
         button{
           height: 100%;
+          font-size: 13pt;
+          margin: 0 0.5rem;
         }
         div{
           display: flex;
           gap: 5%;
-          a {
-            font-size: 14px;
-          }
+
         }
       }
     }

@@ -1,10 +1,10 @@
 section#dashboardProf {
   .gridProf {
     width: 100%;
-    height: 87vh;
+    height: 80vh;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows:  1fr 0.5fr;
     gap: 25px;
 
     .alertesProf, .ressourcesProf, .grillesProf{
@@ -75,7 +75,7 @@ section#dashboardProf {
     }
 
     .ressourcesProf {
-      grid-column: 4 / 6;
+      grid-column: 1 / 4;
       grid-row: 1 / 2;
 
 
@@ -115,6 +115,9 @@ section#dashboardProf {
           &:last-child{
             margin-bottom: 1.5rem;
           }
+          .infosRessources{
+            width: 80%;
+          }
           div{
             display: flex;
             align-items: center;
@@ -124,7 +127,7 @@ section#dashboardProf {
             }
             a{
               color: $couleurTexte;
-              width: 300px;
+              width: 100%;
             }
           }
 
@@ -169,8 +172,8 @@ section#dashboardProf {
     }
 
     .grillesProf {
-      grid-column: 1 / 3;
-      grid-row: 2 / 3;
+      grid-column: 4 / 6;
+      grid-row: 1 / 2;
 
       .toutesLesGrilles{
         overflow-y: scroll;
@@ -198,7 +201,13 @@ section#dashboardProf {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin: 0.7rem 0;
+          margin: 1rem 0.8rem;
+          padding: 0.5rem 0.8rem;
+          &:hover{
+            background-color: $couleurBackground;
+            border-radius: 0.5rem;
+
+          }
           a.grille-link{
             width: 100%;
             color: $couleurTexte;

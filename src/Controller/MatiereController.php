@@ -64,7 +64,7 @@ final class MatiereController extends AbstractController
         return $this->redirectToRoute('app_accueil_prof');
     }
 
-    #[Route('/professeur/matiere/ajout', name: 'app_matiere_ajout')]
+    #[Route('/professeur/matiere', name: 'app_matiere_ajout')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();

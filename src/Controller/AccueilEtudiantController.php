@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etudiant;
 use App\Repository\AlerteRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
@@ -15,8 +16,14 @@ final class AccueilEtudiantController extends AbstractController
     #[Route('/etudiant', name: 'app_accueil_etudiant')]
     public function index(EvaluationRepository $evaluationRepository, AlerteRepository $alerteRepository): Response
     {
-        $etudiant = $this->getUser();
-        $evaluationsGroupe = $evaluationRepository->findGroupEvaluationsByEtudiant($etudiant);
+        $user = $this->getUser();
+
+        if (!$user instanceof Etudiant) {
+            throw $this->createAccessDeniedException('Accès réservé aux étudiants.');
+        }
+
+        $evaluationsGroupe = $evaluationRepository->findGroupEvaluationsByEtudiant($user);
+
         $alertes = $alerteRepository->findAll();
 
         return $this->render('accueil_etudiant/index.html.twig', [

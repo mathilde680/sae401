@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <meta name="description" content="Correcto c'est l'endroit où professeurs et élèves se retrouvent. Gestion des notes, gestion de groupes, réclamation, suivi scolaire, tout y est.">
-    <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <link rel="icon" type="image/png" href="/img/logoCorrecto.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
     </style>
@@ -56,9 +55,6 @@
                               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </a>
-                <div id="popAccueil">
-                    Accueil
-                </div>
                     {% if is_granted('ROLE_PROFESSEUR') %}
                     <a href="{{ path ('app_ressource_prof') }}" title="Ressources">
                         {% else %}
@@ -69,9 +65,6 @@
                               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </a>
-                <div id="popNotes">
-                    Notes
-                </div>
                 <a href="#" title="Dark mode" id="darkmode">
                     <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20.376 13.9927C19.1873 14.4881 17.9119 14.7424 16.624 14.7407C11.239 14.7407 6.87402 10.3757 6.87402 4.99071C6.87402 3.66071 7.14002 2.39371 7.62202 1.23871C5.84549 1.97982 4.32799 3.23006 3.26065 4.83196C2.19331 6.43387 1.62386 8.31579 1.62402 10.2407C1.62402 15.6257 5.98902 19.9907 11.374 19.9907C13.2989 19.9909 15.1809 19.4214 16.7828 18.3541C18.3847 17.2867 19.6349 15.7692 20.376 13.9927Z"
@@ -79,9 +72,6 @@
                         />
                     </svg>
                 </a>
-                <div id="popDarkMode">
-                    Dark Mode
-                </div>
         </nav>
     </header>
     <main>

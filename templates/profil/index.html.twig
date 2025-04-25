@@ -3,33 +3,34 @@
 {% block title %}Proil{% endblock %}
 
 {% block main %}
-<h1>Vos informations personnelles </h1>
-<div class="profil">
-        <div class="photo">
+    {% include 'components/_breadcrumbs.html.twig' %}
+    <div  class=" div_blanche">
+        <div class="profil">
+            <div class="photo">
                 {% if utilisateur.photo is not null %}
-                        <img src="{{ asset('img/avatar/') }}{{ utilisateur.photo }}" alt="avatar de l'utilisateur">
+                    <img src="{{ asset('img/avatar/') }}{{ utilisateur.photo }}" alt="avatar de l'utilisateur">
                 {% else %}
-                        <img src="{{ asset('img/defaultAvatar.png') }}" alt="avatar par défaut">
+                    <img src="{{ asset('img/defaultAvatar.png') }}" alt="avatar par défaut">
                 {% endif %}
-        </div>
-        <div class="infosProfil">
+            </div>
+            <div class="infosProfil">
                 <h2>{{ utilisateur.prenom }} {{ utilisateur.nom }}</h2>
                 {% if is_granted('ROLE_ETUDIANT') %}
                     <h2><span>Informations sur la scolarité</span></h2>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Promotion</th>
-                                <th>TD</th>
-                                <th>TP</th>
-                            </tr>
+                        <tr>
+                            <th>Promotion</th>
+                            <th>TD</th>
+                            <th>TP</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>{{ utilisateur.promotion }}</td>
-                                <td>{{ utilisateur.td }}</td>
-                                <td>{{ utilisateur.tp }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ utilisateur.promotion }}</td>
+                            <td>{{ utilisateur.td }}</td>
+                            <td>{{ utilisateur.tp }}</td>
+                        </tr>
                         </tbody>
                     </table>
                     <h2><span>Informations personnelles</span></h2>
@@ -62,8 +63,10 @@
                         </a>
                     </div>
                 {% endif %}
+            </div>
         </div>
-</div>
+    </div>
+
 
 
 

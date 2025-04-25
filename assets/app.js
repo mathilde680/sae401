@@ -50,17 +50,16 @@ try {
             modalTitle.textContent = 'Grille : ' + grilleName;
 
             // Mise à jour du titre de la modal
-            const deleteUrl = `/grille/${grilleId}/supprime`;
+            const deleteUrl = `/professeur/grille/${grilleId}/supprime`;
             deleteForm.action = deleteUrl;
+
+            const modifyUrl = `/professeur/grille/${grilleId}/modif`;
+            useGrilleLink.href = modifyUrl;
 
             if (useGrilleUtiliser) {
                 // Modifier du titre de la modal
                 useGrilleUtiliser.href = `/evaluation/ajout/grille/${grilleId}`;
             }
-
-
-            // Utiliser
-
 
             // Vider le contenu actuel de la modal
             modalBody.innerHTML = '';
